@@ -25,7 +25,7 @@ export default function FAQsPage() {
     {
       category: 'orders',
       question: 'Can I modify or cancel my order?',
-      answer: 'You can modify or cancel your order within 1 hour of placing it. Contact our customer service immediately at +233 24 123 4567 or hello@premiumstore.com. Once an order is processed, modifications may not be possible.'
+      answer: 'You can modify or cancel your order within 1 hour of placing it. Contact our customer service immediately via WhatsApp at +233 20 959 7443 or email support@multimeysupplies.com. Once an order is processed, modifications may not be possible.'
     },
     {
       category: 'orders',
@@ -80,12 +80,12 @@ export default function FAQsPage() {
     {
       category: 'payment',
       question: 'What payment methods do you accept?',
-      answer: 'We accept MTN Mobile Money, Vodafone Cash, AirtelTigo Money, Visa/Mastercard credit and debit cards, and Cash on Delivery (available for orders under GHS 1,000). All payments are processed securely.'
+      answer: 'We accept MTN Mobile Money, Vodafone Cash, AirtelTigo Money, and Visa/Mastercard credit and debit cards via our secure Moolre payment gateway. All transactions are encrypted and processed securely.'
     },
     {
       category: 'payment',
       question: 'Is it safe to use my credit card on your site?',
-      answer: 'Absolutely. We use industry-standard SSL encryption and partner with secure payment processors (Paystack, Flutterwave). We never store your full card details on our servers. All transactions are PCI-DSS compliant.'
+      answer: 'Absolutely. We use industry-standard SSL encryption and partner with Moolre for secure payment processing. We never store your full card details on our servers. All transactions are PCI-DSS compliant.'
     },
     {
       category: 'payment',
@@ -146,7 +146,7 @@ export default function FAQsPage() {
               Frequently Asked Questions
             </h1>
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              Find quick answers to common questions about ordering, shipping, returns, and more.
+              Find quick answers to common questions about ordering, shipping, returns, payments, and more.
             </p>
 
             <div className="relative">
@@ -229,7 +229,7 @@ export default function FAQsPage() {
               Contact Support
             </Link>
             <a
-              href="https://wa.me/233241234567"
+              href="https://wa.me/233209597443"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-4 rounded-full font-medium hover:bg-blue-500 transition-colors whitespace-nowrap"

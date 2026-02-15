@@ -13,6 +13,9 @@ interface SiteSettings {
     social_facebook: string;
     social_instagram: string;
     social_twitter: string;
+    social_tiktok: string;
+    social_snapchat: string;
+    social_youtube: string;
     primary_color: string;
     secondary_color: string;
     currency: string;
@@ -63,15 +66,18 @@ interface CMSContextType {
 }
 
 const defaultSettings: SiteSettings = {
-    site_name: 'Classy Debbie Collection',
-    site_tagline: 'Elegance for Every Occasion',
-    site_logo: '/logo.svg',
-    contact_email: 'support@classydebbie.com',
-    contact_phone: '0546014734',
+    site_name: 'MultiMey Supplies',
+    site_tagline: 'Dresses, Electronics, Bags, Shoes & More',
+    site_logo: '/logo.png',
+    contact_email: 'support@multimeysupplies.com',
+    contact_phone: '+233209597443',
     contact_address: 'Accra, Ghana',
-    social_facebook: 'https://facebook.com/classydebbie',
-    social_instagram: 'https://instagram.com/classydebbie',
-    social_twitter: 'https://twitter.com/classydebbie',
+    social_facebook: '',
+    social_instagram: 'https://www.instagram.com/mey_phua',
+    social_twitter: 'https://x.com/mey_phua',
+    social_tiktok: 'https://www.tiktok.com/@mey_phua',
+    social_snapchat: 'https://snapchat.com/t/eL9wfuQa',
+    social_youtube: 'https://youtube.com/@mey_phua',
     primary_color: '#059669',
     secondary_color: '#0D9488',
     currency: 'GHS',
@@ -91,15 +97,18 @@ const CMSContext = createContext<CMSContextType>({
 
 export function CMSProvider({ children }: { children: ReactNode }) {
     const [settings, setSettings] = useState<SiteSettings>({
-        site_name: 'Classy Debbie Collection',
-        site_tagline: 'Elegance for Every Occasion',
-        site_logo: '/logo.svg',
-        contact_email: 'info@classydebbie.com',
-        contact_phone: '0546014734',
+        site_name: 'MultiMey Supplies',
+        site_tagline: 'Dresses, Electronics, Bags, Shoes & More',
+        site_logo: '/logo.png',
+        contact_email: 'info@multimeysupplies.com',
+        contact_phone: '+233209597443',
         contact_address: 'Accra, Ghana',
-        social_facebook: 'https://facebook.com/classydebbie',
-        social_instagram: 'https://instagram.com/classydebbie',
-        social_twitter: 'https://twitter.com/classydebbie',
+        social_facebook: '',
+        social_instagram: 'https://www.instagram.com/mey_phua',
+        social_twitter: 'https://x.com/mey_phua',
+        social_tiktok: 'https://www.tiktok.com/@mey_phua',
+        social_snapchat: 'https://snapchat.com/t/eL9wfuQa',
+        social_youtube: 'https://youtube.com/@mey_phua',
         primary_color: '#2563eb',
         secondary_color: '#FBF6F2',
         currency: 'GHS',

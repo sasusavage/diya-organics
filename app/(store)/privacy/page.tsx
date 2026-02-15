@@ -8,7 +8,7 @@ export default function PrivacyPage() {
             <p className="text-xl text-gray-600 leading-relaxed">
               Your privacy matters to us. Learn how we collect, use, and protect your personal information.
             </p>
-            <p className="text-sm text-gray-500 mt-4">Last updated: December 2024</p>
+            <p className="text-sm text-gray-500 mt-4">Last updated: February 2026</p>
           </div>
         </div>
       </div>
@@ -281,7 +281,7 @@ export default function PrivacyPage() {
             </div>
 
             <p className="text-gray-600 leading-relaxed">
-              To exercise any of these rights, please contact us at <a href="mailto:privacy@premiumstore.com" className="text-blue-700 font-medium hover:underline">privacy@premiumstore.com</a> or through your account settings. We will respond within 30 days.
+              To exercise any of these rights, please contact us at <a href="mailto:support@multimeysupplies.com" className="text-blue-700 font-medium hover:underline">support@multimeysupplies.com</a> or through your account settings. We will respond within 30 days.
             </p>
           </section>
 
@@ -384,7 +384,7 @@ export default function PrivacyPage() {
                   <i className="ri-mail-line text-blue-700 text-xl mt-1"></i>
                   <div>
                     <p className="font-medium text-gray-900">Email</p>
-                    <a href="mailto:privacy@premiumstore.com" className="text-blue-700 hover:underline">privacy@premiumstore.com</a>
+                    <a href="mailto:support@multimeysupplies.com" className="text-blue-700 hover:underline">support@multimeysupplies.com</a>
                   </div>
                 </div>
 
@@ -392,7 +392,7 @@ export default function PrivacyPage() {
                   <i className="ri-phone-line text-blue-700 text-xl mt-1"></i>
                   <div>
                     <p className="font-medium text-gray-900">Phone</p>
-                    <a href="tel:+233241234567" className="text-blue-700 hover:underline">+233 24 123 4567</a>
+                    <a href="tel:+233209597443" className="text-blue-700 hover:underline">+233 20 959 7443</a>
                   </div>
                 </div>
 
@@ -400,7 +400,7 @@ export default function PrivacyPage() {
                   <i className="ri-map-pin-line text-blue-700 text-xl mt-1"></i>
                   <div>
                     <p className="font-medium text-gray-900">Address</p>
-                    <p className="text-gray-600">Premium Store Ghana<br />East Legon, Accra<br />Ghana</p>
+                    <p className="text-gray-600">MultiMey Supplies<br />Accra, Ghana</p>
                   </div>
                 </div>
               </div>

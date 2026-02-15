@@ -397,7 +397,7 @@ export default function ProductEditor({ productId }: { productId: string }) {
                 <textarea
                   rows={3}
                   maxLength={500}
-                  defaultValue="Discover our premium full-grain leather crossbody bag. Timeless elegance meets modern functionality with adjustable strap and secure compartments. Perfect for everyday use."
+                  defaultValue="Quality product sourced and inspected for durability and style. Available for retail and wholesale orders."
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
                 />
                 <p className="text-sm text-gray-500 mt-2">160 characters recommended</p>
@@ -425,7 +425,7 @@ export default function ProductEditor({ productId }: { productId: string }) {
                 </label>
                 <input
                   type="text"
-                  defaultValue="leather bag, crossbody bag, premium accessories, women's bag"
+                  defaultValue="MultiMey Supplies, quality products, Ghana shopping"
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
                 <p className="text-sm text-gray-500 mt-2">Separate keywords with commas</p>

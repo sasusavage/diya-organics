@@ -1,4 +1,4 @@
-// Classy Debbie - Service Worker v2.0
+// MultiMey Supplies - Service Worker v2.0
 const CACHE_VERSION = 'sl-v2.0';
 const STATIC_CACHE = `static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `dynamic-${CACHE_VERSION}`;
@@ -14,7 +14,7 @@ const STATIC_ASSETS = [
   '/account',
   '/categories',
   '/offline',
-  '/logo.svg',
+  '/logo.png',
 ];
 
 // Cache size limits
@@ -212,7 +212,7 @@ self.addEventListener('push', (event) => {
 
   const data = event.data.json();
   const options = {
-    body: data.body || 'New update from Classy Debbie Collection',
+    body: data.body || 'New update from MultiMey Supplies',
     icon: '/icons/icon-192x192.png',
     badge: '/icons/icon-72x72.png',
     vibrate: [100, 50, 100],
@@ -228,7 +228,7 @@ self.addEventListener('push', (event) => {
 
   event.waitUntil(
     self.registration.showNotification(
-      data.title || 'Classy Debbie Collection',
+      data.title || 'MultiMey Supplies',
       options
     )
   );

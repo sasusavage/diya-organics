@@ -20,9 +20,9 @@ export default function MobileSearchOverlay({ isOpen, onClose }: MobileSearchOve
   const popularSearches = [
     'New Arrivals',
     'Sale Items',
-    'Women\'s Clothing',
+    'Dresses',
     'Men\'s Shoes',
-    'Accessories',
+    'Electronics',
     'Bags & Purses'
   ];
 

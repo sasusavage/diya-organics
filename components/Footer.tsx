@@ -26,13 +26,16 @@ function FooterSection({ title, children }: { title: string, children: React.Rea
 export default function Footer() {
   const { getSetting } = useCMS();
 
-  const siteName = getSetting('site_name') || 'Classy Debbie Collection';
-  const siteTagline = getSetting('site_tagline') || 'Elegance for Every Occasion.';
+  const siteName = getSetting('site_name') || 'MultiMey Supplies';
+  const siteTagline = getSetting('site_tagline') || 'Dresses, Electronics, Bags, Shoes & More.';
   const contactEmail = getSetting('contact_email') || '';
-  const contactPhone = getSetting('contact_phone') || '0546014734';
+  const contactPhone = getSetting('contact_phone') || '+233209597443';
   const socialFacebook = getSetting('social_facebook') || '';
-  const socialInstagram = getSetting('social_instagram') || '';
-  const socialTwitter = getSetting('social_twitter') || '';
+  const socialInstagram = getSetting('social_instagram') || 'https://www.instagram.com/mey_phua';
+  const socialTwitter = getSetting('social_twitter') || 'https://x.com/mey_phua';
+  const socialTiktok = getSetting('social_tiktok') || 'https://www.tiktok.com/@mey_phua';
+  const socialSnapchat = getSetting('social_snapchat') || 'https://snapchat.com/t/eL9wfuQa';
+  const socialYoutube = getSetting('social_youtube') || 'https://youtube.com/@mey_phua';
 
   return (
     <footer className="relative mt-12 z-0">
@@ -50,17 +53,20 @@ export default function Footer() {
             {/* Brand Column */}
             <div className="lg:col-span-1 space-y-6">
               <Link href="/" className="inline-block group">
-                <img src="/logo.svg" alt={siteName} className="h-12 w-auto object-contain brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity" />
+                <img src="/logo.png" alt={siteName} className="h-12 w-auto object-contain brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity" />
               </Link>
               <p className="text-blue-200/60 leading-relaxed text-sm">
-                Redefining elegance for the modern woman. Premium quality fashion sourced directly for you.
+                Your one-stop shop for dresses, electronics, bags, shoes and more. Locally sourced and imported quality products from Accra, Ghana.
               </p>
 
               <div className="flex gap-3 pt-2">
                 {[
                   { link: socialInstagram, icon: 'ri-instagram-line' },
-                  { link: socialFacebook, icon: 'ri-facebook-fill' },
-                  { link: socialTwitter, icon: 'ri-twitter-x-fill' }
+                  { link: socialTiktok, icon: 'ri-tiktok-fill' },
+                  { link: socialSnapchat, icon: 'ri-snapchat-fill' },
+                  { link: socialYoutube, icon: 'ri-youtube-fill' },
+                  { link: socialTwitter, icon: 'ri-twitter-x-fill' },
+                  { link: socialFacebook, icon: 'ri-facebook-fill' }
                 ].map((social, i) => social.link && (
                   <a
                     key={i}

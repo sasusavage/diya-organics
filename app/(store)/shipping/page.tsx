@@ -20,7 +20,7 @@ export default function ShippingPage() {
       type: 'Store Pickup',
       time: 'Same Day',
       cost: 'FREE',
-      description: 'Collect from our East Legon store',
+      description: 'Collect from our Accra location',
       icon: 'ri-store-2-line'
     }
   ];

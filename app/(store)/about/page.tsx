@@ -11,28 +11,28 @@ export default function AboutPage() {
   const { getSetting } = useCMS();
   const [activeTab, setActiveTab] = useState('story');
 
-  const siteName = getSetting('site_name') || 'Classy Debbie Collection';
+  const siteName = getSetting('site_name') || 'MultiMey Supplies';
 
   const values = [
     {
       icon: 'ri-verified-badge-line',
-      title: 'Authenticity',
-      description: 'Handpicked selections. We document our sourcing journey so you know exactly what you are buying.'
+      title: 'Verified Quality',
+      description: 'Every product is personally inspected before it reaches you. Whether sourced locally or imported from China, quality comes first.'
     },
     {
       icon: 'ri-money-dollar-circle-line',
-      title: 'Unbeatable Value',
-      description: 'Direct sourcing ensures premium quality at prices that make sense, without the markup.'
+      title: 'Unbeatable Prices',
+      description: 'By sourcing directly from manufacturers and local suppliers, we cut out the middleman and pass the savings to you.'
     },
     {
-      icon: 'ri-star-smile-line',
-      title: 'Quality Assured',
-      description: 'Every product is personally inspected. From dresses to accessories, quality is our priority.'
+      icon: 'ri-global-line',
+      title: 'Local & Imported',
+      description: 'The best of both worlds — handpicked local products alongside carefully selected imports from trusted Chinese suppliers.'
     },
     {
-      icon: 'ri-group-line',
-      title: 'Discretion & Trust',
-      description: 'Built on trust. We ensure privacy and discretion, especially with our intimate product line.'
+      icon: 'ri-truck-line',
+      title: 'Nationwide Delivery',
+      description: 'Fast and reliable delivery across Ghana. Based in Accra, we ship to every region with care and speed.'
     }
   ];
 
@@ -40,7 +40,7 @@ export default function AboutPage() {
     <div className="min-h-screen bg-white">
       <PageHero
         title="More Than Just A Brand"
-        subtitle="Welcome to Classy Debbie Collection. Where elegance meets confidence, offering premium fashion and intimate lifestyle products."
+        subtitle="From Accra to your doorstep — quality dresses, electronics, bags, shoes and more at prices that make sense."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -68,28 +68,28 @@ export default function AboutPage() {
         {activeTab === 'story' && (
           <div className="grid md:grid-cols-2 gap-16 items-center animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">Empowering Your Style</h2>
+              <h2 className="text-4xl font-bold text-gray-900 mb-6">How It All Started</h2>
               <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
                 <p>
-                  <strong>Classy Debbie Collection</strong> is more than just a store; it's a celebration of femininity and confidence. We believe that every woman deserves to look and feel her absolute best, whether she's stepping out in a stunning dress or embracing her intimate side.
+                  <strong>MultiMey Supplies</strong> started with a simple idea: bring quality products to Ghanaians at fair prices. We saw how people were paying too much for items that could be sourced smarter — so we built a bridge between trusted Chinese manufacturers, local suppliers, and everyday shoppers.
                 </p>
                 <p>
-                  Our journey began with a simple mission: to curate a collection that blends elegance with excitement. We noticed a gap in the market for high-quality, fashionable items that are both accessible and unique.
+                  What began as a small operation in Accra has grown into a full online store offering everything from trendy dresses and stylish bags to the latest electronics and durable shoes. We handpick every product, test it for quality, and price it fairly.
                 </p>
                 <p>
-                  From the latest trends in women's dresses, shoes, and bags to a discreet and tasteful selection of sex toys, <strong>Classy Debbie Collection</strong> is your one-stop destination for all things chic and sensual. We carefully select each item to ensure it meets our high standards of quality and style.
+                  Whether you are shopping for yourself, stocking your boutique, or looking for the perfect gift, <strong>MultiMey Supplies</strong> has you covered. We combine local sourcing with direct imports to give you the widest selection at the best value.
                 </p>
               </div>
             </div>
             <div className="relative">
               <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl bg-gray-100 relative flex items-center justify-center">
                 <img
-                  src="/logo.svg"
-                  alt="Classy Debbie Collection"
+                  src="/logo.png"
+                  alt="MultiMey Supplies"
                   className="w-2/3 h-auto object-contain opacity-80"
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8">
-                  <p className="text-white font-bold text-xl">Classy Debbie</p>
+                  <p className="text-white font-bold text-xl">MultiMey Supplies</p>
                   <p className="text-blue-200">Founder & CEO</p>
                 </div>
               </div>
@@ -103,20 +103,20 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 gap-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="bg-blue-50 p-10 rounded-3xl border border-blue-100">
               <div className="w-16 h-16 bg-blue-700 rounded-2xl flex items-center justify-center mb-8 shadow-lg">
-                <i className="ri-shirt-line text-3xl text-white"></i>
+                <i className="ri-store-2-line text-3xl text-white"></i>
               </div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-4">Fashion Forward</h3>
+              <h3 className="text-3xl font-bold text-gray-900 mb-4">Everything in One Place</h3>
               <p className="text-gray-600 text-lg leading-relaxed">
-                We are committed to bringing you the latest styles. Our collection of dresses, shoes, and bags is constantly updated to reflect current trends, ensuring you always step out in style.
+                From fashion to electronics, bags to shoes — we aim to be the only store you need. Our catalogue is constantly expanding with new arrivals sourced from trusted local and international suppliers.
               </p>
             </div>
             <div className="bg-amber-50 p-10 rounded-3xl border border-amber-100">
               <div className="w-16 h-16 bg-amber-600 rounded-2xl flex items-center justify-center mb-8 shadow-lg">
-                <i className="ri-heart-pulse-line text-3xl text-white"></i>
+                <i className="ri-hand-heart-line text-3xl text-white"></i>
               </div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-4">Intimate Wellness</h3>
+              <h3 className="text-3xl font-bold text-gray-900 mb-4">Empowering Resellers</h3>
               <p className="text-gray-600 text-lg leading-relaxed">
-                We advocate for self-love and confidence. Our intimate products are chosen to enhance your personal wellness journey, provided with the utmost discretion and care.
+                We support small businesses and resellers with competitive bulk pricing. Many of our products are available at wholesale rates, helping entrepreneurs across Ghana grow their own ventures.
               </p>
             </div>
           </div>
@@ -128,7 +128,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Why Shop With Us?</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">It's not just shopping; it's an experience of luxury and care.</p>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">Trusted by hundreds of customers and resellers across Ghana.</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value, index) => (
@@ -147,9 +147,9 @@ export default function AboutPage() {
       {/* CTA */}
       <div className="bg-blue-900 py-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
-          <h2 className="text-4xl md:text-5xl font-bold mb-8">Ready to elevate your style?</h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-8">Ready to shop smarter?</h2>
           <p className="text-xl text-blue-100 mb-10 leading-relaxed max-w-2xl mx-auto">
-            Join the Classy Debbie community and discover your new favorite pieces today.
+            Browse our collection of dresses, electronics, bags, shoes and more. New stock arrives weekly.
           </p>
           <Link
             href="/shop"

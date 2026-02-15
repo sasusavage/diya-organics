@@ -201,7 +201,7 @@ function ShopContent() {
     <main className="min-h-screen bg-white">
       <PageHero
         title="Shop All Products"
-        subtitle="Discover our curated collection of premium goods"
+        subtitle="Browse our range of dresses, electronics, bags, shoes and more"
       />
 
       {/* Mobile Filter Toggle */}

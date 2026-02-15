@@ -44,7 +44,7 @@ export default async function CategoriesPage() {
     <div className="min-h-screen bg-white">
       <PageHero
         title="Shop by Category"
-        subtitle="Explore our curated collections and find exactly what you're looking for"
+        subtitle="Browse dresses, electronics, bags, shoes and everything in between"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

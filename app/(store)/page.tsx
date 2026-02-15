@@ -38,8 +38,8 @@ export default function Home() {
     banners?: Array<{ text: string; active: boolean }>;
   } = {
     hero: {
-      headline: 'Mannequins, Kitchen Essentials, Electronics & Dresses — All In One Store',
-      subheadline: 'Verified quality China-sourced products at unbeatable prices. Perfect for homes, businesses, and resellers.',
+      headline: 'Dresses, Electronics, Bags & Shoes — Everything You Need, One Store',
+      subheadline: 'Quality products locally sourced and imported directly from China. Unbeatable prices for individuals and resellers across Ghana.',
       primaryButtonText: 'Shop Collections',
       primaryButtonLink: '/shop',
       secondaryButtonText: 'Our Story',
@@ -95,7 +95,7 @@ export default function Home() {
 
   const getHeroImage = () => {
     if (config.hero.backgroundImage) return config.hero.backgroundImage;
-    return "/sarah-lawson.jpeg";
+    return "/logo.png";
   };
 
   const renderBanners = () => {
@@ -150,16 +150,16 @@ export default function Home() {
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4 max-w-5xl mx-auto mt-[-50px]">
 
           <p className="text-white/90 text-sm md:text-base tracking-[0.2em] uppercase font-medium mb-6 animate-fade-in-up">
-            New Collection
+            Welcome to MultiMey Supplies
           </p>
 
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-white mb-6 leading-tight drop-shadow-lg animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-            Elevate Your Style <br />
-            <span className="italic font-light">with Classy Debbie</span>
+            Your One-Stop <br />
+            <span className="italic font-light">Shop for Everything</span>
           </h1>
 
           <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-10 font-light tracking-wide animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-            Premium women&apos;s fashion, accessories, and intimate products.<br />Handpicked for quality and elegance.
+            Dresses, electronics, bags, shoes &amp; more — locally sourced and imported directly from China.<br />Quality you can trust at prices you&apos;ll love.
           </p>
 
           <div className="flex items-center gap-6 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
@@ -183,17 +183,17 @@ export default function Home() {
         <div className="absolute bottom-12 left-0 right-0 z-20 hidden md:flex justify-center items-center gap-16 text-white text-center">
           <div>
             <p className="font-serif text-lg font-medium">Direct Import</p>
-            <p className="text-xs text-white/60 font-light tracking-wide uppercase mt-1">Sourced from Manufacturers</p>
+            <p className="text-xs text-white/60 font-light tracking-wide uppercase mt-1">From China &amp; Local Suppliers</p>
           </div>
           <div className="w-px h-10 bg-white/20"></div>
           <div>
             <p className="font-serif text-lg font-medium">Verified Quality</p>
-            <p className="text-xs text-white/60 font-light tracking-wide uppercase mt-1">Inspected by Hand</p>
+            <p className="text-xs text-white/60 font-light tracking-wide uppercase mt-1">Every Item Checked</p>
           </div>
           <div className="w-px h-10 bg-white/20"></div>
           <div>
             <p className="font-serif text-lg font-medium">Best Prices</p>
-            <p className="text-xs text-white/60 font-light tracking-wide uppercase mt-1">Unbeatable Value</p>
+            <p className="text-xs text-white/60 font-light tracking-wide uppercase mt-1">Wholesale &amp; Retail</p>
           </div>
         </div>
 
@@ -202,7 +202,7 @@ export default function Home() {
           <p className="font-serif text-blue-800 text-lg italic mb-0.5">Exclusive Offer</p>
           <h3 className="text-3xl font-bold text-gray-900 mb-1">25% Off</h3>
           <p className="text-xs text-gray-500 font-medium leading-relaxed">
-            On your first dedicated order. <br />
+            On your first order. <br />
             <Link href="/shop" className="underline text-blue-700 hover:text-blue-900 mt-1 inline-block">Shop now</Link>
           </p>
         </div>
@@ -215,17 +215,17 @@ export default function Home() {
           <AnimatedSection className="flex items-end justify-between mb-12">
             <div>
               <h2 className="font-serif text-4xl md:text-5xl text-gray-900 mb-4">Shop by Category</h2>
-              <p className="text-gray-600 text-lg max-w-md">Explore our carefully curated collections</p>
+              <p className="text-gray-600 text-lg max-w-md">From dresses to electronics, bags to shoes</p>
             </div>
             <Link href="/categories" className="hidden md:flex items-center text-blue-800 font-medium hover:text-blue-900 transition-colors">
               View All <i className="ri-arrow-right-line ml-2"></i>
             </Link>
           </AnimatedSection>
 
-          <AnimatedGrid className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+          <AnimatedGrid className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {categories.map((category) => (
-              <Link href={`/shop?category=${category.slug}`} key={category.id} className="group cursor-pointer block">
-                <div className="aspect-[3/4] rounded-2xl overflow-hidden mb-4 relative shadow-md">
+              <Link href={`/shop?category=${category.slug}`} key={category.id} className="group cursor-pointer block relative">
+                <div className="aspect-[3/4] rounded-2xl overflow-hidden relative shadow-md group-hover:shadow-xl transition-all duration-300">
                   <Image
                     src={category.image || category.image_url || 'https://via.placeholder.com/600x800?text=' + encodeURIComponent(category.name)}
                     alt={category.name}
@@ -234,10 +234,16 @@ export default function Home() {
                     sizes="(max-width: 768px) 50vw, 25vw"
                     quality={75}
                   />
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
-                  <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm p-4 rounded-xl text-center transform translate-y-2 opacity-90 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                    <h3 className="font-serif font-bold text-gray-900 text-lg">{category.name}</h3>
-                    <span className="text-xs text-blue-800 font-medium uppercase tracking-wider mt-1 block">View Collection</span>
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300"></div>
+                  
+                  {/* Content */}
+                  <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col justify-end h-full">
+                    <h3 className="font-serif font-bold text-white text-xl md:text-2xl mb-1 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">{category.name}</h3>
+                    <div className="flex items-center text-white/90 text-sm font-medium opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 delay-75">
+                      <span className="uppercase tracking-wider text-xs">Shop Now</span>
+                      <i className="ri-arrow-right-line ml-2 transition-transform group-hover:translate-x-1"></i>
+                    </div>
                   </div>
                 </div>
               </Link>
@@ -257,7 +263,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection className="text-center mb-16">
             <h2 className="font-serif text-4xl md:text-5xl text-gray-900 mb-4">Featured Products</h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">Handpicked for you</p>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">Top picks from our latest arrivals</p>
           </AnimatedSection>
 
           {loading ? (

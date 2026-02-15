@@ -2,10 +2,10 @@
 
 import { useEffect } from 'react';
 
-const SITE_NAME = 'Classy Debbie Collection';
+const SITE_NAME = 'MultiMey Supplies';
 
 export function usePageTitle(title: string) {
   useEffect(() => {
-    document.title = title ? `${title} | ${SITE_NAME}` : `${SITE_NAME} | Premium Women's Fashion & Accessories`;
+    document.title = title ? `${title} | ${SITE_NAME}` : `${SITE_NAME} | Dresses, Electronics, Bags, Shoes & More`;
   }, [title]);
 }

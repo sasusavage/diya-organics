@@ -50,7 +50,7 @@ export default function NewsletterSection() {
             </h3>
 
             <p className="text-blue-100/80 text-base leading-relaxed">
-              Be the first to know about new collections, exclusive pop-up events, and secret sales. Join the Classy Debbie community today.
+              Be the first to know about new arrivals, restocks, and exclusive deals. From dresses to electronics, we keep you updated on the latest products.
             </p>
           </div>
 
