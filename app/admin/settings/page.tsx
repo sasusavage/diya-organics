@@ -10,6 +10,7 @@ interface SettingRow {
 }
 
 const SETTING_CATEGORIES = [
+    { id: 'announcement', label: 'Announcement', icon: 'ri-megaphone-line', description: 'Top announcement bar' },
     { id: 'general', label: 'General', icon: 'ri-settings-3-line', description: 'Site name, tagline, and logo' },
     { id: 'contact', label: 'Contact Info', icon: 'ri-contacts-line', description: 'Email, phone, and address' },
     { id: 'social', label: 'Social Media', icon: 'ri-share-line', description: 'Social media links' },
@@ -106,7 +107,8 @@ export default function SiteSettingsPage() {
             const settingsToSave = Object.entries(settings).map(([key, value]) => {
                 // Determine category
                 let category = 'general';
-                if (key.startsWith('social_')) category = 'social';
+                if (key.startsWith('announcement_')) category = 'announcement';
+                else if (key.startsWith('social_')) category = 'social';
                 else if (key.startsWith('contact_')) category = 'contact';
                 else if (key.startsWith('footer_') || key === 'payment_methods') category = 'footer';
                 else if (['primary_color', 'secondary_color', 'accent_color'].includes(key)) category = 'branding';
@@ -191,8 +193,8 @@ export default function SiteSettingsPage() {
                                     key={cat.id}
                                     onClick={() => setActiveTab(cat.id)}
                                     className={`w-full flex items-center gap-3 px-5 py-4 text-left transition-all border-l-4 ${activeTab === cat.id
-                                            ? 'bg-blue-50 border-blue-600 text-blue-700'
-                                            : 'border-transparent text-gray-600 hover:bg-gray-50'
+                                        ? 'bg-blue-50 border-blue-600 text-blue-700'
+                                        : 'border-transparent text-gray-600 hover:bg-gray-50'
                                         }`}
                                 >
                                     <i className={`${cat.icon} text-xl`}></i>
@@ -208,6 +210,58 @@ export default function SiteSettingsPage() {
                     {/* Content Panel */}
                     <div className="flex-1">
                         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8">
+                            {/* Announcement */}
+                            {activeTab === 'announcement' && (
+                                <div className="space-y-6">
+                                    <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                                        <i className="ri-megaphone-line text-blue-600"></i> Announcement Bar
+                                    </h2>
+                                    <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex items-start gap-3">
+                                        <i className="ri-information-line text-blue-600 mt-0.5"></i>
+                                        <p className="text-sm text-blue-700">
+                                            The announcement bar appears at the very top of your website. Use it for important notices, shipping offers, or running promotions.
+                                        </p>
+                                    </div>
+
+                                    <div className="grid gap-6">
+                                        <div className="flex items-center justify-between bg-white p-4 border border-gray-200 rounded-xl">
+                                            <div>
+                                                <label className="block text-sm font-semibold text-gray-900">Enable Announcement Bar</label>
+                                                <p className="text-xs text-gray-500">Toggle visibility on the frontend</p>
+                                            </div>
+                                            <label className="relative inline-flex items-center cursor-pointer">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={getVal('announcement_enabled') === 'true'}
+                                                    onChange={e => setVal('announcement_enabled', String(e.target.checked))}
+                                                    className="sr-only peer"
+                                                />
+                                                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                            </label>
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Announcement Text</label>
+                                            <input
+                                                type="text"
+                                                value={getVal('announcement_text')}
+                                                onChange={e => setVal('announcement_text', e.target.value)}
+                                                placeholder="e.g. Free delivery on orders over GHC 200"
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Preview */}
+                                    <div className="mt-8">
+                                        <h3 className="font-bold text-sm text-gray-600 mb-4">Preview</h3>
+                                        <div className="bg-brand-700 text-white px-4 py-2.5 text-center text-xs sm:text-sm font-medium rounded-lg">
+                                            {getVal('announcement_text') || 'Your announcement will appear here'}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
                             {/* General */}
                             {activeTab === 'general' && (
                                 <div className="space-y-6">
