@@ -275,193 +275,195 @@ export default function HeroManager() {
 
             {/* Modal */}
             {isModalOpen && (
-                <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-sm overflow-y-auto">
-                    <div className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl my-8">
-                        <div className="p-6 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white rounded-t-2xl z-10">
-                            <h2 className="text-xl font-bold text-gray-900">
-                                {editingSlide ? 'Edit Slide' : 'New Slide'}
-                            </h2>
-                            <button
-                                onClick={() => setIsModalOpen(false)}
-                                className="text-gray-400 hover:text-gray-600"
-                            >
-                                <i className="ri-close-line text-2xl"></i>
-                            </button>
-                        </div>
-
-                        <form onSubmit={handleSubmit} className="p-6 space-y-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="col-span-1">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Tagline</label>
-                                    <input
-                                        type="text"
-                                        value={formData.tag || ''}
-                                        onChange={(e) => setFormData({ ...formData, tag: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
-                                        placeholder="e.g. New Arrival"
-                                    />
-                                </div>
-                                <div className="col-span-1">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Sort Order</label>
-                                    <input
-                                        type="number"
-                                        value={formData.sort_order || 0}
-                                        onChange={(e) => setFormData({ ...formData, sort_order: parseInt(e.target.value) })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
-                                    />
-                                </div>
-
-                                <div className="col-span-full">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Headline</label>
-                                    <input
-                                        type="text"
-                                        value={formData.title || ''}
-                                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
-                                        placeholder="Main Heading"
-                                        required
-                                    />
-                                </div>
-
-                                <div className="col-span-full">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Subtitle</label>
-                                    <textarea
-                                        value={formData.subtitle || ''}
-                                        onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
-                                        rows={3}
-                                        placeholder="Supporting text..."
-                                    />
-                                </div>
-
-                                {/* Image Upload */}
-                                <div className="col-span-1">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Image (Background)</label>
-                                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:bg-gray-50 transition-colors">
-                                        <input
-                                            type="file"
-                                            ref={fileInputRef}
-                                            onChange={(e) => {
-                                                const file = e.target.files?.[0];
-                                                if (file) setImageFile(file);
-                                            }}
-                                            className="hidden"
-                                            accept="image/*"
-                                        />
-                                        <div
-                                            onClick={() => fileInputRef.current?.click()}
-                                            className="cursor-pointer"
-                                        >
-                                            {imageFile ? (
-                                                <div className="text-sm text-green-600 font-medium truncate">
-                                                    {imageFile.name}
-                                                </div>
-                                            ) : formData.image_url ? (
-                                                <div className="relative h-20 w-full">
-                                                    <img src={formData.image_url} className="h-full w-full object-cover rounded" />
-                                                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center text-white text-xs opacity-0 hover:opacity-100 transition-opacity">Change</div>
-                                                </div>
-                                            ) : (
-                                                <div className="text-gray-500">
-                                                    <i className="ri-image-add-line text-2xl mb-1 block"></i>
-                                                    <span className="text-xs">Click to upload image</span>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Video Upload */}
-                                <div className="col-span-1">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Video (Optional)</label>
-                                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:bg-gray-50 transition-colors">
-                                        <input
-                                            type="file"
-                                            ref={videoInputRef}
-                                            onChange={(e) => {
-                                                const file = e.target.files?.[0];
-                                                if (file) setVideoFile(file);
-                                            }}
-                                            className="hidden"
-                                            accept="video/*"
-                                        />
-                                        <div
-                                            onClick={() => videoInputRef.current?.click()}
-                                            className="cursor-pointer"
-                                        >
-                                            {videoFile ? (
-                                                <div className="text-sm text-green-600 font-medium truncate">
-                                                    {videoFile.name}
-                                                </div>
-                                            ) : formData.video_url ? (
-                                                <div className="relative h-20 w-full bg-black rounded">
-                                                    <video src={formData.video_url} className="h-full w-full object-cover opacity-50" />
-                                                    <div className="absolute inset-0 flex items-center justify-center text-white text-xs">Change Video</div>
-                                                </div>
-                                            ) : (
-                                                <div className="text-gray-500">
-                                                    <i className="ri-movie-line text-2xl mb-1 block"></i>
-                                                    <span className="text-xs">Click to upload video</span>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="col-span-1">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Button Text</label>
-                                    <input
-                                        type="text"
-                                        value={formData.cta_text || ''}
-                                        onChange={(e) => setFormData({ ...formData, cta_text: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
-                                    />
-                                </div>
-                                <div className="col-span-1">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Button Link</label>
-                                    <input
-                                        type="text"
-                                        value={formData.cta_link || ''}
-                                        onChange={(e) => setFormData({ ...formData, cta_link: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
-                                    />
-                                </div>
-
-                                <div className="col-span-full flex items-center gap-2">
-                                    <input
-                                        type="checkbox"
-                                        id="is_active"
-                                        checked={formData.is_active}
-                                        onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-                                        className="w-4 h-4 text-brand-600 border-gray-300 rounded focus:ring-brand-500"
-                                    />
-                                    <label htmlFor="is_active" className="text-sm font-medium text-gray-700">Active (Visible on homepage)</label>
-                                </div>
-
-                            </div>
-
-                            <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                <div className="fixed inset-0 z-50 overflow-y-auto">
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setIsModalOpen(false)} />
+                    <div className="flex min-h-full items-center justify-center p-4">
+                        <div className="relative bg-white rounded-2xl w-full max-w-2xl shadow-2xl my-8 z-10">
+                            <div className="p-6 border-b border-gray-100 flex justify-between items-center rounded-t-2xl">
+                                <h2 className="text-xl font-bold text-gray-900">
+                                    {editingSlide ? 'Edit Slide' : 'New Slide'}
+                                </h2>
                                 <button
-                                    type="button"
                                     onClick={() => setIsModalOpen(false)}
-                                    className="px-4 py-2 text-gray-700 font-medium hover:bg-gray-100 rounded-lg transition-colors"
-                                    disabled={saving}
+                                    className="text-gray-400 hover:text-gray-600"
                                 >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    disabled={saving}
-                                    className="px-6 py-2 bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                                >
-                                    {saving && <i className="ri-loader-4-line animate-spin"></i>}
-                                    {saving ? 'Saving...' : 'Save Slide'}
+                                    <i className="ri-close-line text-2xl"></i>
                                 </button>
                             </div>
-                        </form>
+
+                            <form onSubmit={handleSubmit} className="p-6 space-y-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="col-span-1">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Tagline</label>
+                                        <input
+                                            type="text"
+                                            value={formData.tag || ''}
+                                            onChange={(e) => setFormData({ ...formData, tag: e.target.value })}
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+                                            placeholder="e.g. New Arrival"
+                                        />
+                                    </div>
+                                    <div className="col-span-1">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Sort Order</label>
+                                        <input
+                                            type="number"
+                                            value={formData.sort_order || 0}
+                                            onChange={(e) => setFormData({ ...formData, sort_order: parseInt(e.target.value) })}
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+                                        />
+                                    </div>
+
+                                    <div className="col-span-full">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Headline</label>
+                                        <input
+                                            type="text"
+                                            value={formData.title || ''}
+                                            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+                                            placeholder="Main Heading"
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="col-span-full">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Subtitle</label>
+                                        <textarea
+                                            value={formData.subtitle || ''}
+                                            onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+                                            rows={3}
+                                            placeholder="Supporting text..."
+                                        />
+                                    </div>
+
+                                    {/* Image Upload */}
+                                    <div className="col-span-1">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Image (Background)</label>
+                                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:bg-gray-50 transition-colors">
+                                            <input
+                                                type="file"
+                                                ref={fileInputRef}
+                                                onChange={(e) => {
+                                                    const file = e.target.files?.[0];
+                                                    if (file) setImageFile(file);
+                                                }}
+                                                className="hidden"
+                                                accept="image/*"
+                                            />
+                                            <div
+                                                onClick={() => fileInputRef.current?.click()}
+                                                className="cursor-pointer"
+                                            >
+                                                {imageFile ? (
+                                                    <div className="text-sm text-green-600 font-medium truncate">
+                                                        {imageFile.name}
+                                                    </div>
+                                                ) : formData.image_url ? (
+                                                    <div className="relative h-20 w-full">
+                                                        <img src={formData.image_url} className="h-full w-full object-cover rounded" />
+                                                        <div className="absolute inset-0 bg-black/20 flex items-center justify-center text-white text-xs opacity-0 hover:opacity-100 transition-opacity">Change</div>
+                                                    </div>
+                                                ) : (
+                                                    <div className="text-gray-500">
+                                                        <i className="ri-image-add-line text-2xl mb-1 block"></i>
+                                                        <span className="text-xs">Click to upload image</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Video Upload */}
+                                    <div className="col-span-1">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Video (Optional)</label>
+                                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:bg-gray-50 transition-colors">
+                                            <input
+                                                type="file"
+                                                ref={videoInputRef}
+                                                onChange={(e) => {
+                                                    const file = e.target.files?.[0];
+                                                    if (file) setVideoFile(file);
+                                                }}
+                                                className="hidden"
+                                                accept="video/*"
+                                            />
+                                            <div
+                                                onClick={() => videoInputRef.current?.click()}
+                                                className="cursor-pointer"
+                                            >
+                                                {videoFile ? (
+                                                    <div className="text-sm text-green-600 font-medium truncate">
+                                                        {videoFile.name}
+                                                    </div>
+                                                ) : formData.video_url ? (
+                                                    <div className="relative h-20 w-full bg-black rounded">
+                                                        <video src={formData.video_url} className="h-full w-full object-cover opacity-50" />
+                                                        <div className="absolute inset-0 flex items-center justify-center text-white text-xs">Change Video</div>
+                                                    </div>
+                                                ) : (
+                                                    <div className="text-gray-500">
+                                                        <i className="ri-movie-line text-2xl mb-1 block"></i>
+                                                        <span className="text-xs">Click to upload video</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-span-1">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Button Text</label>
+                                        <input
+                                            type="text"
+                                            value={formData.cta_text || ''}
+                                            onChange={(e) => setFormData({ ...formData, cta_text: e.target.value })}
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+                                        />
+                                    </div>
+                                    <div className="col-span-1">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Button Link</label>
+                                        <input
+                                            type="text"
+                                            value={formData.cta_link || ''}
+                                            onChange={(e) => setFormData({ ...formData, cta_link: e.target.value })}
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+                                        />
+                                    </div>
+
+                                    <div className="col-span-full flex items-center gap-2">
+                                        <input
+                                            type="checkbox"
+                                            id="is_active"
+                                            checked={formData.is_active}
+                                            onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
+                                            className="w-4 h-4 text-brand-600 border-gray-300 rounded focus:ring-brand-500"
+                                        />
+                                        <label htmlFor="is_active" className="text-sm font-medium text-gray-700">Active (Visible on homepage)</label>
+                                    </div>
+
+                                </div>
+
+                                <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsModalOpen(false)}
+                                        className="px-4 py-2 text-gray-700 font-medium hover:bg-gray-100 rounded-lg transition-colors"
+                                        disabled={saving}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        disabled={saving}
+                                        className="px-6 py-2 bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                                    >
+                                        {saving && <i className="ri-loader-4-line animate-spin"></i>}
+                                        {saving ? 'Saving...' : 'Save Slide'}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             )}
-        </div>
-    );
+            );
 }
