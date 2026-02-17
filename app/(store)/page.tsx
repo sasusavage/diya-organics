@@ -161,11 +161,12 @@ export default function Home() {
     title: s.title || '',
     description: s.content || '',
     color: s.metadata?.color || 'from-brand-500 to-brand-700',
+    link: s.metadata?.link || '/about'
   })) : [
-    { icon: 'ri-capsule-line', title: 'Retail Pharmacy', description: 'Walk-in and online pharmaceutical dispensing with expert pharmacist consultation.', color: 'from-brand-500 to-brand-700' },
-    { icon: 'ri-truck-line', title: 'Wholesale Distribution', description: 'Bulk pharmaceutical supply to hospitals, clinics, and pharmacies across Ghana.', color: 'from-brand-400 to-brand-600' },
-    { icon: 'ri-flask-line', title: 'Manufacturing', description: 'Production of quality pharmaceutical products meeting international standards.', color: 'from-gold-400 to-gold-600' },
-    { icon: 'ri-graduation-cap-line', title: 'Training Institute', description: 'WIDAMA Training Institute — educating future pharmacy professionals.', color: 'from-pharmacy-blue to-brand-600' },
+    { icon: 'ri-capsule-line', title: 'Retail Pharmacy', description: 'Walk-in and online pharmaceutical dispensing with expert pharmacist consultation.', color: 'from-brand-500 to-brand-700', link: '/shop' },
+    { icon: 'ri-truck-line', title: 'Wholesale Distribution', description: 'Bulk pharmaceutical supply to hospitals, clinics, and pharmacies across Ghana.', color: 'from-brand-400 to-brand-600', link: '/contact' },
+    { icon: 'ri-flask-line', title: 'Manufacturing', description: 'Production of quality pharmaceutical products meeting international standards.', color: 'from-gold-400 to-gold-600', link: '/about' },
+    { icon: 'ri-graduation-cap-line', title: 'Training Institute', description: 'WIDAMA Training Institute — educating future pharmacy professionals.', color: 'from-pharmacy-blue to-brand-600', link: '/about' },
   ];
 
   const trustBadges = cmsTrustBadges.length > 0 ? cmsTrustBadges.map(b => ({
@@ -405,9 +406,10 @@ export default function Home() {
 
           <AnimatedGrid className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service, index) => (
-              <div
+              <Link
+                href={service.link}
                 key={index}
-                className="group relative bg-white rounded-3xl p-8 border border-gray-100 hover:border-brand-200 hover:shadow-brand-lg transition-all duration-500 overflow-hidden"
+                className="group relative bg-white rounded-3xl p-8 border border-gray-100 hover:border-brand-200 hover:shadow-brand-lg transition-all duration-500 overflow-hidden block"
               >
                 {/* Hover gradient overlay */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-[0.04] transition-opacity duration-500 rounded-3xl`} />
@@ -422,7 +424,7 @@ export default function Home() {
                   <span>Learn More</span>
                   <i className="ri-arrow-right-line ml-2 transition-transform group-hover:translate-x-1"></i>
                 </div>
-              </div>
+              </Link>
             ))}
           </AnimatedGrid>
         </div>
