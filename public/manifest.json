@@ -1,19 +1,20 @@
 {
-  "name": "MultiMey Supplies",
-  "short_name": "MultiMey",
-  "description": "Shop dresses, electronics, bags, shoes and more at MultiMey Supplies. Quality products delivered across Ghana.",
+  "name": "WIDAMA Pharmacy",
+  "short_name": "WIDAMA",
+  "description": "Quality medicines, health products, and pharmaceutical services. WIDAMA Pharmacy — your trusted healthcare partner since 2004.",
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#ffffff",
-  "theme_color": "#2563eb",
+  "theme_color": "#0D6B4E",
   "dir": "ltr",
   "lang": "en",
   "categories": [
+    "health",
+    "medical",
     "shopping",
-    "lifestyle",
-    "fashion"
+    "pharmacy"
   ],
   "icons": [
     {

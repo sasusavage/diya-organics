@@ -11,6 +11,7 @@ interface Module {
   color: string;
   enabled: boolean;
   category: string;
+  configPath?: string;
 }
 
 const colorMap: Record<string, string> = {
@@ -37,16 +38,18 @@ export default function ModulesPage() {
       icon: 'ri-notification-3-line',
       color: 'red',
       enabled: false,
-      category: 'Marketing'
+      category: 'Marketing',
+      configPath: '/admin/notifications'
     },
     {
       id: 'cms',
-      name: 'CMS / Pages',
-      description: 'Manage website content, policies, and landing pages',
-      icon: 'ri-file-list-line',
+      name: 'Site Settings',
+      description: 'Manage branding, contact info, footer, and policies',
+      icon: 'ri-settings-3-line',
       color: 'blue',
       enabled: false,
-      category: 'Content'
+      category: 'Content',
+      configPath: '/admin/settings'
     },
     {
       id: 'homepage',
@@ -55,7 +58,8 @@ export default function ModulesPage() {
       icon: 'ri-home-gear-line',
       color: 'purple',
       enabled: false,
-      category: 'Content'
+      category: 'Content',
+      configPath: '/admin/homepage'
     },
     {
       id: 'blog',
@@ -64,7 +68,8 @@ export default function ModulesPage() {
       icon: 'ri-article-line',
       color: 'teal',
       enabled: false,
-      category: 'Marketing'
+      category: 'Marketing',
+      configPath: '/admin/blog'
     },
     {
       id: 'customer-insights',
@@ -73,7 +78,8 @@ export default function ModulesPage() {
       icon: 'ri-user-search-line',
       color: 'orange',
       enabled: false,
-      category: 'Analytics'
+      category: 'Analytics',
+      configPath: '/admin/customer-insights'
     },
     {
       id: 'flash-sales',
@@ -82,7 +88,8 @@ export default function ModulesPage() {
       icon: 'ri-flashlight-line',
       color: 'amber',
       enabled: false,
-      category: 'Marketing'
+      category: 'Marketing',
+      configPath: '/admin/flash-sales'
     },
     {
       id: 'loyalty-program',
@@ -91,7 +98,8 @@ export default function ModulesPage() {
       icon: 'ri-trophy-line',
       color: 'yellow',
       enabled: false,
-      category: 'Marketing'
+      category: 'Marketing',
+      configPath: '/admin/loyalty-program'
     },
     {
       id: 'pwa-settings',
@@ -100,7 +108,18 @@ export default function ModulesPage() {
       icon: 'ri-smartphone-line',
       color: 'indigo',
       enabled: false,
-      category: 'Mobile'
+      category: 'Mobile',
+      configPath: '/admin/pwa-settings'
+    },
+    {
+      id: 'support-hub',
+      name: 'AI Support Hub',
+      description: 'Manage AI chatbot, support tickets, and knowledge base',
+      icon: 'ri-customer-service-2-line',
+      color: 'teal',
+      enabled: false,
+      category: 'Support',
+      configPath: '/admin/support'
     }
   ]);
 
@@ -282,6 +301,14 @@ export default function ModulesPage() {
                         <span className={`text-xs font-bold px-2 py-1 rounded-full ${module.enabled ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'}`}>
                           {module.enabled ? 'Enabled' : 'Disabled'}
                         </span>
+                        {module.enabled && module.configPath && (
+                          <a
+                            href={module.configPath}
+                            className="text-sm font-semibold text-blue-600 hover:text-blue-800 hover:underline flex items-center gap-1"
+                          >
+                            <i className="ri-settings-4-line"></i> Configure
+                          </a>
+                        )}
                       </div>
                     </div>
                   ))}

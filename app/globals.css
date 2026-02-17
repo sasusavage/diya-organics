@@ -1,13 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* ========================================
-   ANIMATIONS & EFFECTS
+   BASE LAYER - PHARMACY DESIGN SYSTEM
    ======================================== */
 
-/* Fade In Up Animation */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #1a1a2e;
+    line-height: 1.7;
+  }
+
+  ::selection {
+    background-color: rgba(13, 107, 78, 0.15);
+    color: #0D6B4E;
+  }
+}
+
+/* ========================================
+   ANIMATIONS & KEYFRAMES
+   ======================================== */
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -19,13 +42,11 @@
   }
 }
 
-/* Fade In Animation */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-/* Fade In Left */
 @keyframes fadeInLeft {
   from {
     opacity: 0;
@@ -37,7 +58,6 @@
   }
 }
 
-/* Fade In Right */
 @keyframes fadeInRight {
   from {
     opacity: 0;
@@ -49,7 +69,6 @@
   }
 }
 
-/* Scale In */
 @keyframes scaleIn {
   from {
     opacity: 0;
@@ -61,7 +80,6 @@
   }
 }
 
-/* Slide Up */
 @keyframes slideUp {
   from {
     transform: translateY(100%);
@@ -71,22 +89,63 @@
   }
 }
 
-/* Float animation for decorative elements */
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
 }
 
-/* Pulse glow */
 @keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4); }
-  50% { box-shadow: 0 0 20px 10px rgba(56, 189, 248, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(13, 107, 78, 0.4); }
+  50% { box-shadow: 0 0 20px 10px rgba(13, 107, 78, 0); }
 }
 
-/* Shimmer effect for loading */
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes morphBlob {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+}
+
+@keyframes textReveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pillPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.1); opacity: 0.3; }
+}
+
+@keyframes crossFade {
+  0%, 45% { opacity: 1; }
+  50%, 95% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  14% { transform: scale(1.05); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.05); }
+  70% { transform: scale(1); }
 }
 
 /* ========================================
@@ -121,7 +180,15 @@
   animation: pulseGlow 2s ease-in-out infinite;
 }
 
-/* Staggered delays for lists */
+.animate-morph {
+  animation: morphBlob 8s ease-in-out infinite;
+}
+
+.animate-heartbeat {
+  animation: heartbeat 2s ease-in-out infinite;
+}
+
+/* Staggered delays */
 .animate-delay-100 { animation-delay: 100ms; }
 .animate-delay-200 { animation-delay: 200ms; }
 .animate-delay-300 { animation-delay: 300ms; }
@@ -131,7 +198,10 @@
 .animate-delay-700 { animation-delay: 700ms; }
 .animate-delay-800 { animation-delay: 800ms; }
 
-/* Initial hidden state for scroll animations */
+/* ========================================
+   SCROLL-TRIGGERED ANIMATIONS
+   ======================================== */
+
 .scroll-animate {
   opacity: 0;
   transform: translateY(30px);
@@ -180,7 +250,6 @@
    HOVER EFFECTS
    ======================================== */
 
-/* Card lift effect */
 .hover-lift {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -190,7 +259,6 @@
   box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
 }
 
-/* Card grow effect */
 .hover-grow {
   transition: transform 0.3s ease;
 }
@@ -199,7 +267,6 @@
   transform: scale(1.03);
 }
 
-/* Image zoom on hover */
 .img-zoom {
   overflow: hidden;
 }
@@ -212,7 +279,6 @@
   transform: scale(1.1);
 }
 
-/* Shine effect on hover */
 .hover-shine {
   position: relative;
   overflow: hidden;
@@ -239,13 +305,12 @@
   left: 100%;
 }
 
-/* Border glow on hover */
 .hover-glow {
   transition: box-shadow 0.3s ease;
 }
 
 .hover-glow:hover {
-  box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+  box-shadow: 0 0 25px rgba(13, 107, 78, 0.3);
 }
 
 /* ========================================
@@ -285,41 +350,64 @@
   transform: translateY(0);
 }
 
+/* Pharmacy-specific button */
+.btn-pharmacy {
+  position: relative;
+  background: linear-gradient(135deg, #0D6B4E 0%, #1A8A6F 100%);
+  color: white;
+  padding: 0.875rem 2rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.btn-pharmacy::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #1A8A6F 0%, #0D6B4E 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-pharmacy:hover::before {
+  opacity: 1;
+}
+
+.btn-pharmacy:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px -8px rgba(13, 107, 78, 0.4);
+}
+
+.btn-pharmacy span {
+  position: relative;
+  z-index: 1;
+}
+
+/* Gold accent button */
+.btn-gold {
+  background: linear-gradient(135deg, #D4A853 0%, #B58B3A 100%);
+  color: #032416;
+  padding: 0.875rem 2rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px -8px rgba(212, 168, 83, 0.5);
+}
+
 /* ========================================
    LOADING SKELETON
    ======================================== */
 
 .skeleton {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: linear-gradient(90deg, #E8F5F0 25%, #C6E8DB 50%, #E8F5F0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
-}
-
-/* ========================================
-   SMOOTH TRANSITIONS
-   ======================================== */
-
-/* Page transition wrapper */
-.page-transition {
-  animation: fadeIn 0.4s ease-out;
-}
-
-/* Smooth color transitions for interactive elements */
-a, button {
-  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-}
-
-/* Smooth image loading */
-img {
-  transition: opacity 0.3s ease;
-}
-
-/* ========================================
-   PARALLAX HELPER
-   ======================================== */
-
-.parallax-slow {
-  will-change: transform;
 }
 
 /* ========================================
@@ -340,11 +428,82 @@ img {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.glass-brand {
+  background: rgba(13, 107, 78, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* ========================================
+   PHARMACY-SPECIFIC DECORATIVE ELEMENTS
+   ======================================== */
+
+/* Cross pattern for pharmacy vibe */
+.pharmacy-cross {
+  position: relative;
+}
+
+.pharmacy-cross::before {
+  content: '✚';
+  position: absolute;
+  color: rgba(13, 107, 78, 0.06);
+  font-size: 200px;
+  font-weight: 900;
+  pointer-events: none;
+}
+
+/* Pill shape decorative */
+.pill-shape {
+  border-radius: 100px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Health-wave pattern */
+.health-wave {
+  position: relative;
+}
+
+.health-wave::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100'%3E%3Cpath fill='%23ffffff' fill-opacity='1' d='M0,40L48,35C96,30,192,20,288,25C384,30,480,50,576,55C672,60,768,50,864,45C960,40,1056,40,1152,35C1248,30,1344,20,1392,15L1440,10L1440,100L1392,100C1344,100,1248,100,1152,100C1056,100,960,100,864,100C768,100,672,100,576,100C480,100,384,100,288,100C192,100,96,100,48,100L0,100Z'%3E%3C/path%3E%3C/svg%3E") no-repeat bottom;
+  background-size: cover;
+}
+
+/* ========================================
+   SMOOTH TRANSITIONS
+   ======================================== */
+
+.page-transition {
+  animation: fadeIn 0.4s ease-out;
+}
+
+a, button {
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+img {
+  transition: opacity 0.3s ease;
+}
+
+/* ========================================
+   PARALLAX HELPER
+   ======================================== */
+
+.parallax-slow {
+  will-change: transform;
+}
+
 /* ========================================
    PWA - STANDALONE MODE OPTIMIZATIONS
    ======================================== */
 
-/* Safe area insets for notched devices */
 .safe-area-top {
   padding-top: env(safe-area-inset-top, 0px);
 }
@@ -353,16 +512,13 @@ img {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Body-level PWA optimizations */
 .pwa-body {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   overscroll-behavior-y: contain;
 }
 
-/* Standalone mode - full app feel */
 @media (display-mode: standalone) {
-  /* Remove browser-like elements, tighten the experience */
   html {
     overscroll-behavior: none;
   }
@@ -373,29 +529,24 @@ img {
     user-select: none;
   }
   
-  /* Allow text selection in inputs and text content */
   input, textarea, [contenteditable], p, span, h1, h2, h3, h4, h5, h6, li, td, th, label, a {
     -webkit-user-select: text;
     user-select: text;
   }
 
-  /* Add safe area top padding for the sticky header */
   header.sticky {
     padding-top: env(safe-area-inset-top, 0px);
   }
 
-  /* Ensure bottom nav has safe area */
   nav[aria-label="Mobile navigation"] {
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
-  /* Add bottom padding to main content for bottom nav */
   main {
     padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
   }
 }
 
-/* Ensure bottom padding for mobile nav even in browser mode */
 @media (max-width: 1023px) {
   main,
   footer {
@@ -407,7 +558,6 @@ img {
    PWA - ANIMATIONS FOR PROMPTS & TOASTS
    ======================================== */
 
-/* Sheet slide up for install prompt */
 @keyframes sheetSlideUp {
   from {
     transform: translateY(100%);
@@ -432,7 +582,6 @@ img {
   animation: backdropFadeIn 0.3s ease-out forwards;
 }
 
-/* Update toast slide in */
 @keyframes toastSlideIn {
   from {
     transform: translateY(20px);
@@ -452,7 +601,6 @@ img {
    PWA - NATIVE-LIKE TOUCH INTERACTIONS
    ======================================== */
 
-/* Haptic-like active state for all tappable elements */
 @media (hover: none) and (pointer: coarse) {
   button:active,
   a:active,
@@ -462,13 +610,11 @@ img {
   }
 }
 
-/* Smooth momentum scrolling */
 .scroll-smooth-native {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
 }
 
-/* Hide scrollbar for app-like feel on horizontal scrolls */
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -479,7 +625,7 @@ img {
 }
 
 /* ========================================
-   PWA - PULL TO REFRESH VISUAL INDICATOR
+   PWA - PULL TO REFRESH & PAGE TRANSITIONS
    ======================================== */
 
 @keyframes pullRefreshSpin {
@@ -490,10 +636,6 @@ img {
 .pull-refresh-spinner {
   animation: pullRefreshSpin 0.8s linear infinite;
 }
-
-/* ========================================
-   PWA - PAGE TRANSITION EFFECT
-   ======================================== */
 
 @keyframes pageSlideIn {
   from {
@@ -511,7 +653,7 @@ img {
 }
 
 /* ========================================
-   PWA - SPLASH SCREEN FALLBACK
+   PWA - SPLASH SCREEN
    ======================================== */
 
 @keyframes splashFadeOut {
@@ -527,7 +669,7 @@ img {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #2563eb 0%, #1e40af 50%, #0c4a6e 100%);
+  background: linear-gradient(135deg, #0D6B4E 0%, #084832 50%, #032416 100%);
   animation: splashFadeOut 0.5s ease-out 1.5s forwards;
 }
 
@@ -546,3 +688,42 @@ img {
 
 .pwa-splash-dots span:nth-child(2) { animation-delay: 0.2s; }
 .pwa-splash-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+/* ========================================
+   CUSTOM SCROLLBAR (PHARMACY THEMED)
+   ======================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F4F7F5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #A7D5C5;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0D6B4E;
+}
+
+/* ========================================
+   GRADIENT TEXT
+   ======================================== */
+
+.text-gradient-brand {
+  background: linear-gradient(135deg, #0D6B4E, #1A8A6F);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, #D4A853, #B58B3A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

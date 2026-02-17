@@ -1,151 +1,118 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 
-interface SEOProps {
+const SITE_NAME = 'WIDAMA Pharmacy';
+const SITE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://www.widamapharmacy.com';
+const SITE_DESCRIPTION = 'WIDAMA Pharmacy — Ghana\'s trusted source for quality medicines, health products, and pharmaceutical services. Wholesale, retail, manufacturing, and training since 2004.';
+const DEFAULT_KEYWORDS = [
+  'WIDAMA Pharmacy', 'pharmacy Ghana', 'medicines online', 'health products',
+  'pharmaceutical wholesale', 'pharmacy Ashaiman', 'buy medicine online Ghana',
+  'WIDAMA Towers', 'pharmaceutical services', 'health supplements',
+  'pharmacy training Ghana', 'pharmaceutical manufacturing',
+];
+
+export function generateMetadata({
+  title = '',
+  description = SITE_DESCRIPTION,
+  keywords = DEFAULT_KEYWORDS,
+  image = '/og-image.jpg',
+  url = '',
+  type = 'website',
+  noIndex = false,
+}: {
   title?: string;
   description?: string;
   keywords?: string[];
-  ogImage?: string;
-  ogType?: 'website' | 'product' | 'article';
-  price?: number;
-  currency?: string;
-  availability?: string;
-  category?: string;
-  publishedTime?: string;
-  author?: string;
-  noindex?: boolean;
-}
+  image?: string;
+  url?: string;
+  type?: string;
+  noIndex?: boolean;
+} = {}): Metadata {
+  const fullTitle = title ? `${title} | ${SITE_NAME}` : SITE_NAME;
+  const absoluteImageUrl = image.startsWith('http') ? image : `${SITE_URL}${image}`;
 
-export function generateMetadata({
-  title = 'Premium Online Shopping in Ghana',
-  description = 'Shop dresses, electronics, bags, shoes and more at MultiMey Supplies. Locally sourced and imported quality products delivered across Ghana.',
-  keywords = [],
-  ogImage = 'https://readdy.ai/api/search-image?query=modern%20premium%20ecommerce%20online%20shopping%20platform%20elegant%20design&width=1200&height=630&seq=ogimage&orientation=landscape',
-  ogType = 'website',
-  price,
-  currency = 'GHS',
-  availability,
-  category,
-  publishedTime,
-  author,
-  noindex = false
-}: SEOProps): Metadata {
-  const siteName = 'PremiumShop Ghana';
-  const siteUrl = 'https://premiumshop.com';
-  const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
-
-  const defaultKeywords = [
-    'online shopping ghana',
-    'premium products ghana',
-    'buy online ghana',
-    'ecommerce ghana',
-    'fast delivery ghana',
-    'secure shopping'
-  ];
-
-  const allKeywords = [...new Set([...keywords, ...defaultKeywords])];
-
-  const metadata: Metadata = {
+  return {
     title: fullTitle,
     description,
-    keywords: allKeywords.join(', '),
-    authors: author ? [{ name: author }] : undefined,
+    keywords: keywords.join(', '),
+    metadataBase: new URL(SITE_URL),
+    alternates: {
+      canonical: url ? `${SITE_URL}${url}` : undefined,
+    },
     openGraph: {
       title: fullTitle,
       description,
-      images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
-      type: ogType as any,
-      siteName,
-      locale: 'en_GH'
+      url: url ? `${SITE_URL}${url}` : SITE_URL,
+      siteName: SITE_NAME,
+      images: [
+        {
+          url: absoluteImageUrl,
+          width: 1200,
+          height: 630,
+          alt: fullTitle,
+        },
+      ],
+      locale: 'en_GH',
+      type: type as any,
     },
     twitter: {
       card: 'summary_large_image',
       title: fullTitle,
       description,
-      images: [ogImage]
+      images: [absoluteImageUrl],
     },
-    robots: noindex ? {
-      index: false,
-      follow: false
-    } : {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-image-preview': 'large',
-        'max-snippet': -1
-      }
-    },
-    alternates: {
-      canonical: siteUrl
-    }
+    robots: noIndex
+      ? { index: false, follow: false }
+      : { index: true, follow: true },
   };
-
-  if (ogType === 'article' && publishedTime) {
-    metadata.openGraph = {
-      ...metadata.openGraph,
-      type: 'article',
-      publishedTime
-    };
-  }
-
-  return metadata;
 }
 
 export function generateProductSchema(product: {
   name: string;
-  description: string;
-  image: string;
+  description?: string;
+  image?: string;
   price: number;
   currency?: string;
-  sku: string;
+  sku?: string;
+  slug?: string;
+  inStock?: boolean;
   rating?: number;
   reviewCount?: number;
-  availability?: string;
-  brand?: string;
-  category?: string;
 }) {
-  const schema = {
+  return {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
-    description: product.description,
-    image: product.image,
-    sku: product.sku,
+    description: product.description || '',
+    image: product.image ? (product.image.startsWith('http') ? product.image : `${SITE_URL}${product.image}`) : `${SITE_URL}/og-image.jpg`,
+    sku: product.sku || '',
+    url: product.slug ? `${SITE_URL}/product/${product.slug}` : '',
     brand: {
       '@type': 'Brand',
-      name: product.brand || 'PremiumShop'
+      name: SITE_NAME,
     },
     offers: {
       '@type': 'Offer',
-      price: product.price,
       priceCurrency: product.currency || 'GHS',
-      availability: product.availability === 'in_stock'
+      price: product.price,
+      availability: product.inStock !== false
         ? 'https://schema.org/InStock'
         : 'https://schema.org/OutOfStock',
-      url: typeof window !== 'undefined' ? window.location.href : '',
-      priceValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-    }
+      seller: {
+        '@type': 'Organization',
+        name: SITE_NAME,
+      },
+    },
+    aggregateRating: product.rating
+      ? {
+        '@type': 'AggregateRating',
+        ratingValue: product.rating,
+        reviewCount: product.reviewCount || 0,
+      }
+      : undefined,
   };
-
-  if (product.rating && product.reviewCount) {
-    (schema as any).aggregateRating = {
-      '@type': 'AggregateRating',
-      ratingValue: product.rating,
-      reviewCount: product.reviewCount,
-      bestRating: 5,
-      worstRating: 1
-    };
-  }
-
-  if (product.category) {
-    (schema as any).category = product.category;
-  }
-
-  return schema;
 }
 
-export function generateBreadcrumbSchema(items: { name: string; url: string }[]) {
+export function generateBreadcrumbSchema(items: { name: string; url?: string }[]) {
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -153,8 +120,8 @@ export function generateBreadcrumbSchema(items: { name: string; url: string }[])
       '@type': 'ListItem',
       position: index + 1,
       name: item.name,
-      item: item.url
-    }))
+      item: item.url ? `${SITE_URL}${item.url}` : undefined,
+    })),
   };
 }
 
@@ -162,21 +129,28 @@ export function generateOrganizationSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'PremiumShop Ghana',
-    url: 'https://premiumshop.com',
-    logo: 'https://readdy.ai/api/search-image?query=premium%20shop%20logo%20elegant%20modern&width=200&height=200&seq=logo&orientation=squarish',
+    name: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    logo: `${SITE_URL}/logo.png`,
+    foundingDate: '2004',
+    founder: {
+      '@type': 'Person',
+      name: 'Mr. Wisdom Amezah',
+    },
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'WIDAMA Towers, Ashaiman Lebanon',
+      addressLocality: 'Ashaiman',
+      addressRegion: 'Greater Accra',
+      addressCountry: 'GH',
+    },
+    sameAs: [],
     contactPoint: {
       '@type': 'ContactPoint',
-      telephone: '+233-XX-XXX-XXXX',
-      contactType: 'Customer Service',
-      areaServed: 'GH',
-      availableLanguage: ['English']
+      contactType: 'customer service',
+      availableLanguage: 'English',
     },
-    sameAs: [
-      'https://facebook.com/premiumshop',
-      'https://instagram.com/premiumshop',
-      'https://twitter.com/premiumshop'
-    ]
   };
 }
 
@@ -184,24 +158,16 @@ export function generateWebsiteSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'PremiumShop Ghana',
-    url: 'https://premiumshop.com',
+    name: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
     potentialAction: {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://premiumshop.com/shop?search={search_term_string}'
+        urlTemplate: `${SITE_URL}/shop?search={search_term_string}`,
       },
-      'query-input': 'required name=search_term_string'
-    }
+      'query-input': 'required name=search_term_string',
+    },
   };
-}
-
-export function StructuredData({ data }: { data: any }) {
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
-    />
-  );
 }

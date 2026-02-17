@@ -25,7 +25,7 @@ export default function SessionTimeoutWarning() {
 
     const checkInterval = setInterval(() => {
       const timeSinceActivity = Date.now() - lastActivity;
-      
+
       if (timeSinceActivity >= IDLE_TIMEOUT) {
         handleLogout();
       } else if (timeSinceActivity >= IDLE_TIMEOUT - WARNING_TIME) {
@@ -95,7 +95,7 @@ export default function SessionTimeoutWarning() {
           </button>
           <button
             onClick={handleStayLoggedIn}
-            className="flex-1 px-4 py-2.5 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium whitespace-nowrap"
+            className="flex-1 px-4 py-2.5 bg-brand-900 text-white rounded-lg hover:bg-brand-800 transition-colors font-medium whitespace-nowrap"
           >
             Stay Logged In
           </button>

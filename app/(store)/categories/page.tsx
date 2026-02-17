@@ -20,12 +20,12 @@ export default async function CategoriesPage() {
 
   // Palette to cycle through for visual variety since DB doesn't have colors
   const palette = [
-    { color: 'from-blue-500 to-blue-700', icon: 'ri-store-2-line' },
-    { color: 'from-blue-500 to-blue-700', icon: 'ri-shopping-bag-3-line' },
-    { color: 'from-purple-500 to-purple-700', icon: 'ri-t-shirt-line' },
-    { color: 'from-amber-500 to-amber-700', icon: 'ri-home-smile-line' },
-    { color: 'from-rose-500 to-rose-700', icon: 'ri-heart-line' },
-    { color: 'from-indigo-500 to-indigo-700', icon: 'ri-star-smile-line' },
+    { color: 'from-brand-500 to-brand-700', icon: 'ri-capsule-line' },
+    { color: 'from-teal-500 to-teal-700', icon: 'ri-heart-pulse-line' },
+    { color: 'from-amber-500 to-amber-700', icon: 'ri-first-aid-kit-line' },
+    { color: 'from-emerald-500 to-emerald-700', icon: 'ri-medicine-bottle-line' },
+    { color: 'from-brand-400 to-brand-600', icon: 'ri-stethoscope-line' },
+    { color: 'from-gold-400 to-gold-600', icon: 'ri-mental-health-line' },
   ];
 
   const categories = categoriesData?.map((c, i) => {
@@ -44,7 +44,7 @@ export default async function CategoriesPage() {
     <div className="min-h-screen bg-white">
       <PageHero
         title="Shop by Category"
-        subtitle="Browse dresses, electronics, bags, shoes and everything in between"
+        subtitle="Browse medicines, supplements, personal care, and health products"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -77,7 +77,7 @@ export default async function CategoriesPage() {
                   <p className="text-gray-600 leading-relaxed text-sm mb-4 line-clamp-2">
                     {category.description || 'Explore our exclusive collection in this category.'}
                   </p>
-                  <div className="flex items-center text-blue-700 font-medium text-sm group-hover:gap-2 transition-all">
+                  <div className="flex items-center text-brand-700 font-medium text-sm group-hover:gap-2 transition-all">
                     <span>Browse Collection</span>
                     <i className="ri-arrow-right-line ml-2"></i>
                   </div>
@@ -93,23 +93,23 @@ export default async function CategoriesPage() {
         )}
       </div>
 
-      <div className="bg-gradient-to-br from-blue-700 to-blue-900 py-16">
+      <div className="bg-gradient-to-br from-brand-700 to-brand-900 py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold text-white mb-4">Can't Find What You're Looking For?</h2>
-          <p className="text-xl text-blue-100 mb-8 leading-relaxed">
+          <p className="text-xl text-brand-100 mb-8 leading-relaxed">
             Try our advanced search or contact our team for personalised product recommendations
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
               href="/shop"
-              className="inline-flex items-center gap-2 bg-white text-blue-700 px-8 py-4 rounded-full font-medium hover:bg-blue-50 transition-colors whitespace-nowrap"
+              className="inline-flex items-center gap-2 bg-white text-brand-700 px-8 py-4 rounded-full font-medium hover:bg-brand-50 transition-colors whitespace-nowrap"
             >
               <i className="ri-search-line"></i>
               Search All Products
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-4 rounded-full font-medium hover:bg-blue-500 transition-colors whitespace-nowrap"
+              className="inline-flex items-center gap-2 bg-brand-600 text-white px-8 py-4 rounded-full font-medium hover:bg-brand-500 transition-colors whitespace-nowrap"
             >
               <i className="ri-customer-service-line"></i>
               Contact Support

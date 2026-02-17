@@ -1,114 +1,96 @@
-import type { Metadata, Viewport } from "next";
-import Script from "next/script";
-import { CartProvider } from "@/context/CartContext";
-import { WishlistProvider } from "@/context/WishlistContext";
-import "./globals.css";
-
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 5,
-  themeColor: '#2563eb',
-};
-
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.multimeysupplies.com';
+import type { Metadata, Viewport } from 'next';
+import Script from 'next/script';
+import './globals.css';
+import { CartProvider } from '@/context/CartContext';
+import { WishlistProvider } from '@/context/WishlistContext';
+import { CMSProvider } from '@/context/CMSContext';
+import dynamic from 'next/dynamic';
+import ChatWidget from '@/components/ChatWidget';
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
   title: {
-    default: "MultiMey Supplies | Quality Products & Supplies",
-    template: "%s | MultiMey Supplies"
+    default: 'WIDAMA Pharmacy — Quality Medicines & Healthcare Since 2004',
+    template: '%s | WIDAMA Pharmacy',
   },
-  description: "Shop dresses, electronics, bags, shoes & more at MultiMey Supplies. Locally sourced and imported quality products delivered across Ghana from Accra.",
+  description: 'WIDAMA Pharmacy — Ghana\'s trusted source for quality medicines, health products, and pharmaceutical services. Wholesale, retail, manufacturing, and training since 2004. Visit us at WIDAMA Towers, Ashaiman Lebanon.',
   keywords: [
-    "MultiMey Supplies",
-    "Online Store Ghana",
-    "Buy Dresses Online Ghana",
-    "Electronics Ghana",
-    "Bags and Shoes Accra",
-    "China Import Ghana",
-    "Affordable Fashion Ghana",
-    "Accra Online Shopping",
-    "Ghana E-commerce",
-    "Quality Products Accra"
+    'WIDAMA Pharmacy', 'pharmacy Ghana', 'medicines online', 'health products',
+    'pharmaceutical wholesale', 'buy medicine online Ghana', 'pharmacy Ashaiman',
+    'WIDAMA Towers', 'pharmaceutical services', 'health supplements',
   ],
-  authors: [{ name: "MultiMey Supplies" }],
-  creator: "MultiMey Supplies",
-  publisher: "MultiMey Supplies",
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://www.widamapharmacy.com'),
+  openGraph: {
+    type: 'website',
+    locale: 'en_GH',
+    url: process.env.NEXT_PUBLIC_APP_URL || 'https://www.widamapharmacy.com',
+    siteName: 'WIDAMA Pharmacy',
+    title: 'WIDAMA Pharmacy — Quality Medicines & Healthcare Since 2004',
+    description: 'Ghana\'s trusted pharmacy for quality medicines, health products, and pharmaceutical services. Wholesale, retail, manufacturing, and training.',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'WIDAMA Pharmacy',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'WIDAMA Pharmacy — Quality Medicines & Healthcare',
+    description: 'Ghana\'s trusted pharmacy since 2004. Quality medicines, health products, pharmaceutical services.',
   },
   icons: {
     icon: [
-      { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
-      { url: '/icons/icon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/icons/icon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/icons/icon-48x48.png', sizes: '48x48', type: 'image/png' },
-      { url: '/icons/icon-96x96.png', sizes: '96x96', type: 'image/png' },
       { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
       { url: '/icons/icon-512x512.png', sizes: '512x512', type: 'image/png' },
     ],
     apple: [
-      { url: '/icons/icon-152x152.png', sizes: '152x152', type: 'image/png' },
-      { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
-      { url: '/icons/icon-384x384.png', sizes: '384x384', type: 'image/png' },
-      { url: '/icons/icon-512x512.png', sizes: '512x512', type: 'image/png' },
+      { url: '/icons/icon-192x192.png' },
     ],
-    shortcut: '/favicon.png',
+    shortcut: '/favicon.ico',
   },
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'MultiMey Supplies',
-  },
-  formatDetection: {
-    telephone: true,
-  },
-  verification: {
-    // Add your Google Search Console verification code here
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',
-  },
-  openGraph: {
-    type: "website",
-    locale: "en_GH",
-    url: siteUrl,
-    title: "MultiMey Supplies | Quality Products & Supplies",
-    description: "Shop dresses, electronics, bags, shoes and more. Locally sourced and China-imported quality products delivered across Ghana.",
-    siteName: "MultiMey Supplies",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "MultiMey Supplies",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "MultiMey Supplies | Quality Products & Supplies",
-    description: "Dresses, electronics, bags, shoes and more. Quality products delivered across Ghana from Accra.",
-    images: ["/og-image.png"],
-    creator: "@mey_phua",
-  },
-  alternates: {
-    canonical: siteUrl,
+    title: 'WIDAMA Pharmacy',
   },
 };
 
-// Google Analytics Measurement ID
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
-// Google reCAPTCHA v3 Site Key
-const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#0D6B4E',
+  viewportFit: 'cover',
+};
+
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'WIDAMA Pharmacy',
+  description: 'Quality medicines, health products, and pharmaceutical services. Wholesale, retail, manufacturing, and training since 2004.',
+  url: process.env.NEXT_PUBLIC_APP_URL || 'https://www.widamapharmacy.com',
+  logo: `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.widamapharmacy.com'}/logo.png`,
+  foundingDate: '2004',
+  founder: {
+    '@type': 'Person',
+    name: 'Mr. Wisdom Amezah',
+  },
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'WIDAMA Towers, Ashaiman Lebanon',
+    addressLocality: 'Ashaiman',
+    addressRegion: 'Greater Accra',
+    addressCountry: 'GH',
+  },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer service',
+    availableLanguage: 'English',
+  },
+};
 
 export default function RootLayout({
   children,
@@ -116,102 +98,46 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <head>
-        {/* PWA Meta Tags */}
-        <meta name="theme-color" content="#2563eb" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="MultiMey Supplies" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="msapplication-TileColor" content="#2563eb" />
-        <meta name="msapplication-tap-highlight" content="no" />
-
-        {/* Apple Touch Icons */}
-        <link rel="apple-touch-icon" href="/icons/icon-152x152.png" />
-        <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png" />
-        <link rel="apple-touch-icon" sizes="384x384" href="/icons/icon-384x384.png" />
-        <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512x512.png" />
-
-        {/* Apple Splash Screens */}
-        <link rel="apple-touch-startup-image" href="/icons/icon-512x512.png" />
-
-        <link
-          href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css"
-          rel="stylesheet"
-        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
-        {/* Structured Data - Organization */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "MultiMey Supplies",
-              "url": "https://www.multimeysupplies.com",
-              "logo": "https://www.multimeysupplies.com/logo.png",
-              "description": "Shop dresses, electronics, bags, shoes and more at MultiMey Supplies. Locally sourced and China-imported quality products delivered across Ghana from Accra.",
-              "address": {
-                "@type": "PostalAddress",
-                "addressCountry": "GH",
-                "addressLocality": "Accra"
-              },
-              "contactPoint": {
-                "@type": "ContactPoint",
-                "contactType": "customer service",
-                "availableLanguage": "English"
-              }
-            })
-          }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
         />
-      </head>
-
-      {/* Google Analytics */}
-      {GA_MEASUREMENT_ID && (
-        <>
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+              `}
+            </Script>
+          </>
+        )}
+        {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
           <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+            src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
             strategy="afterInteractive"
           />
-          <Script id="google-analytics" strategy="afterInteractive">
-            {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${GA_MEASUREMENT_ID}', {
-                page_path: window.location.pathname,
-              });
-            `}
-          </Script>
-        </>
-      )}
-
-      {/* Google reCAPTCHA v3 */}
-      {RECAPTCHA_SITE_KEY && (
-        <Script
-          src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`}
-          strategy="afterInteractive"
-        />
-      )}
-
-      <body className="antialiased font-sans overflow-x-hidden pwa-body">
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[10000] focus:px-6 focus:py-3 focus:bg-blue-600 focus:text-white focus:rounded-lg focus:font-semibold focus:shadow-lg"
-        >
-          Skip to main content
-        </a>
-        <CartProvider>
-          <WishlistProvider>
-            <div id="main-content">
+        )}
+      </head>
+      <body className="antialiased min-h-screen bg-white text-gray-900">
+        <CMSProvider>
+          <CartProvider>
+            <WishlistProvider>
               {children}
-            </div>
-          </WishlistProvider>
-        </CartProvider>
+              <ChatWidget />
+            </WishlistProvider>
+          </CartProvider>
+        </CMSProvider>
       </body>
     </html>
   );

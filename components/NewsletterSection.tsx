@@ -1,94 +1,71 @@
-"use client";
+'use client';
 
 import { useState } from 'react';
 
-// Newsletter Component
 export default function NewsletterSection() {
   const [email, setEmail] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus('idle');
-
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      setSubmitStatus('success');
+    if (email.trim()) {
+      // In a real implementation, this would call an API
+      setSubmitted(true);
       setEmail('');
-    } catch (error) {
-      setSubmitStatus('error');
-    } finally {
-      setIsSubmitting(false);
+      setTimeout(() => setSubmitted(false), 5000);
     }
   };
 
   return (
-    <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 mb-12">
-      <div className="bg-[#0c1929] rounded-[2rem] overflow-hidden shadow-2xl relative">
-
-        {/* Background Image / Texture */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0 bg-[url('/pattern-noise.png')] opacity-20"></div> {/* Fallback to simple noise if available or just raw color */}
-          <div className="absolute -top-40 -right-40 w-96 h-96 bg-sky-400 rounded-full blur-[100px] opacity-30"></div>
-          <div className="absolute top-40 -left-20 w-72 h-72 bg-sky-300 rounded-full blur-[100px] opacity-20"></div>
-        </div>
-
-        <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between p-8 md:p-10 lg:p-12 gap-8">
-
-          {/* Left Content */}
-          <div className="text-center lg:text-left max-w-xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/50 border border-blue-500/30 text-blue-300 text-xs font-bold tracking-widest uppercase mb-4 animate-pulse-glow">
-              <span className="w-2 h-2 rounded-full bg-sky-400"></span>
-              The Insider Club
-            </div>
-
-            <h3 className="text-3xl md:text-4xl font-serif text-white mb-4 leading-tight">
-              Unlock <span className="italic text-sky-400">10% Off</span> <br /> Your First Order
-            </h3>
-
-            <p className="text-blue-100/80 text-base leading-relaxed">
-              Be the first to know about new arrivals, restocks, and exclusive deals. From dresses to electronics, we keep you updated on the latest products.
-            </p>
-          </div>
-
-          {/* Right Form */}
-          <div className="w-full max-w-md bg-white/5 backdrop-blur-md p-1.5 rounded-2xl border border-white/10 pwa-submit-form">
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2">
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                className="flex-1 bg-transparent border-none text-white placeholder-white/40 px-5 py-3 focus:ring-0 text-base"
-              />
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="bg-sky-400 hover:bg-blue-400 text-blue-950 font-bold px-6 py-3 rounded-xl transition-all hover:scale-105 active:scale-95 disabled:opacity-75 disabled:cursor-not-allowed shadow-lg whitespace-nowrap text-sm"
-              >
-                {isSubmitting ? (
-                  <i className="ri-loader-4-line animate-spin text-lg"></i>
-                ) : (
-                  <span className="flex items-center gap-2">
-                    Join <i className="ri-arrow-right-line"></i>
-                  </span>
-                )}
-              </button>
-            </form>
-          </div>
-
-        </div>
-
-        {submitStatus === 'success' && (
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-sky-400 text-blue-950 px-6 py-2 rounded-full font-bold shadow-lg animate-in fade-in slide-in-from-bottom-2">
-            <i className="ri-checkbox-circle-line mr-2"></i> Welcome to the club!
-          </div>
-        )}
+    <section className="py-20 bg-sage-50 relative overflow-hidden">
+      {/* Decorative */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/3 w-96 h-96 bg-brand-100/50 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/3 w-72 h-72 bg-gold-100/50 rounded-full blur-3xl" />
       </div>
-    </div>
+
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <div className="w-14 h-14 bg-brand-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <i className="ri-mail-send-line text-2xl text-brand-600"></i>
+        </div>
+        <h2 className="font-serif text-3xl sm:text-4xl text-gray-900 mb-4">
+          Stay Healthy, Stay Informed
+        </h2>
+        <p className="text-gray-500 text-lg mb-8 max-w-xl mx-auto">
+          Subscribe to our newsletter for health tips, new product alerts, and exclusive offers from WIDAMA Pharmacy.
+        </p>
+
+        {submitted ? (
+          <div className="animate-fade-in-up bg-brand-50 border border-brand-200 rounded-2xl p-6 max-w-md mx-auto">
+            <div className="w-12 h-12 bg-brand-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <i className="ri-check-line text-2xl text-brand-600"></i>
+            </div>
+            <p className="font-semibold text-brand-700">Thank you for subscribing!</p>
+            <p className="text-brand-600 text-sm mt-1">You&apos;ll receive our latest updates soon.</p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email address"
+              required
+              className="flex-1 px-5 py-4 border-2 border-brand-100 rounded-xl focus:ring-2 focus:ring-brand-200 focus:border-brand-400 text-base bg-white transition-all"
+            />
+            <button
+              type="submit"
+              className="px-8 py-4 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-all shadow-brand hover:shadow-brand-lg hover:-translate-y-0.5 whitespace-nowrap"
+            >
+              Subscribe
+            </button>
+          </form>
+        )}
+
+        <p className="text-xs text-gray-400 mt-4">
+          No spam. Unsubscribe anytime. Your privacy matters to us.
+        </p>
+      </div>
+    </section>
   );
 }

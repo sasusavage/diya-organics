@@ -1,65 +1,50 @@
 'use client';
 
-import React, { useEffect, useRef, useState, ReactNode } from 'react';
+import { useEffect, useRef, useState, ReactNode } from 'react';
 
 interface AnimatedSectionProps {
   children: ReactNode;
   className?: string;
-  animation?: 'fade-up' | 'fade-left' | 'fade-right' | 'scale' | 'fade';
   delay?: number;
-  threshold?: number;
+  direction?: 'up' | 'left' | 'right' | 'scale';
 }
 
 export default function AnimatedSection({
   children,
   className = '',
-  animation = 'fade-up',
   delay = 0,
-  threshold = 0.1,
+  direction = 'up',
 }: AnimatedSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
-
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setTimeout(() => setIsVisible(true), delay);
-          observer.unobserve(element);
+          setIsVisible(true);
+          observer.unobserve(entry.target);
         }
       },
-      { threshold, rootMargin: '50px' }
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
     );
 
-    observer.observe(element);
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
 
-    return () => observer.unobserve(element);
-  }, [delay, threshold]);
-
-  const getAnimationClass = () => {
-    switch (animation) {
-      case 'fade-up':
-        return 'scroll-animate';
-      case 'fade-left':
-        return 'scroll-animate-left';
-      case 'fade-right':
-        return 'scroll-animate-right';
-      case 'scale':
-        return 'scroll-animate-scale';
-      case 'fade':
-        return 'scroll-animate';
-      default:
-        return 'scroll-animate';
-    }
+  const directionClasses = {
+    up: 'translate-y-8',
+    left: '-translate-x-8',
+    right: 'translate-x-8',
+    scale: 'scale-95',
   };
 
   return (
     <div
       ref={ref}
-      className={`${getAnimationClass()} ${isVisible ? 'is-visible' : ''} ${className}`}
+      className={`transition-all duration-700 ease-out ${isVisible ? 'opacity-100 translate-y-0 translate-x-0 scale-100' : `opacity-0 ${directionClasses[direction]}`
+        } ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
@@ -67,63 +52,53 @@ export default function AnimatedSection({
   );
 }
 
-// Staggered grid animation component
-interface AnimatedGridProps {
-  children: ReactNode[];
-  className?: string;
-  itemClassName?: string;
-  staggerDelay?: number;
-}
-
+// Grid variant: staggers children
 export function AnimatedGrid({
   children,
   className = '',
-  itemClassName = '',
-  staggerDelay = 100
-}: AnimatedGridProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [visibleItems, setVisibleItems] = useState<boolean[]>([]);
-
-  const childrenArray = React.Children.toArray(children);
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          childrenArray.forEach((_, index) => {
-            setTimeout(() => {
-              setVisibleItems(prev => {
-                const newState = [...prev];
-                newState[index] = true;
-                return newState;
-              });
-            }, index * staggerDelay);
-          });
-          observer.unobserve(container);
+          setIsVisible(true);
+          observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.1, rootMargin: '50px' }
+      { threshold: 0.05, rootMargin: '0px 0px -30px 0px' }
     );
 
-    observer.observe(container);
-
-    return () => observer.unobserve(container);
-  }, [childrenArray.length, staggerDelay]);
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <div ref={containerRef} className={className}>
-      {childrenArray.map((child, index) => (
-        <div
-          key={index}
-          className={`scroll-animate ${visibleItems[index] ? 'is-visible' : ''} ${itemClassName}`}
-          style={{ transitionDelay: `${index * staggerDelay}ms` }}
-        >
-          {child}
-        </div>
-      ))}
+    <div ref={ref}>
+      {isVisible ? (
+        <style>{`
+          .animated-grid-visible > * {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: gridItemReveal 0.5s ease-out forwards;
+          }
+          ${Array.from({ length: 12 }, (_, i) => `.animated-grid-visible > *:nth-child(${i + 1}) { animation-delay: ${i * 100}ms; }`).join('\n')}
+          @keyframes gridItemReveal {
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+        `}</style>
+      ) : null}
+      <div className={`${className} ${isVisible ? 'animated-grid-visible' : ''}`}>
+        {children}
+      </div>
     </div>
   );
 }

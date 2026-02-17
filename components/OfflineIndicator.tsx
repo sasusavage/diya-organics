@@ -44,7 +44,7 @@ export default function OfflineIndicator() {
       <div
         className={`${
           isOnline
-            ? 'bg-blue-600'
+            ? 'bg-brand-600'
             : 'bg-gray-900'
         } text-white`}
       >

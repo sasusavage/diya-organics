@@ -1,45 +1,28 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function PWASplash() {
-  const [showSplash, setShowSplash] = useState(false);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    // Only show splash in standalone mode
-    const isStandalone =
-      window.matchMedia('(display-mode: standalone)').matches ||
-      (window.navigator as any).standalone === true;
-
-    // Only show on first load (not on subsequent navigations)
-    const hasShownSplash = sessionStorage.getItem('splashShown');
-
-    if (isStandalone && !hasShownSplash) {
-      setShowSplash(true);
-      sessionStorage.setItem('splashShown', 'true');
-
-      const timer = setTimeout(() => setShowSplash(false), 2000);
-      return () => clearTimeout(timer);
-    }
+    const timer = setTimeout(() => setVisible(false), 2000);
+    return () => clearTimeout(timer);
   }, []);
 
-  if (!showSplash) return null;
+  if (!visible) return null;
 
   return (
-    <div className="pwa-splash" aria-hidden="true">
-      <div className="pwa-splash-logo mb-6">
-        <img
-          src="/logo.png"
-          alt="MultiMey Supplies"
-          className="w-24 h-24 object-contain brightness-0 invert"
-        />
+    <div className="pwa-splash">
+      <div className="pwa-splash-logo flex flex-col items-center">
+        <img src="/logo.png" alt="WIDAMA Pharmacy" className="w-24 h-24 object-contain mb-6" />
+        <h1 className="text-white text-3xl font-bold font-serif mb-2">WIDAMA</h1>
+        <p className="text-gold-300 text-xs uppercase tracking-[0.3em] font-medium">Pharmacy</p>
       </div>
-      <h1 className="text-white text-xl font-bold font-serif mb-2">MultiMey Supplies</h1>
-      <p className="text-blue-200 text-sm font-medium mb-8">Dresses, Electronics, Bags & More</p>
-      <div className="pwa-splash-dots flex gap-1.5">
-        <span className="w-2 h-2 bg-white rounded-full" />
-        <span className="w-2 h-2 bg-white rounded-full" />
-        <span className="w-2 h-2 bg-white rounded-full" />
+      <div className="pwa-splash-dots flex gap-2 mt-10">
+        <span className="w-2 h-2 bg-gold-400 rounded-full"></span>
+        <span className="w-2 h-2 bg-gold-400 rounded-full"></span>
+        <span className="w-2 h-2 bg-gold-400 rounded-full"></span>
       </div>
     </div>
   );

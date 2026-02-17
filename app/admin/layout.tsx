@@ -151,6 +151,23 @@ export default function AdminLayout({
       exact: true
     },
     {
+      title: 'Hero Slides',
+      icon: 'ri-slideshow-line',
+      path: '/admin/hero'
+    },
+    {
+      title: 'Homepage Config',
+      icon: 'ri-layout-grid-line',
+      path: '/admin/homepage',
+      moduleId: 'homepage'
+    },
+    {
+      title: 'Site Settings',
+      icon: 'ri-settings-3-line',
+      path: '/admin/settings',
+      moduleId: 'cms'
+    },
+    {
       title: 'Orders',
       icon: 'ri-shopping-bag-line',
       path: '/admin/orders',
@@ -197,6 +214,18 @@ export default function AdminLayout({
       path: '/admin/coupons'
     },
     {
+      title: 'Flash Sales',
+      icon: 'ri-flashlight-line',
+      path: '/admin/flash-sales',
+      moduleId: 'flash-sales'
+    },
+    {
+      title: 'Loyalty Program',
+      icon: 'ri-trophy-line',
+      path: '/admin/loyalty-program',
+      moduleId: 'loyalty-program'
+    },
+    {
       title: 'Customer Insights',
       icon: 'ri-user-search-line',
       path: '/admin/customer-insights',
@@ -212,6 +241,18 @@ export default function AdminLayout({
       title: 'SMS Debugger',
       icon: 'ri-message-2-line',
       path: '/admin/test-sms'
+    },
+    {
+      title: 'PWA Settings',
+      icon: 'ri-smartphone-line',
+      path: '/admin/pwa-settings',
+      moduleId: 'pwa-settings'
+    },
+    {
+      title: 'Support Hub',
+      icon: 'ri-customer-service-2-line',
+      path: '/admin/support',
+      moduleId: 'support-hub'
     },
 
     {
@@ -261,7 +302,7 @@ export default function AdminLayout({
       >
         <div className="h-full px-4 py-6 overflow-y-auto">
           <Link href="/admin" className="flex items-center mb-8 px-2 cursor-pointer">
-            <span className="text-xl font-['Pacifico'] text-blue-700">MultiMey</span>
+            <span className="text-xl font-bold text-brand-700">WIDAMA</span>
             <span className="ml-3 text-sm font-semibold text-gray-500">ADMIN</span>
           </Link>
 

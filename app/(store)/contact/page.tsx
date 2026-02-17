@@ -88,7 +88,7 @@ export default function ContactPage() {
   };
 
   // Get contact details from CMS settings
-  const contactEmail = getSetting('contact_email') || 'support@multimeysupplies.com';
+  const contactEmail = getSetting('contact_email') || 'info@widamapharmacy.com';
   const contactPhone = getSetting('contact_phone') || '+233209597443';
   const contactAddress = getSetting('contact_address') || 'Accra, Ghana';
 
@@ -130,7 +130,7 @@ export default function ContactPage() {
   const faqs = [
     {
       question: 'What are your delivery times?',
-      answer: 'Standard delivery takes 2-5 business days within Ghana. Express delivery is available for Accra and Kumasi. We ship dresses, electronics, bags, shoes and all other items with care.'
+      answer: 'Standard delivery takes 2-5 business days within Ghana. Express delivery is available for Accra and Kumasi. We ship medicines, supplements, and health products with care.'
     },
     {
       question: 'Do you offer international shipping?',
@@ -146,7 +146,7 @@ export default function ContactPage() {
     <div className="min-h-screen bg-white">
       <PageHero
         title="Get In Touch"
-        subtitle="Have a question about our dresses, electronics, bags, or shoes? We're here to help from Accra, Ghana."
+        subtitle="Have a question about our medicines, supplements, or health products? We're here to help from Accra, Ghana."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -157,13 +157,13 @@ export default function ContactPage() {
               href={method.link}
               target={method.link.startsWith('http') ? '_blank' : '_self'}
               rel={method.link.startsWith('http') ? 'noopener noreferrer' : ''}
-              className="bg-white border border-gray-200 p-6 rounded-2xl hover:shadow-lg hover:border-blue-200 transition-all cursor-pointer"
+              className="bg-white border border-gray-200 p-6 rounded-2xl hover:shadow-lg hover:border-brand-200 transition-all cursor-pointer"
             >
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                <i className={`${method.icon} text-2xl text-blue-700`}></i>
+              <div className="w-12 h-12 bg-brand-100 rounded-full flex items-center justify-center mb-4">
+                <i className={`${method.icon} text-2xl text-brand-700`}></i>
               </div>
               <h3 className="font-bold text-gray-900 mb-2">{method.title}</h3>
-              <p className="text-blue-700 font-medium mb-1">{method.value}</p>
+              <p className="text-brand-700 font-medium mb-1">{method.value}</p>
               <p className="text-sm text-gray-500">{method.description}</p>
             </a>
           ))}
@@ -189,7 +189,7 @@ export default function ContactPage() {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent text-sm"
                   placeholder="John Doe"
                 />
               </div>
@@ -205,7 +205,7 @@ export default function ContactPage() {
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent text-sm"
                   placeholder="john@example.com"
                 />
               </div>
@@ -220,7 +220,7 @@ export default function ContactPage() {
                   name="phone"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent text-sm"
                   placeholder="+233 XX XXX XXXX"
                 />
               </div>
@@ -236,7 +236,7 @@ export default function ContactPage() {
                   required
                   value={formData.subject}
                   onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent text-sm"
                   placeholder="Order inquiry, product question, etc."
                 />
               </div>
@@ -253,14 +253,14 @@ export default function ContactPage() {
                   maxLength={500}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent resize-none text-sm"
                   placeholder="Tell us how we can help you..."
                 ></textarea>
                 <p className="text-xs text-gray-500 mt-1">{formData.message.length}/500 characters</p>
               </div>
 
               {submitStatus === 'success' && (
-                <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-xl">
+                <div className="bg-brand-50 border border-brand-200 text-brand-700 px-4 py-3 rounded-xl">
                   <i className="ri-check-line mr-2"></i>
                   Message sent successfully! We'll respond within 24 hours.
                 </div>
@@ -276,7 +276,7 @@ export default function ContactPage() {
               <button
                 type="submit"
                 disabled={isSubmitting || verifying}
-                className="w-full bg-blue-700 text-white py-4 rounded-xl font-medium hover:bg-blue-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap cursor-pointer"
+                className="w-full bg-brand-700 text-white py-4 rounded-xl font-medium hover:bg-brand-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap cursor-pointer"
               >
                 {isSubmitting || verifying ? (verifying ? 'Verifying...' : 'Sending...') : 'Send Message'}
               </button>
@@ -302,19 +302,19 @@ export default function ContactPage() {
               ))}
             </div>
 
-            <div className="bg-gradient-to-br from-blue-700 to-blue-900 p-8 rounded-2xl text-white">
+            <div className="bg-gradient-to-br from-brand-700 to-brand-900 p-8 rounded-2xl text-white">
               <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mb-4">
                 <i className="ri-customer-service-2-line text-2xl"></i>
               </div>
               <h3 className="text-2xl font-bold mb-3">Need Immediate Help?</h3>
-              <p className="text-blue-100 mb-6 leading-relaxed">
+              <p className="text-brand-100 mb-6 leading-relaxed">
                 Our customer support team is available Monday to Friday, 8am-6pm GMT. For urgent matters, reach out via WhatsApp.
               </p>
               <a
                 href={`https://wa.me/${contactPhone.replace(/[^0-9]/g, '')}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-white text-blue-700 px-6 py-3 rounded-full font-medium hover:bg-blue-50 transition-colors whitespace-nowrap"
+                className="inline-flex items-center gap-2 bg-white text-brand-700 px-6 py-3 rounded-full font-medium hover:bg-brand-50 transition-colors whitespace-nowrap"
               >
                 <i className="ri-whatsapp-line text-xl"></i>
                 Chat on WhatsApp
@@ -333,11 +333,11 @@ export default function ContactPage() {
             </p>
             <div className="flex flex-wrap justify-center gap-4 text-gray-600">
               <div className="flex items-center gap-2">
-                <i className="ri-map-pin-2-line text-blue-700"></i>
+                <i className="ri-map-pin-2-line text-brand-700"></i>
                 <span>{contactAddress}</span>
               </div>
               <div className="flex items-center gap-2">
-                <i className="ri-time-line text-blue-700"></i>
+                <i className="ri-time-line text-brand-700"></i>
                 <span>Mon-Sat: 9am-6pm</span>
               </div>
             </div>
