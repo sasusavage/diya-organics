@@ -79,6 +79,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
     const addToCart = (newItem: CartItem) => {
         setCart((prevCart) => {
+            const safeMaxStock = newItem.maxStock || 9999;
+            const safeMoq = newItem.moq || 1;
+            const safeQuantity = Math.max(newItem.quantity || 1, safeMoq);
+
             const existingItemIndex = prevCart.findIndex(
                 (item) => item.id === newItem.id && item.variant === newItem.variant
             );
@@ -86,15 +90,29 @@ export function CartProvider({ children }: { children: ReactNode }) {
             if (existingItemIndex > -1) {
                 const newCart = [...prevCart];
                 const existingItem = newCart[existingItemIndex];
-                // Ensure we don't exceed max stock
+
+                // Ensure legacy items have these props too
+                const currentMaxStock = existingItem.maxStock || safeMaxStock;
+
                 const newQuantity = Math.min(
-                    existingItem.quantity + newItem.quantity,
-                    existingItem.maxStock
+                    existingItem.quantity + safeQuantity,
+                    currentMaxStock
                 );
-                newCart[existingItemIndex] = { ...existingItem, quantity: newQuantity };
+
+                newCart[existingItemIndex] = {
+                    ...existingItem,
+                    quantity: newQuantity,
+                    maxStock: currentMaxStock,
+                    moq: existingItem.moq || safeMoq
+                };
                 return newCart;
             } else {
-                return [...prevCart, newItem];
+                return [...prevCart, {
+                    ...newItem,
+                    quantity: safeQuantity,
+                    maxStock: safeMaxStock,
+                    moq: safeMoq
+                }];
             }
         });
 
@@ -113,14 +131,21 @@ export function CartProvider({ children }: { children: ReactNode }) {
             if (!item) return prevCart;
 
             const minQty = item.moq || 1;
-            
+            const maxQty = item.maxStock || 9999;
+
             // If trying to reduce below MOQ, remove the item
             if (quantity < minQty) {
-                return prevCart.filter(i => !(i.id === itemId && i.variant === variant));
+                // Optional: You might want to ask for confirmation here or just clamp to MOQ
+                // For now, let's allow removal if they go to 0, but if they define quantity < MOQ but > 0, clamp to MOQ?
+                // Standard behavior: if 0, remove. If 1-(MOQ-1), clamp to MOQ.
+                if (quantity <= 0) {
+                    return prevCart.filter(i => !(i.id === itemId && i.variant === variant));
+                }
+                return prevCart.map(i => i.id === itemId && i.variant === variant ? { ...i, quantity: minQty } : i);
             }
 
             // Clamp quantity between MOQ and maxStock
-            const clampedQty = Math.min(Math.max(quantity, minQty), item.maxStock);
+            const clampedQty = Math.min(Math.max(quantity, minQty), maxQty);
 
             return prevCart.map((i) =>
                 i.id === itemId && i.variant === variant

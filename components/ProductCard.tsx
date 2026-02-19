@@ -120,7 +120,16 @@ export default function ProductCard({
               <button
                 onClick={(e) => {
                   e.preventDefault();
-                  addToCart({ id, name, price, image, quantity: moq, slug, maxStock, moq });
+                  addToCart({
+                    id,
+                    name,
+                    price,
+                    image,
+                    quantity: moq || 1,
+                    slug,
+                    maxStock: maxStock || 50,
+                    moq: moq || 1
+                  });
                 }}
                 className="w-full bg-brand-600 text-white hover:bg-brand-700 py-3 rounded-lg font-medium shadow-brand transition-colors flex items-center justify-center space-x-2 text-sm"
               >
@@ -150,8 +159,8 @@ export default function ProductCard({
                   setActiveColor(activeColor === color.name ? null : color.name);
                 }}
                 className={`w-4 h-4 rounded-full border transition-all duration-200 flex-shrink-0 ${activeColor === color.name
-                    ? 'ring-2 ring-offset-1 ring-brand-500 scale-110'
-                    : 'hover:scale-110'
+                  ? 'ring-2 ring-offset-1 ring-brand-500 scale-110'
+                  : 'hover:scale-110'
                   } ${color.hex === '#FFFFFF' ? 'border-gray-300' : 'border-transparent'}`}
                 style={{ backgroundColor: color.hex }}
               />
@@ -186,7 +195,16 @@ export default function ProductCard({
             <button
               onClick={(e) => {
                 e.preventDefault();
-                addToCart({ id, name, price, image, quantity: moq, slug, maxStock, moq });
+                addToCart({
+                  id,
+                  name,
+                  price,
+                  image,
+                  quantity: moq || 1,
+                  slug,
+                  maxStock: maxStock || 50,
+                  moq: moq || 1
+                });
               }}
               disabled={!inStock}
               className="w-full bg-brand-50 text-brand-700 py-2.5 rounded-lg text-sm font-semibold hover:bg-brand-100 active:bg-brand-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
