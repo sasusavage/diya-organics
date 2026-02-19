@@ -36,6 +36,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -43,8 +44,13 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fadeInLeft {
@@ -52,10 +58,25 @@
     opacity: 0;
     transform: translateX(-30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
   }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+.slide-in-right {
+  animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes fadeInRight {
@@ -63,6 +84,7 @@
     opacity: 0;
     transform: translateX(30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -74,6 +96,7 @@
     opacity: 0;
     transform: scale(0.9);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -84,68 +107,145 @@
   from {
     transform: translateY(100%);
   }
+
   to {
     transform: translateY(0);
   }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 @keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(13, 107, 78, 0.4); }
-  50% { box-shadow: 0 0 20px 10px rgba(13, 107, 78, 0); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(13, 107, 78, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 20px 10px rgba(13, 107, 78, 0);
+  }
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @keyframes gradientFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes morphBlob {
-  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-  50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+
+  0%,
+  100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+
+  50% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+  }
 }
 
 @keyframes textReveal {
   from {
     clip-path: inset(0 100% 0 0);
   }
+
   to {
     clip-path: inset(0 0 0 0);
   }
 }
 
 @keyframes countUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes pillPulse {
-  0%, 100% { transform: scale(1); opacity: 0.6; }
-  50% { transform: scale(1.1); opacity: 0.3; }
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: scale(1.1);
+    opacity: 0.3;
+  }
 }
 
 @keyframes crossFade {
-  0%, 45% { opacity: 1; }
-  50%, 95% { opacity: 0; }
-  100% { opacity: 1; }
+
+  0%,
+  45% {
+    opacity: 1;
+  }
+
+  50%,
+  95% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 @keyframes heartbeat {
-  0% { transform: scale(1); }
-  14% { transform: scale(1.05); }
-  28% { transform: scale(1); }
-  42% { transform: scale(1.05); }
-  70% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  14% {
+    transform: scale(1.05);
+  }
+
+  28% {
+    transform: scale(1);
+  }
+
+  42% {
+    transform: scale(1.05);
+  }
+
+  70% {
+    transform: scale(1);
+  }
 }
 
 /* ========================================
@@ -189,14 +289,37 @@
 }
 
 /* Staggered delays */
-.animate-delay-100 { animation-delay: 100ms; }
-.animate-delay-200 { animation-delay: 200ms; }
-.animate-delay-300 { animation-delay: 300ms; }
-.animate-delay-400 { animation-delay: 400ms; }
-.animate-delay-500 { animation-delay: 500ms; }
-.animate-delay-600 { animation-delay: 600ms; }
-.animate-delay-700 { animation-delay: 700ms; }
-.animate-delay-800 { animation-delay: 800ms; }
+.animate-delay-100 {
+  animation-delay: 100ms;
+}
+
+.animate-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animate-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animate-delay-400 {
+  animation-delay: 400ms;
+}
+
+.animate-delay-500 {
+  animation-delay: 500ms;
+}
+
+.animate-delay-600 {
+  animation-delay: 600ms;
+}
+
+.animate-delay-700 {
+  animation-delay: 700ms;
+}
+
+.animate-delay-800 {
+  animation-delay: 800ms;
+}
 
 /* ========================================
    SCROLL-TRIGGERED ANIMATIONS
@@ -291,12 +414,10 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent);
   transition: left 0.5s ease;
   z-index: 1;
 }
@@ -484,7 +605,8 @@
   animation: fadeIn 0.4s ease-out;
 }
 
-a, button {
+a,
+button {
   transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
@@ -522,14 +644,29 @@ img {
   html {
     overscroll-behavior: none;
   }
-  
+
   body {
     overscroll-behavior-y: none;
     -webkit-user-select: none;
     user-select: none;
   }
-  
-  input, textarea, [contenteditable], p, span, h1, h2, h3, h4, h5, h6, li, td, th, label, a {
+
+  input,
+  textarea,
+  [contenteditable],
+  p,
+  span,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  li,
+  td,
+  th,
+  label,
+  a {
     -webkit-user-select: text;
     user-select: text;
   }
@@ -548,6 +685,7 @@ img {
 }
 
 @media (max-width: 1023px) {
+
   main,
   footer {
     padding-bottom: 80px;
@@ -563,6 +701,7 @@ img {
     transform: translateY(100%);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -570,8 +709,13 @@ img {
 }
 
 @keyframes backdropFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .pwa-prompt-sheet {
@@ -587,6 +731,7 @@ img {
     transform: translateY(20px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -602,6 +747,7 @@ img {
    ======================================== */
 
 @media (hover: none) and (pointer: coarse) {
+
   button:active,
   a:active,
   [role="button"]:active {
@@ -629,8 +775,13 @@ img {
    ======================================== */
 
 @keyframes pullRefreshSpin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .pull-refresh-spinner {
@@ -642,6 +793,7 @@ img {
     opacity: 0;
     transform: translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -657,8 +809,14 @@ img {
    ======================================== */
 
 @keyframes splashFadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; visibility: hidden; }
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
 
 .pwa-splash {
@@ -678,16 +836,28 @@ img {
 }
 
 @keyframes splashPulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
+
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 .pwa-splash-dots span {
   animation: splashPulse 1.4s ease-in-out infinite;
 }
 
-.pwa-splash-dots span:nth-child(2) { animation-delay: 0.2s; }
-.pwa-splash-dots span:nth-child(3) { animation-delay: 0.4s; }
+.pwa-splash-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.pwa-splash-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
 
 /* ========================================
    CUSTOM SCROLLBAR (PHARMACY THEMED)

@@ -33,8 +33,8 @@ export default function MiniCart({ isOpen, onClose }: MiniCartProps) {
         onClick={onClose}
       ></div>
 
-      <div className="fixed top-0 right-0 bottom-0 w-full max-w-md bg-white shadow-2xl z-50 flex flex-col slide-in-right">
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+      <div className="fixed inset-y-0 right-0 w-full max-w-md h-[100dvh] bg-white shadow-2xl z-50 flex flex-col slide-in-right">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0 z-10 bg-white relative">
           <h2 className="text-xl font-bold text-gray-900">
             Shopping Cart ({cart.reduce((sum, i) => sum + i.quantity, 0)})
           </h2>
@@ -63,7 +63,7 @@ export default function MiniCart({ isOpen, onClose }: MiniCartProps) {
           </div>
         ) : (
           <>
-            <div className="flex-1 overflow-y-auto p-6">
+            <div className="flex-1 overflow-y-auto min-h-0 p-6 overscroll-contain">
               <div className="space-y-4">
                 {cart.map((item) => (
                   <div key={`${item.id}-${item.variant}`} className="flex space-x-4 bg-gray-50 rounded-lg p-4">
@@ -125,7 +125,7 @@ export default function MiniCart({ isOpen, onClose }: MiniCartProps) {
               </div>
             </div>
 
-            <div className="border-t border-gray-200 p-6 bg-gray-50">
+            <div className="border-t border-gray-200 p-6 bg-gray-50 flex-shrink-0 safe-area-bottom z-10 relative shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-gray-700 font-medium">Subtotal</span>
                 <span className="text-2xl font-bold text-gray-900">GH₵{subtotal.toFixed(2)}</span>
