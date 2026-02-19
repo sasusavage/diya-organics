@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useParams } from 'next/navigation';
 
@@ -8,6 +8,11 @@ export default function ChatDetailPage() {
     const [messages, setMessages] = useState<any[]>([]);
     const [newMessage, setNewMessage] = useState('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    const fetchMessages = useCallback(async () => {
+        const { data } = await supabase.from('chat_conversations').select('messages').eq('id', id).single();
+        if (data?.messages) setMessages(data.messages);
+    }, [id]);
 
     useEffect(() => {
         fetchMessages();
@@ -21,12 +26,7 @@ export default function ChatDetailPage() {
             .subscribe();
 
         return () => { supabase.removeChannel(channel); };
-    }, [id]);
-
-    const fetchMessages = async () => {
-        const { data } = await supabase.from('chat_conversations').select('messages').eq('id', id).single();
-        if (data?.messages) setMessages(data.messages);
-    };
+    }, [id, fetchMessages]);
 
     const sendMessage = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -60,8 +60,8 @@ export default function ChatDetailPage() {
                 {messages.map((msg, i) => (
                     <div key={i} className={`flex ${msg.role === 'agent' ? 'justify-end' : 'justify-start'}`}>
                         <div className={`max-w-[70%] p-3 rounded-2xl text-sm ${msg.role === 'agent'
-                                ? 'bg-blue-600 text-white rounded-br-none'
-                                : 'bg-white border border-gray-200 text-gray-800 rounded-bl-none shadow-sm'
+                            ? 'bg-blue-600 text-white rounded-br-none'
+                            : 'bg-white border border-gray-200 text-gray-800 rounded-bl-none shadow-sm'
                             }`}>
                             <p>{msg.content}</p>
                             <div className={`text-[10px] mt-1 ${msg.role === 'agent' ? 'text-blue-200' : 'text-gray-400'}`}>

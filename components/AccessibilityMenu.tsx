@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export default function AccessibilityMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,12 +22,7 @@ export default function AccessibilityMenu() {
     }
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('accessibilitySettings', JSON.stringify(settings));
-    applySettings();
-  }, [settings]);
-
-  const applySettings = () => {
+  const applySettings = useCallback(() => {
     const root = document.documentElement;
 
     root.classList.remove('text-sm', 'text-base', 'text-lg', 'text-xl');
@@ -66,7 +61,12 @@ export default function AccessibilityMenu() {
     } else {
       document.body.classList.remove('highlight-links');
     }
-  };
+  }, [settings]);
+
+  useEffect(() => {
+    localStorage.setItem('accessibilitySettings', JSON.stringify(settings));
+    applySettings();
+  }, [settings, applySettings]);
 
   const resetSettings = () => {
     setSettings({
@@ -94,7 +94,7 @@ export default function AccessibilityMenu() {
       {isOpen && (
         <>
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9998]" onClick={() => setIsOpen(false)} />
-          
+
           <div className="fixed left-0 top-0 bottom-0 w-full max-w-md bg-white shadow-2xl z-[9999] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between">
               <div className="flex items-center space-x-3">
@@ -119,11 +119,10 @@ export default function AccessibilityMenu() {
                     <button
                       key={size}
                       onClick={() => setSettings({ ...settings, fontSize: size })}
-                      className={`py-2 px-4 rounded-lg border-2 font-medium transition-colors whitespace-nowrap ${
-                        settings.fontSize === size
-                          ? 'border-brand-700 bg-brand-50 text-brand-700'
-                          : 'border-gray-300 text-gray-700 hover:border-gray-400'
-                      }`}
+                      className={`py-2 px-4 rounded-lg border-2 font-medium transition-colors whitespace-nowrap ${settings.fontSize === size
+                        ? 'border-brand-700 bg-brand-50 text-brand-700'
+                        : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                        }`}
                     >
                       {size === 'normal' ? 'A' : size === 'large' ? 'A+' : 'A++'}
                     </button>
@@ -138,11 +137,10 @@ export default function AccessibilityMenu() {
                     <button
                       key={contrast}
                       onClick={() => setSettings({ ...settings, contrast })}
-                      className={`py-2 px-4 rounded-lg border-2 font-medium transition-colors whitespace-nowrap ${
-                        settings.contrast === contrast
-                          ? 'border-brand-700 bg-brand-50 text-brand-700'
-                          : 'border-gray-300 text-gray-700 hover:border-gray-400'
-                      }`}
+                      className={`py-2 px-4 rounded-lg border-2 font-medium transition-colors whitespace-nowrap ${settings.contrast === contrast
+                        ? 'border-brand-700 bg-brand-50 text-brand-700'
+                        : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                        }`}
                     >
                       {contrast === 'normal' ? 'Normal' : 'High'}
                     </button>
@@ -157,11 +155,10 @@ export default function AccessibilityMenu() {
                     <button
                       key={height}
                       onClick={() => setSettings({ ...settings, lineHeight: height })}
-                      className={`py-2 px-4 rounded-lg border-2 font-medium transition-colors whitespace-nowrap capitalize ${
-                        settings.lineHeight === height
-                          ? 'border-brand-700 bg-brand-50 text-brand-700'
-                          : 'border-gray-300 text-gray-700 hover:border-gray-400'
-                      }`}
+                      className={`py-2 px-4 rounded-lg border-2 font-medium transition-colors whitespace-nowrap capitalize ${settings.lineHeight === height
+                        ? 'border-brand-700 bg-brand-50 text-brand-700'
+                        : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                        }`}
                     >
                       {height}
                     </button>
@@ -176,11 +173,10 @@ export default function AccessibilityMenu() {
                     <button
                       key={spacing}
                       onClick={() => setSettings({ ...settings, letterSpacing: spacing })}
-                      className={`py-2 px-4 rounded-lg border-2 font-medium transition-colors whitespace-nowrap capitalize ${
-                        settings.letterSpacing === spacing
-                          ? 'border-brand-700 bg-brand-50 text-brand-700'
-                          : 'border-gray-300 text-gray-700 hover:border-gray-400'
-                      }`}
+                      className={`py-2 px-4 rounded-lg border-2 font-medium transition-colors whitespace-nowrap capitalize ${settings.letterSpacing === spacing
+                        ? 'border-brand-700 bg-brand-50 text-brand-700'
+                        : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                        }`}
                     >
                       {spacing}
                     </button>
@@ -195,11 +191,10 @@ export default function AccessibilityMenu() {
                     <button
                       key={size}
                       onClick={() => setSettings({ ...settings, cursorSize: size })}
-                      className={`py-2 px-4 rounded-lg border-2 font-medium transition-colors whitespace-nowrap capitalize ${
-                        settings.cursorSize === size
-                          ? 'border-brand-700 bg-brand-50 text-brand-700'
-                          : 'border-gray-300 text-gray-700 hover:border-gray-400'
-                      }`}
+                      className={`py-2 px-4 rounded-lg border-2 font-medium transition-colors whitespace-nowrap capitalize ${settings.cursorSize === size
+                        ? 'border-brand-700 bg-brand-50 text-brand-700'
+                        : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                        }`}
                     >
                       {size}
                     </button>
@@ -212,13 +207,11 @@ export default function AccessibilityMenu() {
                   <span className="text-sm font-semibold text-gray-900">Readable Font</span>
                   <button
                     onClick={() => setSettings({ ...settings, readableFont: !settings.readableFont })}
-                    className={`w-12 h-6 rounded-full flex items-center px-1 transition-colors ${
-                      settings.readableFont ? 'bg-brand-700' : 'bg-gray-300'
-                    }`}
+                    className={`w-12 h-6 rounded-full flex items-center px-1 transition-colors ${settings.readableFont ? 'bg-brand-700' : 'bg-gray-300'
+                      }`}
                   >
-                    <div className={`w-4 h-4 bg-white rounded-full shadow-sm transition-transform ${
-                      settings.readableFont ? 'translate-x-6' : 'translate-x-0'
-                    }`}></div>
+                    <div className={`w-4 h-4 bg-white rounded-full shadow-sm transition-transform ${settings.readableFont ? 'translate-x-6' : 'translate-x-0'
+                      }`}></div>
                   </button>
                 </label>
 
@@ -226,13 +219,11 @@ export default function AccessibilityMenu() {
                   <span className="text-sm font-semibold text-gray-900">Hide Images</span>
                   <button
                     onClick={() => setSettings({ ...settings, hideImages: !settings.hideImages })}
-                    className={`w-12 h-6 rounded-full flex items-center px-1 transition-colors ${
-                      settings.hideImages ? 'bg-brand-700' : 'bg-gray-300'
-                    }`}
+                    className={`w-12 h-6 rounded-full flex items-center px-1 transition-colors ${settings.hideImages ? 'bg-brand-700' : 'bg-gray-300'
+                      }`}
                   >
-                    <div className={`w-4 h-4 bg-white rounded-full shadow-sm transition-transform ${
-                      settings.hideImages ? 'translate-x-6' : 'translate-x-0'
-                    }`}></div>
+                    <div className={`w-4 h-4 bg-white rounded-full shadow-sm transition-transform ${settings.hideImages ? 'translate-x-6' : 'translate-x-0'
+                      }`}></div>
                   </button>
                 </label>
 
@@ -240,13 +231,11 @@ export default function AccessibilityMenu() {
                   <span className="text-sm font-semibold text-gray-900">Highlight Links</span>
                   <button
                     onClick={() => setSettings({ ...settings, highlightLinks: !settings.highlightLinks })}
-                    className={`w-12 h-6 rounded-full flex items-center px-1 transition-colors ${
-                      settings.highlightLinks ? 'bg-brand-700' : 'bg-gray-300'
-                    }`}
+                    className={`w-12 h-6 rounded-full flex items-center px-1 transition-colors ${settings.highlightLinks ? 'bg-brand-700' : 'bg-gray-300'
+                      }`}
                   >
-                    <div className={`w-4 h-4 bg-white rounded-full shadow-sm transition-transform ${
-                      settings.highlightLinks ? 'translate-x-6' : 'translate-x-0'
-                    }`}></div>
+                    <div className={`w-4 h-4 bg-white rounded-full shadow-sm transition-transform ${settings.highlightLinks ? 'translate-x-6' : 'translate-x-0'
+                      }`}></div>
                   </button>
                 </label>
               </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 
 interface SettingRow {
@@ -39,11 +39,7 @@ export default function SiteSettingsPage() {
     const [logoFile, setLogoFile] = useState<File | null>(null);
     const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
-    useEffect(() => {
-        fetchSettings();
-    }, []);
-
-    const fetchSettings = async () => {
+    const fetchSettings = useCallback(async () => {
         try {
             const { data, error } = await supabase.from('site_settings').select('*');
             if (error) throw error;
@@ -59,7 +55,11 @@ export default function SiteSettingsPage() {
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
+
+    useEffect(() => {
+        fetchSettings();
+    }, [fetchSettings]);
 
     const showToast = (type: string, message: string) => {
         setToast({ type, message });

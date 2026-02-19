@@ -68,112 +68,88 @@ export default function Footer() {
       {/* Decorative Elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-brand-400/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-1/4 w-72 h-72 bg-gold-400/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-1/4 w-72 h-72 bg-gold-400/5 rounded-full blur-3xl opacity-50" />
       </div>
 
-      {/* Top CTA Strip */}
-      <div className="border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gold-400/20 rounded-xl flex items-center justify-center">
-                <i className="ri-capsule-line text-2xl text-gold-300"></i>
+      {/* Top CTA Strip - Compact */}
+      <div className="border-b border-white/10 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-gold-400/20 rounded-lg flex items-center justify-center">
+                <i className="ri-capsule-line text-lg text-gold-300"></i>
               </div>
-              <div>
-                <h3 className="font-bold text-lg">{footerCtaTitle}</h3>
-                <p className="text-white/60 text-sm">{footerCtaSubtitle}</p>
-              </div>
+              <p className="text-sm font-medium">
+                <span className="font-bold text-white block md:inline md:mr-2">{footerCtaTitle}</span>
+                <span className="text-white/60 hidden md:inline">{footerCtaSubtitle}</span>
+              </p>
             </div>
-            <div className="flex items-center gap-4">
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 bg-gold-400 hover:bg-gold-300 text-brand-900 px-6 py-3 rounded-full font-bold text-sm transition-all hover:-translate-y-0.5"
-              >
-                <i className="ri-phone-line"></i>
-                Contact Us
-              </Link>
-            </div>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 text-gold-300 hover:text-white font-bold text-xs uppercase tracking-wider transition-colors"
+            >
+              Contact Support <i className="ri-arrow-right-line"></i>
+            </Link>
           </div>
         </div>
       </div>
 
       {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 relative z-10">
+        <div className="grid grid-cols-2 md:grid-cols-12 gap-x-8 gap-y-10">
 
-          {/* Brand Column */}
-          <div className="lg:col-span-4">
-            <Link href="/" className="flex items-center gap-3 mb-6 group">
-              <img src={siteLogo} alt={siteName} className="h-12 w-auto object-contain" />
+          {/* Brand Column - Full width on mobile, 4 cols on desktop */}
+          <div className="col-span-2 md:col-span-4 lg:pr-8">
+            <Link href="/" className="flex items-center gap-2 mb-4 group">
+              <img src={siteLogo} alt={siteName} className="h-8 w-auto object-contain" />
               <div>
-                <span className="text-white font-bold text-xl block leading-tight">WIDAMA</span>
-                <span className="text-gold-300 text-[10px] uppercase tracking-[0.25em] font-medium">Pharmacy</span>
+                <span className="text-white font-bold text-lg block leading-none">WIDAMA</span>
+                <span className="text-gold-300 text-[9px] uppercase tracking-[0.2em] font-medium">Pharmacy</span>
               </div>
             </Link>
-            <p className="text-white/50 text-sm leading-relaxed mb-6 max-w-sm">
+            <p className="text-white/60 text-sm leading-relaxed mb-6 max-w-sm">
               {footerDescription}
             </p>
-            <div className="space-y-3 mb-6">
-              <div className="flex items-center gap-3 text-white/60 text-sm">
-                <i className="ri-map-pin-line text-gold-400"></i>
-                <span>{siteAddress}</span>
-              </div>
-              <div className="flex items-center gap-3 text-white/60 text-sm">
-                <i className="ri-phone-line text-gold-400"></i>
-                <a href={`tel:${sitePhone.replace(/\s/g, '')}`} className="hover:text-white transition-colors">{sitePhone}</a>
-              </div>
-              <div className="flex items-center gap-3 text-white/60 text-sm">
-                <i className="ri-mail-line text-gold-400"></i>
-                <a href={`mailto:${siteEmail}`} className="hover:text-white transition-colors">{siteEmail}</a>
+
+            <div className="flex flex-col gap-2 mb-6 text-sm text-white/70">
+              <a href={`tel:${sitePhone.replace(/\s/g, '')}`} className="flex items-center gap-3 hover:text-white transition-colors">
+                <i className="ri-phone-fill text-gold-400"></i> {sitePhone}
+              </a>
+              <a href={`mailto:${siteEmail}`} className="flex items-center gap-3 hover:text-white transition-colors">
+                <i className="ri-mail-fill text-gold-400"></i> {siteEmail}
+              </a>
+              <div className="flex items-start gap-3">
+                <i className="ri-map-pin-fill text-gold-400 mt-1"></i>
+                <span className="max-w-[200px]">{siteAddress}</span>
               </div>
             </div>
 
-            {/* Social Links — only renders if at least one URL is configured */}
-            {socialLinks.length > 0 && (
-              <div className="flex items-center gap-3">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.label}
-                    href={getSetting(social.key)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 bg-white/10 hover:bg-gold-400/20 rounded-xl flex items-center justify-center text-white/60 hover:text-gold-300 transition-all duration-200"
-                    aria-label={social.label}
-                  >
-                    <i className={`${social.icon} text-lg`}></i>
-                  </a>
-                ))}
-              </div>
-            )}
-            {socialLinks.length === 0 && (
-              <div className="flex items-center gap-3">
-                {[
-                  { icon: 'ri-facebook-fill', label: 'Facebook' },
-                  { icon: 'ri-instagram-line', label: 'Instagram' },
-                  { icon: 'ri-twitter-x-line', label: 'X' },
-                  { icon: 'ri-whatsapp-line', label: 'WhatsApp' },
-                ].map((social) => (
-                  <a
-                    key={social.label}
-                    href="#"
-                    className="w-10 h-10 bg-white/10 hover:bg-gold-400/20 rounded-xl flex items-center justify-center text-white/60 hover:text-gold-300 transition-all duration-200"
-                    aria-label={social.label}
-                  >
-                    <i className={`${social.icon} text-lg`}></i>
-                  </a>
-                ))}
-              </div>
-            )}
+            {/* Social Links */}
+            <div className="flex items-center gap-2">
+              {(socialLinks.length > 0 ? socialLinks : [
+                { icon: 'ri-facebook-fill', label: 'Facebook' },
+                { icon: 'ri-instagram-line', label: 'Instagram' },
+                { icon: 'ri-twitter-x-line', label: 'X' },
+              ]).slice(0, 5).map((social, idx) => (
+                <a
+                  key={idx}
+                  href={'#'}
+                  className="w-8 h-8 rounded-lg bg-white/5 hover:bg-gold-400 hover:text-brand-900 flex items-center justify-center transition-all text-white/60"
+                  aria-label={social.label}
+                >
+                  <i className={social.icon}></i>
+                </a>
+              ))}
+            </div>
           </div>
 
           {/* Shop Column */}
-          <div className="lg:col-span-2 lg:col-start-6">
-            <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-5">Shop</h4>
-            <ul className="space-y-3">
+          <div className="col-span-1 md:col-span-2">
+            <h4 className="font-bold text-white text-xs uppercase tracking-wider mb-4 opacity-80">Shop</h4>
+            <ul className="space-y-2.5">
               {shopLinks.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-white/50 hover:text-gold-300 text-sm transition-colors inline-flex items-center gap-1 group">
-                    <i className="ri-arrow-right-s-line text-xs opacity-0 group-hover:opacity-100 transition-all -ml-4 group-hover:ml-0"></i>
+                  <Link href={link.href} className="text-white/60 hover:text-gold-300 text-sm transition-colors block">
                     {link.label}
                   </Link>
                 </li>
@@ -182,13 +158,12 @@ export default function Footer() {
           </div>
 
           {/* Support Column */}
-          <div className="lg:col-span-3">
-            <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-5">Support</h4>
-            <ul className="space-y-3">
+          <div className="col-span-1 md:col-span-3">
+            <h4 className="font-bold text-white text-xs uppercase tracking-wider mb-4 opacity-80">Support</h4>
+            <ul className="space-y-2.5">
               {supportLinks.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-white/50 hover:text-gold-300 text-sm transition-colors inline-flex items-center gap-1 group">
-                    <i className="ri-arrow-right-s-line text-xs opacity-0 group-hover:opacity-100 transition-all -ml-4 group-hover:ml-0"></i>
+                  <Link href={link.href} className="text-white/60 hover:text-gold-300 text-sm transition-colors block">
                     {link.label}
                   </Link>
                 </li>
@@ -197,51 +172,39 @@ export default function Footer() {
           </div>
 
           {/* Company Column */}
-          <div className="lg:col-span-3">
-            <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-5">Company</h4>
-            <ul className="space-y-3">
+          <div className="col-span-1 md:col-span-3">
+            <h4 className="font-bold text-white text-xs uppercase tracking-wider mb-4 opacity-80">Company</h4>
+            <ul className="space-y-2.5">
               {companyLinks.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-white/50 hover:text-gold-300 text-sm transition-colors inline-flex items-center gap-1 group">
-                    <i className="ri-arrow-right-s-line text-xs opacity-0 group-hover:opacity-100 transition-all -ml-4 group-hover:ml-0"></i>
+                  <Link href={link.href} className="text-white/60 hover:text-gold-300 text-sm transition-colors block">
                     {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
 
-            {/* Payment Methods */}
-            <div className="mt-8">
-              <h4 className="font-bold text-white text-xs uppercase tracking-wider mb-3">Payment Methods</h4>
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-1 bg-white/10 px-3 py-1.5 rounded-lg">
-                  <i className="ri-smartphone-line text-sm text-white/60"></i>
-                  <span className="text-[10px] text-white/60 font-medium">Mobile Money</span>
-                </div>
-                <div className="flex items-center gap-1 bg-white/10 px-3 py-1.5 rounded-lg">
-                  <i className="ri-bank-card-line text-sm text-white/60"></i>
-                  <span className="text-[10px] text-white/60 font-medium">Card</span>
-                </div>
+            {/* Payment Methods - Compact */}
+            <div className="mt-8 pt-6 border-t border-white/10">
+              <div className="flex gap-2">
+                <i className="ri-visa-line text-2xl text-white/50"></i>
+                <i className="ri-mastercard-line text-2xl text-white/50"></i>
+                <i className="ri-secure-payment-line text-2xl text-white/50"></i>
               </div>
             </div>
           </div>
+
         </div>
       </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-white/40 text-xs text-center md:text-left">
-              &copy; {currentYear} {siteName}. {footerCopyright}
-            </p>
-            <div className="flex items-center gap-4 text-white/40 text-xs">
-              <Link href="/privacy" className="hover:text-white/60 transition-colors">Privacy</Link>
-              <span>·</span>
-              <Link href="/terms" className="hover:text-white/60 transition-colors">Terms</Link>
-              <span>·</span>
-              <Link href="/faqs" className="hover:text-white/60 transition-colors">FAQs</Link>
-            </div>
+      {/* Bottom Bar - Ultra Compact */}
+      <div className="bg-brand-800/50 py-4 border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-white/40">
+          <p>&copy; {currentYear} {siteName}. All rights reserved.</p>
+          <div className="flex items-center gap-4">
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+            <a href="https://moolre.com" target="_blank" className="hover:text-gold-300 transition-colors">Powered by Moolre</a>
           </div>
         </div>
       </div>

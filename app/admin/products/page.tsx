@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 
 export default function ProductsPage() {
@@ -28,17 +28,12 @@ export default function ProductsPage() {
     'archived': 'bg-amber-100 text-amber-700',
   };
 
-  useEffect(() => {
-    fetchProducts();
-    fetchCategories();
-  }, [sortBy]);
-
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     const { data } = await supabase.from('categories').select('name');
     if (data) setCategories(data);
-  };
+  }, []);
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
       setLoading(true);
       let query = supabase
@@ -90,7 +85,12 @@ export default function ProductsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [sortBy]);
+
+  useEffect(() => {
+    fetchProducts();
+    fetchCategories();
+  }, [fetchProducts, fetchCategories]);
 
   const handleSelectAll = () => {
     if (selectedProducts.length === products.length) {
@@ -109,26 +109,26 @@ export default function ProductsPage() {
   };
 
   const handleDeleteProduct = async (productId: string) => {
-    if (confirm('Are you sure you want to delete this product?')) {
-      const { error } = await supabase.from('products').delete().eq('id', productId);
+    if (confirm('Are you sure you want to archive this product? This prevents new sales but keeps history.')) {
+      const { error } = await supabase.from('products').update({ status: 'archived' }).eq('id', productId);
       if (!error) {
-        setProducts(products.filter(p => p.id !== productId));
-        alert('Product deleted successfully');
+        setProducts(products.map(p => p.id === productId ? { ...p, status: 'archived' } : p));
+        alert('Product archived successfully');
       } else {
-        alert('Error deleting product');
+        alert('Error archiving product');
       }
     }
   };
 
   const handleBulkDelete = async () => {
-    if (confirm(`Are you sure you want to delete ${selectedProducts.length} products?`)) {
-      const { error } = await supabase.from('products').delete().in('id', selectedProducts);
+    if (confirm(`Are you sure you want to archive ${selectedProducts.length} products?`)) {
+      const { error } = await supabase.from('products').update({ status: 'archived' }).in('id', selectedProducts);
       if (!error) {
-        setProducts(products.filter(p => !selectedProducts.includes(p.id)));
+        setProducts(products.map(p => selectedProducts.includes(p.id) ? { ...p, status: 'archived' } : p));
         setSelectedProducts([]);
-        alert('Products deleted successfully');
+        alert('Products archived successfully');
       } else {
-        alert('Error deleting products');
+        alert('Error archiving products');
       }
     }
   };

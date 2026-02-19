@@ -12,6 +12,37 @@ import AnimatedSection, { AnimatedGrid } from '@/components/AnimatedSection';
 import NewsletterSection from '@/components/NewsletterSection';
 import { usePageTitle } from '@/hooks/usePageTitle';
 
+// Default slides fallback
+const DEFAULT_SLIDES = [
+  {
+    id: 'default-1',
+    tag: 'Test Validation',
+    title: 'Validating Image Load',
+    subtitle: 'If you see the image background, the URL is working. If green, the image is blocked.',
+    cta_text: 'Shop Medicines',
+    cta_link: '/shop',
+    image_url: 'https://jwqgkjcjawsvbdlgtqxo.supabase.co/storage/v1/object/public/hero-assets/images/8wvku2awupa_1771319209665.jpg',
+  },
+  {
+    id: 'default-2',
+    tag: 'Wholesale & Retail',
+    title: 'Pharmaceutical Excellence in Ghana',
+    subtitle: 'From wholesale distribution to retail pharmacy — WIDAMA Towers, Ashaiman Lebanon. Serving healthcare professionals and families.',
+    cta_text: 'Browse Products',
+    cta_link: '/shop',
+    image_url: null,
+  },
+  {
+    id: 'default-3',
+    tag: 'Training & Manufacturing',
+    title: 'Building the Future of Healthcare',
+    subtitle: 'WIDAMA Training Institute and manufacturing arm — empowering the next generation of pharmacy professionals across Ghana.',
+    cta_text: 'Our Services',
+    cta_link: '/about',
+    image_url: null,
+  },
+];
+
 export default function Home() {
   usePageTitle('');
   const { getContent, getContentList, getSetting } = useCMS();
@@ -25,35 +56,7 @@ export default function Home() {
   const [slides, setSlides] = useState<any[]>([]);
 
   // Default slides fallback
-  const DEFAULT_SLIDES = [
-    {
-      id: 'default-1',
-      tag: 'Test Validation',
-      title: 'Validating Image Load',
-      subtitle: 'If you see the image background, the URL is working. If green, the image is blocked.',
-      cta_text: 'Shop Medicines',
-      cta_link: '/shop',
-      image_url: 'https://jwqgkjcjawsvbdlgtqxo.supabase.co/storage/v1/object/public/hero-assets/images/8wvku2awupa_1771319209665.jpg',
-    },
-    {
-      id: 'default-2',
-      tag: 'Wholesale & Retail',
-      title: 'Pharmaceutical Excellence in Ghana',
-      subtitle: 'From wholesale distribution to retail pharmacy — WIDAMA Towers, Ashaiman Lebanon. Serving healthcare professionals and families.',
-      cta_text: 'Browse Products',
-      cta_link: '/shop',
-      image_url: null,
-    },
-    {
-      id: 'default-3',
-      tag: 'Training & Manufacturing',
-      title: 'Building the Future of Healthcare',
-      subtitle: 'WIDAMA Training Institute and manufacturing arm — empowering the next generation of pharmacy professionals across Ghana.',
-      cta_text: 'Our Services',
-      cta_link: '/about',
-      image_url: null,
-    },
-  ];
+
 
   useEffect(() => {
     async function fetchSlides() {
@@ -163,10 +166,10 @@ export default function Home() {
     color: s.metadata?.color || 'from-brand-500 to-brand-700',
     link: s.metadata?.link || '/about'
   })) : [
-    { icon: 'ri-capsule-line', title: 'Retail Pharmacy', description: 'Walk-in and online pharmaceutical dispensing with expert pharmacist consultation.', color: 'from-brand-500 to-brand-700', link: '/shop' },
-    { icon: 'ri-truck-line', title: 'Wholesale Distribution', description: 'Bulk pharmaceutical supply to hospitals, clinics, and pharmacies across Ghana.', color: 'from-brand-400 to-brand-600', link: '/contact' },
-    { icon: 'ri-flask-line', title: 'Manufacturing', description: 'Production of quality pharmaceutical products meeting international standards.', color: 'from-gold-400 to-gold-600', link: '/about' },
-    { icon: 'ri-graduation-cap-line', title: 'Training Institute', description: 'WIDAMA Training Institute — educating future pharmacy professionals.', color: 'from-pharmacy-blue to-brand-600', link: '/about' },
+    { icon: 'ri-medicine-bottle-line', title: 'Retail Pharmacy', description: 'Walk-in and online pharmaceutical dispensing with expert pharmacist consultation.', color: 'from-brand-500 to-brand-700', link: '/shop' },
+    { icon: 'ri-global-line', title: 'Wholesale Distribution', description: 'Bulk pharmaceutical supply to hospitals, clinics, and pharmacies across Ghana.', color: 'from-brand-400 to-brand-600', link: '/contact' },
+    { icon: 'ri-microscope-line', title: 'Manufacturing', description: 'Production of quality pharmaceutical products meeting international standards.', color: 'from-gold-400 to-gold-600', link: '/about' },
+    { icon: 'ri-book-open-line', title: 'Training Institute', description: 'WIDAMA Training Institute — educating future pharmacy professionals.', color: 'from-pharmacy-blue to-brand-600', link: '/about' },
   ];
 
   const trustBadges = cmsTrustBadges.length > 0 ? cmsTrustBadges.map(b => ({
@@ -386,47 +389,86 @@ export default function Home() {
       {/* ============================================
           SERVICES SECTION
           ============================================ */}
-      <section className="py-20 md:py-28 bg-white relative overflow-hidden">
-        {/* Decorative BG */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-50/50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+      {/* ============================================
+          SERVICES SECTION (Redesigned Bento Grid)
+          ============================================ */}
+      <section className="py-24 bg-gray-50 relative overflow-hidden">
+
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <AnimatedSection className="text-center mb-16">
-            <p className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-50 text-brand-600 text-sm font-semibold tracking-wider uppercase mb-4">
-              <i className="ri-service-line"></i>
-              {servicesHeader?.metadata?.tag || 'What We Do'}
-            </p>
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-gray-900 mb-5">
-              {servicesHeader?.title || <>Comprehensive <span className="text-gradient-brand">Healthcare</span> Services</>}
-            </h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              {servicesHeader?.subtitle || 'From retail pharmacy to wholesale distribution, manufacturing, and professional training — WIDAMA Pharmacy is your complete healthcare partner.'}
-            </p>
+          <AnimatedSection className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+            <div className="max-w-2xl">
+              <p className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-brand-100 text-brand-600 text-xs font-bold tracking-wider uppercase mb-4 shadow-sm">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse"></span>
+                {servicesHeader?.metadata?.tag || 'Our Expertise'}
+              </p>
+              <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl text-gray-900 leading-[1.1] mb-6">
+                {servicesHeader?.title || <>Comprehensive <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-brand-800">Healthcare</span> Solutions</>}
+              </h2>
+              <p className="text-gray-600 text-lg leading-relaxed">
+                {servicesHeader?.subtitle || 'From retail pharmacy to wholesale distribution, manufacturing, and professional training — WIDAMA Pharmacy is your complete, trusted healthcare partner.'}
+              </p>
+            </div>
+
+            <Link
+              href="/about"
+              className="hidden md:inline-flex items-center gap-2 text-brand-900 font-bold border-b-2 border-gold-400 pb-1 hover:text-brand-700 transition-colors"
+            >
+              Explore Our Services <i className="ri-arrow-right-line"></i>
+            </Link>
           </AnimatedSection>
 
-          <AnimatedGrid className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((service, index) => (
-              <Link
-                href={service.link}
-                key={index}
-                className="group relative bg-white rounded-3xl p-8 border border-gray-100 hover:border-brand-200 hover:shadow-brand-lg transition-all duration-500 overflow-hidden block"
-              >
-                {/* Hover gradient overlay */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-[0.04] transition-opacity duration-500 rounded-3xl`} />
+          <AnimatedGrid className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[350px]">
+            {services.map((service, index) => {
+              // Layout logic: 1st and 4th item span 2 columns
+              const isLarge = index === 0 || index === 3;
 
-                <div className={`w-16 h-16 bg-gradient-to-br ${service.color} rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                  <i className={`${service.icon} text-2xl text-white`}></i>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-brand-700 transition-colors">{service.title}</h3>
-                <p className="text-gray-500 leading-relaxed text-sm">{service.description}</p>
+              return (
+                <Link
+                  href={service.link}
+                  key={index}
+                  className={`group relative rounded-[2.5rem] p-10 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 border border-white/60 ${isLarge ? 'md:col-span-2' : 'md:col-span-1'
+                    } bg-white`}
+                >
+                  {/* Background Gradient & Pattern */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-500`} />
 
-                <div className="mt-6 flex items-center text-brand-600 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                  <span>Learn More</span>
-                  <i className="ri-arrow-right-line ml-2 transition-transform group-hover:translate-x-1"></i>
-                </div>
-              </Link>
-            ))}
+                  {/* Decorative Circle */}
+                  <div className={`absolute -right-10 -top-10 w-64 h-64 bg-gradient-to-br ${service.color} opacity-[0.05] rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700 ease-out`} />
+
+                  <div className="relative h-full flex flex-col justify-between z-10">
+                    <div className="flex justify-between items-start">
+                      {/* Clean Icon Style: Transparent background, gradient text */}
+                      <div className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-500 -ml-2`}>
+                        <i className={`${service.icon} text-4xl bg-gradient-to-br ${service.color} bg-clip-text text-transparent`}></i>
+                      </div>
+                      <div className="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center bg-white group-hover:bg-brand-600 group-hover:border-brand-600 transition-colors duration-300">
+                        <i className="ri-arrow-right-up-line text-gray-400 group-hover:text-white transition-colors"></i>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="text-2xl md:text-3xl font-serif font-bold text-gray-900 mb-3 group-hover:text-brand-800 transition-colors">
+                        {service.title}
+                      </h3>
+                      <p className="text-gray-500 leading-relaxed text-sm md:text-base max-w-sm">
+                        {service.description}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </AnimatedGrid>
+
+          <div className="mt-8 text-center md:hidden">
+            <Link
+              href="/about"
+              className="inline-flex items-center gap-2 text-brand-900 font-bold border-b-2 border-gold-400 pb-1"
+            >
+              Explore Our Services <i className="ri-arrow-right-line"></i>
+            </Link>
+          </div>
         </div>
       </section>
 

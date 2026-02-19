@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 
@@ -42,11 +42,7 @@ export default function HeroManager() {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const videoInputRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => {
-        fetchSlides();
-    }, []);
-
-    const fetchSlides = async () => {
+    const fetchSlides = useCallback(async () => {
         setLoading(true);
         const { data, error } = await supabase
             .from('hero_slides')
@@ -59,7 +55,11 @@ export default function HeroManager() {
             setSlides(data || []);
         }
         setLoading(false);
-    };
+    }, []);
+
+    useEffect(() => {
+        fetchSlides();
+    }, [fetchSlides]);
 
     const handleOpenModal = (slide?: HeroSlide) => {
         if (slide) {
@@ -362,7 +362,7 @@ export default function HeroManager() {
                                                     </div>
                                                 ) : formData.image_url ? (
                                                     <div className="relative h-20 w-full">
-                                                        <img src={formData.image_url} className="h-full w-full object-cover rounded" />
+                                                        <img src={formData.image_url} alt="Preview" className="h-full w-full object-cover rounded" />
                                                         <div className="absolute inset-0 bg-black/20 flex items-center justify-center text-white text-xs opacity-0 hover:opacity-100 transition-opacity">Change</div>
                                                     </div>
                                                 ) : (

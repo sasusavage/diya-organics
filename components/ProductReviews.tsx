@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import { cachedQuery, invalidateCache } from '@/lib/query-cache';
 import { useRecaptcha } from '@/hooks/useRecaptcha';
@@ -36,16 +36,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
   });
   const { getToken, verifying } = useRecaptcha();
 
-  useEffect(() => {
-    // Check auth
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user || null);
-    });
-
-    fetchReviews();
-  }, [productId]);
-
-  const fetchReviews = async () => {
+  const fetchReviews = useCallback(async () => {
     try {
       // Fetch approved reviews (cached for 5 minutes)
       const { data, error } = await cachedQuery<{ data: any; error: any }>(
@@ -84,7 +75,16 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [productId]);
+
+  useEffect(() => {
+    // Check auth
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user || null);
+    });
+
+    fetchReviews();
+  }, [productId, fetchReviews]);
 
   const averageRating = reviews.length > 0
     ? reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length
