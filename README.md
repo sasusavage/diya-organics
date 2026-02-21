@@ -1,6 +1,6 @@
-# WIDAMA Pharmacy - Modern E-Commerce Platform
+# Diya Organics - Premium Natural & Organic E-Commerce Platform
 
-This is a robust, full-stack e-commerce application built for WIDAMA Pharmacy using **Next.js 14** and **Supabase**. It features a modular admin dashboard, dynamic content management, and a highly optimized shopping experience.
+This is a robust, full-stack e-commerce application built for **Diya Organics** using **Next.js 14** and **Supabase**. It specializes in delivering high-quality natural and organic products through a seamless shopping experience and a powerful admin dashboard.
 
 ## 🚀 Key Features
 

@@ -19,7 +19,7 @@ export default function Header() {
   const { cartCount, isCartOpen, setIsCartOpen } = useCart();
   const { getSetting } = useCMS();
 
-  const siteName = getSetting('site_name') || 'WIDAMA Pharmacy';
+  const siteName = getSetting('site_name') || 'Diya Organics';
   const siteLogo = getSetting('site_logo') || '/logo.png';
   const sitePhone = getSetting('contact_phone') || '+233 XX XXX XXXX';
 
@@ -101,8 +101,8 @@ export default function Header() {
                 >
                   <img src={siteLogo} alt={siteName} className="h-10 md:h-12 w-auto object-contain" />
                   <div className="hidden md:flex flex-col">
-                    <span className="text-brand-700 font-bold text-lg leading-tight tracking-tight">WIDAMA</span>
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-brand-400 font-medium">Pharmacy</span>
+                    <span className="text-brand-700 font-bold text-lg leading-tight tracking-tight">DIYA</span>
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-brand-400 font-medium">Organics</span>
                   </div>
                 </Link>
               </div>
@@ -196,7 +196,7 @@ export default function Header() {
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h3 className="text-xl font-bold text-gray-900">Search Products</h3>
-                  <p className="text-sm text-gray-500 mt-1">Find medicines, health products & more</p>
+                  <p className="text-sm text-gray-500 mt-1">Find organic skincare, supplements & more</p>
                 </div>
                 <button
                   onClick={() => setIsSearchOpen(false)}
@@ -211,7 +211,7 @@ export default function Header() {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search medicines, health products..."
+                    placeholder="Search organic products, supplements..."
                     className="w-full px-5 py-4 pr-14 border-2 border-brand-100 rounded-xl focus:ring-2 focus:ring-brand-200 focus:border-brand-400 text-base bg-sage-50 transition-all"
                     autoFocus
                   />
@@ -225,7 +225,7 @@ export default function Header() {
               </form>
               {/* Quick Links */}
               <div className="mt-4 flex flex-wrap gap-2">
-                {['Medicines', 'Supplements', 'First Aid', 'Baby Care'].map((term) => (
+                {['Skincare', 'Supplements', 'Essential Oils', 'Superfoods'].map((term) => (
                   <button
                     key={term}
                     onClick={() => { setSearchQuery(term); }}
@@ -254,8 +254,8 @@ export default function Header() {
               <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3">
                 <img src={siteLogo} alt={siteName} className="h-9 w-auto object-contain" />
                 <div className="flex flex-col">
-                  <span className="text-brand-700 font-bold text-base leading-tight">WIDAMA</span>
-                  <span className="text-[9px] uppercase tracking-[0.2em] text-brand-400 font-medium">Pharmacy</span>
+                  <span className="text-brand-700 font-bold text-base leading-tight">DIYA</span>
+                  <span className="text-[9px] uppercase tracking-[0.2em] text-brand-400 font-medium">Organics</span>
                 </div>
               </Link>
               <button
@@ -273,7 +273,7 @@ export default function Header() {
                 { label: 'Home', href: '/', icon: 'ri-home-4-line' },
                 { label: 'Shop All Products', href: '/shop', icon: 'ri-store-2-line' },
                 { label: 'Categories', href: '/categories', icon: 'ri-layout-grid-line' },
-                { label: 'About WIDAMA', href: '/about', icon: 'ri-information-line' },
+                { label: 'About Diya Organics', href: '/about', icon: 'ri-information-line' },
                 { label: 'Contact Us', href: '/contact', icon: 'ri-phone-line' },
               ].map((link) => (
                 <Link

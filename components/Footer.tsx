@@ -5,15 +5,15 @@ import { useCMS } from '@/context/CMSContext';
 
 export default function Footer() {
   const { getSetting, getContentList } = useCMS();
-  const siteName = getSetting('site_name') || 'WIDAMA Pharmacy';
+  const siteName = getSetting('site_name') || 'Diya Organics';
   const siteLogo = getSetting('site_logo') || '/logo.png';
-  const siteEmail = getSetting('contact_email') || 'info@widamapharmacy.com';
+  const siteEmail = getSetting('contact_email') || 'info@diyaorganics.com';
   const sitePhone = getSetting('contact_phone') || '+233 XX XXX XXXX';
   const siteAddress = getSetting('contact_address') || 'WIDAMA Towers, Ashaiman Lebanon, Ghana';
-  const footerDescription = getSetting('footer_description') || 'Your trusted healthcare partner since 2004. Quality medicines, wholesale distribution, manufacturing, and professional training — all under one roof.';
+  const footerDescription = getSetting('footer_description') || 'Your trusted destination for premium organic and natural products. Enhancing your wellbeing with nature\'s best since 2024.';
   const footerCopyright = getSetting('footer_copyright') || `All rights reserved. Licensed Pharmacy — WIDAMA Towers, Ashaiman Lebanon, Ghana.`;
-  const footerCtaTitle = getSetting('footer_cta_title') || 'Need Pharmaceutical Advice?';
-  const footerCtaSubtitle = getSetting('footer_cta_subtitle') || 'Our licensed pharmacists are here to help.';
+  const footerCtaTitle = getSetting('footer_cta_title') || 'Need Natural Wellness Advice?';
+  const footerCtaSubtitle = getSetting('footer_cta_subtitle') || 'Our organic experts are here to help.';
 
   // Social links from settings
   const socialLinks = [
@@ -56,7 +56,7 @@ export default function Footer() {
   const companyLinks = cmsCompanyLinks.length > 0
     ? cmsCompanyLinks.map(l => ({ label: l.title || '', href: l.button_url || '#' }))
     : [
-      { label: 'About WIDAMA', href: '/about' },
+      { label: 'About Diya Organics', href: '/about' },
       { label: 'Privacy Policy', href: '/privacy' },
       { label: 'Terms & Conditions', href: '/terms' },
     ];
@@ -103,8 +103,8 @@ export default function Footer() {
             <Link href="/" className="flex items-center gap-2 mb-4 group">
               <img src={siteLogo} alt={siteName} className="h-8 w-auto object-contain" />
               <div>
-                <span className="text-white font-bold text-lg block leading-none">WIDAMA</span>
-                <span className="text-gold-300 text-[9px] uppercase tracking-[0.2em] font-medium">Pharmacy</span>
+                <span className="text-white font-bold text-lg block leading-none">DIYA</span>
+                <span className="text-gold-300 text-[9px] uppercase tracking-[0.2em] font-medium">Organics</span>
               </div>
             </Link>
             <p className="text-white/60 text-sm leading-relaxed mb-6 max-w-sm">

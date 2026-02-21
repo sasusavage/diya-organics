@@ -9,36 +9,36 @@ import ChatWidget from '@/components/ChatWidget';
 
 export const metadata: Metadata = {
   title: {
-    default: 'WIDAMA Pharmacy — Quality Medicines & Healthcare Since 2004',
-    template: '%s | WIDAMA Pharmacy',
+    default: 'Diya Organics — Premium Natural & Organic Products',
+    template: '%s | Diya Organics',
   },
-  description: 'WIDAMA Pharmacy — Ghana\'s trusted source for quality medicines, health products, and pharmaceutical services. Wholesale, retail, manufacturing, and training since 2004. Visit us at WIDAMA Towers, Ashaiman Lebanon.',
+  description: 'Diya Organics — Your trusted source for 100% natural, organic, and eco-friendly products. Shop our curated collection for a healthier lifestyle.',
   keywords: [
-    'WIDAMA Pharmacy', 'pharmacy Ghana', 'medicines online', 'health products',
-    'pharmaceutical wholesale', 'buy medicine online Ghana', 'pharmacy Ashaiman',
-    'WIDAMA Towers', 'pharmaceutical services', 'health supplements',
+    'Diya Organics', 'organic products Ghana', 'natural skincare', 'organic health supplements',
+    'eco-friendly products', 'buy organic online Ghana', 'healthy living',
+    'natural wellness', 'organic beauty', 'superfoods',
   ],
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://www.widamapharmacy.com'),
   openGraph: {
     type: 'website',
     locale: 'en_GH',
     url: process.env.NEXT_PUBLIC_APP_URL || 'https://www.widamapharmacy.com',
-    siteName: 'WIDAMA Pharmacy',
-    title: 'WIDAMA Pharmacy — Quality Medicines & Healthcare Since 2004',
-    description: 'Ghana\'s trusted pharmacy for quality medicines, health products, and pharmaceutical services. Wholesale, retail, manufacturing, and training.',
+    siteName: 'Diya Organics',
+    title: 'Diya Organics — Premium Natural & Organic Products',
+    description: 'Your trusted destination for premium organic and natural products. Enhancing your wellbeing with nature\'s best.',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'WIDAMA Pharmacy',
+        alt: 'Diya Organics',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'WIDAMA Pharmacy — Quality Medicines & Healthcare',
-    description: 'Ghana\'s trusted pharmacy since 2004. Quality medicines, health products, pharmaceutical services.',
+    title: 'Diya Organics — Premium Natural & Organic Products',
+    description: 'Premium organic and natural products for a healthier lifestyle. Order online today.',
   },
   icons: {
     icon: [
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'WIDAMA Pharmacy',
+    title: 'Diya Organics',
   },
 };
 
@@ -68,8 +68,8 @@ export const viewport: Viewport = {
 const orgSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'WIDAMA Pharmacy',
-  description: 'Quality medicines, health products, and pharmaceutical services. Wholesale, retail, manufacturing, and training since 2004.',
+  name: 'Diya Organics',
+  description: 'Premium natural and organic products for a healthier and sustainable lifestyle.',
   url: process.env.NEXT_PUBLIC_APP_URL || 'https://www.widamapharmacy.com',
   logo: `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.widamapharmacy.com'}/logo.png`,
   foundingDate: '2004',
