@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { useState, useEffect } from 'react';
+import { Home, ShoppingBag, ShoppingCart, Heart, User } from 'lucide-react';
 
 export default function MobileBottomNav() {
   const pathname = usePathname();
@@ -44,80 +45,70 @@ export default function MobileBottomNav() {
     {
       href: '/',
       label: 'Home',
-      iconActive: 'ri-home-5-fill',
-      iconInactive: 'ri-home-5-line',
+      icon: Home,
     },
     {
       href: '/shop',
       label: 'Shop',
-      iconActive: 'ri-store-3-fill',
-      iconInactive: 'ri-store-3-line',
+      icon: ShoppingBag,
     },
     {
       href: '/cart',
       label: 'Cart',
-      iconActive: 'ri-shopping-cart-fill',
-      iconInactive: 'ri-shopping-cart-line',
+      icon: ShoppingCart,
       badge: cartCount,
     },
     {
       href: '/wishlist',
-      label: 'Wishlist',
-      iconActive: 'ri-heart-3-fill',
-      iconInactive: 'ri-heart-3-line',
+      label: 'Likes',
+      icon: Heart,
       badge: wishlistCount,
     },
     {
       href: '/account',
-      label: 'Account',
-      iconActive: 'ri-user-3-fill',
-      iconInactive: 'ri-user-3-line',
+      label: 'Me',
+      icon: User,
     },
   ];
 
   return (
     <nav
-      className={`lg:hidden fixed bottom-0 left-0 right-0 z-50 transition-transform duration-300 ease-out ${isVisible ? 'translate-y-0' : 'translate-y-full'
+      className={`lg:hidden fixed bottom-6 left-0 right-0 z-50 transition-all duration-500 ease-in-out px-4 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
         }`}
       aria-label="Mobile navigation"
     >
       <div className="relative">
-        {/* Top shadow gradient */}
-        <div className="absolute -top-6 left-0 right-0 h-6 bg-gradient-to-t from-white/80 to-transparent pointer-events-none" />
-
-        <div className="bg-white/95 backdrop-blur-xl border-t border-brand-100/50 shadow-[0_-4px_30px_rgba(0,0,0,0.06)]">
-          <div className={`grid grid-cols-5 ${isStandalone ? 'pb-6' : 'pb-1'} pt-1`}>
+        {/* Floating Capsule Style */}
+        <div className="bg-brand-900/90 backdrop-blur-xl border border-white/10 shadow-2xl rounded-[2rem] overflow-hidden">
+          <div className={`grid grid-cols-5 ${isStandalone ? 'pb-2' : ''} py-2`}>
             {navItems.map((item) => {
               const active = isActive(item.href);
+              const Icon = item.icon;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex flex-col items-center justify-center py-2 transition-all duration-200 relative group active:scale-90 ${active ? 'text-brand-600' : 'text-gray-400'
+                  className={`flex flex-col items-center justify-center py-2 transition-all duration-300 relative group active:scale-95 ${active ? 'text-gold-300' : 'text-gray-400'
                     }`}
                   aria-label={item.label}
                   aria-current={active ? 'page' : undefined}
                 >
-                  {/* Active indicator pill */}
-                  {active && (
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-1 bg-brand-500 rounded-full transition-all duration-300" />
-                  )}
-
                   <div className="relative w-7 h-7 flex items-center justify-center">
-                    <i
-                      className={`${active ? item.iconActive : item.iconInactive} text-[22px] transition-all duration-200 ${active ? 'scale-110' : 'group-hover:scale-105'
+                    <Icon
+                      className={`w-5 h-5 transition-all duration-300 ${active ? 'scale-110' : 'group-hover:scale-105 opacity-80'
                         }`}
+                      strokeWidth={active ? 2.5 : 2}
                     />
 
                     {/* Badge */}
                     {item.badge !== undefined && item.badge > 0 && (
-                      <span className="absolute -top-1.5 -right-2 min-w-[18px] h-[18px] bg-gold-400 text-brand-900 text-[10px] font-bold rounded-full flex items-center justify-center px-1 shadow-sm animate-scale-in">
+                      <span className="absolute -top-1.5 -right-2 min-w-[18px] h-[18px] bg-gold-400 text-brand-900 text-[9px] font-black rounded-full flex items-center justify-center px-1 shadow-lg ring-2 ring-brand-900">
                         {item.badge > 99 ? '99+' : item.badge}
                       </span>
                     )}
                   </div>
 
-                  <span className={`text-[10px] font-semibold mt-0.5 transition-all duration-200 ${active ? 'opacity-100' : 'opacity-70'
+                  <span className={`text-[9px] font-bold uppercase tracking-widest mt-1.5 transition-all duration-300 ${active ? 'opacity-100' : 'opacity-0 h-0 hidden'
                     }`}>
                     {item.label}
                   </span>

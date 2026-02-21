@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { ShoppingCart, ListChecks, Star } from 'lucide-react';
 import LazyImage from './LazyImage';
 import { useCart } from '@/context/CartContext';
 
@@ -82,74 +84,85 @@ export default function ProductCard({
   const formatPrice = (val: number) => `GH\u20B5${val.toFixed(2)}`;
 
   return (
-    <div className="group bg-white rounded-2xl h-full flex flex-col hover-lift border border-gray-100 hover:border-brand-200 overflow-hidden transition-all duration-300">
-      <Link href={`/product/${slug}`} className="relative block aspect-[3/4] overflow-hidden bg-sage-50">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      whileHover={{ y: -8 }}
+      transition={{ duration: 0.4 }}
+      className="group bg-white rounded-3xl h-full flex flex-col border border-sage-100 hover:border-brand-200 overflow-hidden transition-all duration-500 hover:shadow-2xl shadow-sm"
+    >
+      <Link href={`/product/${slug}`} className="relative block aspect-[4/5] overflow-hidden bg-sage-50">
         <LazyImage
           src={image}
           alt={name}
-          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
         />
 
-        <div className="absolute top-3 left-3 flex flex-col gap-2">
+        {/* Exclusive Badges */}
+        <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
           {badge && (
-            <span className="bg-brand-500 text-white text-[10px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-md shadow-sm">
+            <span className="bg-brand-900/90 backdrop-blur-md text-gold-300 text-[9px] uppercase tracking-[0.2em] font-black px-3 py-1.5 rounded-full border border-gold-300/20">
               {badge}
             </span>
           )}
           {discount > 0 && (
-            <span className="bg-gold-400 text-brand-900 text-[10px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-md shadow-sm">
+            <span className="bg-gold-400 text-brand-900 text-[10px] uppercase tracking-widest font-black px-3 py-1.5 rounded-full shadow-lg">
               -{discount}%
             </span>
           )}
         </div>
 
+        {/* Heart / Wishlist would go here */}
+
         {!inStock && (
-          <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] flex items-center justify-center">
-            <span className="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-medium">Out of Stock</span>
+          <div className="absolute inset-0 bg-white/70 backdrop-blur-sm flex items-center justify-center z-10">
+            <span className="bg-gray-900 text-white px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest">Restocking</span>
           </div>
         )}
 
+        {/* Hover Action Strip */}
         {inStock && (
-          <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 hidden lg:block">
+          <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out hidden lg:block z-20">
             {hasVariants ? (
-              <span className="w-full bg-brand-600 text-white hover:bg-brand-700 py-3 rounded-lg font-medium shadow-brand transition-colors flex items-center justify-center space-x-2 text-sm">
-                <i className="ri-list-check"></i>
-                <span>Select Options</span>
+              <span className="w-full bg-brand-900 text-gold-300 py-3.5 rounded-2xl font-bold transition-all flex items-center justify-center space-x-2 text-xs uppercase tracking-widest shadow-xl">
+                <ListChecks className="w-4 h-4" />
+                <span>Choose Variant</span>
               </span>
             ) : (
               <button
                 onClick={(e) => {
                   e.preventDefault();
                   addToCart({
-                    id,
-                    name,
-                    price,
-                    image,
-                    quantity: moq || 1,
-                    slug,
-                    maxStock: maxStock || 50,
-                    moq: moq || 1
+                    id, name, price, image, quantity: moq || 1, slug, maxStock: maxStock || 50, moq: moq || 1
                   });
                 }}
-                className="w-full bg-brand-600 text-white hover:bg-brand-700 py-3 rounded-lg font-medium shadow-brand transition-colors flex items-center justify-center space-x-2 text-sm"
+                className="w-full bg-brand-900 text-gold-300 hover:bg-black py-3.5 rounded-2xl font-bold transition-all flex items-center justify-center space-x-3 text-xs uppercase tracking-widest shadow-2xl"
               >
-                <i className="ri-shopping-cart-2-line"></i>
-                <span>{moq > 1 ? `Add ${moq} to Cart` : 'Quick Add'}</span>
+                <ShoppingCart className="w-4 h-4" />
+                <span>{moq > 1 ? `Add ${moq} items` : 'Add to Bag'}</span>
               </button>
             )}
           </div>
         )}
       </Link>
 
-      <div className="flex flex-col flex-grow p-4 pt-3">
+      <div className="flex flex-col flex-grow p-6">
+        <div className="flex items-center gap-1 mb-3">
+          {[...Array(5)].map((_, i) => (
+            <Star key={i} className={`w-3 h-3 ${i < Math.floor(rating) ? 'text-gold-400 fill-current' : 'text-gray-200'}`} />
+          ))}
+          <span className="text-[10px] text-gray-400 font-bold ml-1 uppercase">{reviewCount} Reviews</span>
+        </div>
+
         <Link href={`/product/${slug}`}>
-          <h3 className="font-medium text-sm leading-snug text-gray-900 mb-1 group-hover:text-brand-600 transition-colors line-clamp-2">
+          <h3 className="font-serif text-lg leading-tight text-gray-900 mb-2 group-hover:text-brand-700 transition-colors line-clamp-2 min-h-[3rem]">
             {name}
           </h3>
         </Link>
 
         {colorVariants.length > 0 && (
-          <div className="flex items-center gap-1.5 mb-2">
+          <div className="flex items-center gap-2 mb-4">
             {colorVariants.slice(0, MAX_SWATCHES).map((color) => (
               <button
                 key={color.name}
@@ -158,62 +171,41 @@ export default function ProductCard({
                   e.preventDefault();
                   setActiveColor(activeColor === color.name ? null : color.name);
                 }}
-                className={`w-4 h-4 rounded-full border transition-all duration-200 flex-shrink-0 ${activeColor === color.name
-                  ? 'ring-2 ring-offset-1 ring-brand-500 scale-110'
-                  : 'hover:scale-110'
-                  } ${color.hex === '#FFFFFF' ? 'border-gray-300' : 'border-transparent'}`}
+                className={`w-4 h-4 rounded-full border-2 transition-all duration-300 ${activeColor === color.name
+                  ? 'border-brand-600 scale-125'
+                  : 'border-white hover:scale-110 shadow-sm'
+                  }`}
                 style={{ backgroundColor: color.hex }}
               />
             ))}
-            {colorVariants.length > MAX_SWATCHES && (
-              <span className="text-xs text-gray-400 ml-0.5">+{colorVariants.length - MAX_SWATCHES}</span>
-            )}
           </div>
         )}
 
-        <div className="flex items-baseline space-x-2 mb-2">
-          {hasVariants && minVariantPrice ? (
-            <span className="text-gray-900 font-semibold">From {formatPrice(minVariantPrice)}</span>
-          ) : (
-            <span className="text-gray-900 font-semibold">{formatPrice(price)}</span>
-          )}
-          {originalPrice && (
-            <span className="text-sm text-gray-400 line-through">{formatPrice(originalPrice)}</span>
-          )}
-        </div>
+        <div className="mt-auto flex items-center justify-between">
+          <div className="flex flex-col">
+            {originalPrice && (
+              <span className="text-[11px] text-gray-400 line-through mb-0.5">{formatPrice(originalPrice)}</span>
+            )}
+            <span className="text-brand-900 font-black text-base">
+              {hasVariants && minVariantPrice ? `From ${formatPrice(minVariantPrice)}` : formatPrice(price)}
+            </span>
+          </div>
 
-        <div className="mt-auto pt-2 lg:hidden">
-          {hasVariants ? (
-            <Link
-              href={`/product/${slug}`}
-              className="w-full bg-brand-50 text-brand-700 py-2.5 rounded-lg text-sm font-semibold hover:bg-brand-100 active:bg-brand-200 transition-colors flex items-center justify-center space-x-1"
-            >
-              <i className="ri-list-check text-sm"></i>
-              <span>Select Options</span>
-            </Link>
-          ) : (
+          <div className="lg:hidden">
             <button
+              disabled={!inStock}
               onClick={(e) => {
                 e.preventDefault();
-                addToCart({
-                  id,
-                  name,
-                  price,
-                  image,
-                  quantity: moq || 1,
-                  slug,
-                  maxStock: maxStock || 50,
-                  moq: moq || 1
-                });
+                if (hasVariants) { window.location.href = `/product/${slug}`; return; }
+                addToCart({ id, name, price, image, quantity: moq || 1, slug, maxStock: maxStock || 50, moq: moq || 1 });
               }}
-              disabled={!inStock}
-              className="w-full bg-brand-50 text-brand-700 py-2.5 rounded-lg text-sm font-semibold hover:bg-brand-100 active:bg-brand-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-10 h-10 bg-sage-50 text-brand-900 rounded-full flex items-center justify-center hover:bg-brand-900 hover:text-white transition-all disabled:opacity-50"
             >
-              {moq > 1 ? `Add ${moq} to Cart` : 'Add to Cart'}
+              {hasVariants ? <ListChecks className="w-4 h-4" /> : <ShoppingCart className="w-4 h-4" />}
             </button>
-          )}
+          </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

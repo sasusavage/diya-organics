@@ -8,13 +8,12 @@ export default function NewsletterSection() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
-  const newsletterTitle = getSetting('newsletter_title') || 'Stay Healthy, Stay Informed';
-  const newsletterSubtitle = getSetting('newsletter_subtitle') || 'Subscribe to our newsletter for health tips, new product alerts, and exclusive offers from WIDAMA Pharmacy.';
+  const newsletterTitle = getSetting('newsletter_title') || 'Join the Diya Inner Circle';
+  const newsletterSubtitle = getSetting('newsletter_subtitle') || 'Get exclusive access to new botanical launches, organic skincare tips, and special wellness offers.';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (email.trim()) {
-      // In a real implementation, this would call an API
       setSubmitted(true);
       setEmail('');
       setTimeout(() => setSubmitted(false), 5000);
@@ -22,53 +21,53 @@ export default function NewsletterSection() {
   };
 
   return (
-    <section className="py-20 bg-sage-50 relative overflow-hidden">
-      {/* Decorative */}
+    <section className="py-24 bg-[#F8F9FA] relative overflow-hidden border-t border-sage-100">
+      {/* Decorative botanical-style circles */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/3 w-96 h-96 bg-brand-100/50 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/3 w-72 h-72 bg-gold-100/50 rounded-full blur-3xl" />
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-brand-500/5 rounded-full blur-3xl" />
+        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-gold-400/5 rounded-full blur-3xl" />
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <div className="w-14 h-14 bg-brand-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-          <i className="ri-mail-send-line text-2xl text-brand-600"></i>
+      <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-white border border-brand-100 rounded-3xl shadow-sm mb-8">
+          <i className="ri-leaf-line text-2xl text-brand-600"></i>
         </div>
-        <h2 className="font-serif text-3xl sm:text-4xl text-gray-900 mb-4">
+        <h2 className="font-serif text-4xl sm:text-5xl text-gray-900 mb-6 leading-tight">
           {newsletterTitle}
         </h2>
-        <p className="text-gray-500 text-lg mb-8 max-w-xl mx-auto">
+        <p className="text-gray-500 text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
           {newsletterSubtitle}
         </p>
 
         {submitted ? (
-          <div className="animate-fade-in-up bg-brand-50 border border-brand-200 rounded-2xl p-6 max-w-md mx-auto">
-            <div className="w-12 h-12 bg-brand-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <i className="ri-check-line text-2xl text-brand-600"></i>
+          <div className="animate-fade-in-up bg-white border border-brand-100 rounded-[2rem] p-8 max-w-md mx-auto shadow-sm">
+            <div className="w-14 h-14 bg-brand-50 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i className="ri-check-line text-3xl text-brand-600"></i>
             </div>
-            <p className="font-semibold text-brand-700">Thank you for subscribing!</p>
-            <p className="text-brand-600 text-sm mt-1">You&apos;ll receive our latest updates soon.</p>
+            <p className="font-bold text-gray-900 text-xl mb-1">Welcome to the Club!</p>
+            <p className="text-gray-500">You&apos;ll be the first to hear from us.</p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email address"
+              placeholder="Your email address"
               required
-              className="flex-1 px-5 py-4 border-2 border-brand-100 rounded-xl focus:ring-2 focus:ring-blue-200 focus:border-brand-400 text-base bg-white transition-all"
+              className="flex-1 px-6 py-5 border-2 border-sage-100 rounded-2xl focus:ring-4 focus:ring-brand-500/5 focus:border-brand-500 text-gray-900 bg-white transition-all shadow-sm outline-none"
             />
             <button
               type="submit"
-              className="px-8 py-4 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-all shadow-brand hover:shadow-brand-lg hover:-translate-y-0.5 whitespace-nowrap"
+              className="px-10 py-5 bg-brand-900 text-gold-300 rounded-2xl font-bold tracking-wider hover:bg-brand-800 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 uppercase text-sm"
             >
-              Subscribe
+              Join Now
             </button>
           </form>
         )}
 
-        <p className="text-xs text-gray-400 mt-4">
-          No spam. Unsubscribe anytime. Your privacy matters to us.
+        <p className="text-[11px] text-gray-400 mt-8 uppercase tracking-widest font-bold">
+          We respect your privacy. No spam, just pure goodness.
         </p>
       </div>
     </section>
