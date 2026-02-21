@@ -24,6 +24,7 @@
     "typescript": "^5"
   },
   "name": "diya-organics",
+  "description": "Premium Natural & Organic E-Commerce Platform",
   "private": true,
   "scripts": {
     "build": "next build",
