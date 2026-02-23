@@ -284,7 +284,7 @@ export default function OrderDetailClient({ orderId }: OrderDetailClientProps) {
           {/* Header */}
           <div className="flex justify-between items-start border-b-2 border-gray-800 pb-4 mb-4">
             <div>
-              <h1 className="text-2xl font-bold">WIDAMA Pharmacy</h1>
+              <h1 className="text-2xl font-bold">Store Company</h1>
               <p className="text-sm text-gray-600">Order Packing Slip</p>
             </div>
             <div className="text-right">
@@ -345,8 +345,8 @@ export default function OrderDetailClient({ orderId }: OrderDetailClientProps) {
 
           {/* Footer */}
           <div className="border-t-2 border-gray-800 pt-4 text-center text-sm text-gray-600">
-            <p>Thank you for shopping with WIDAMA Pharmacy!</p>
-            <p>Questions? Contact us at info@widamapharmacy.com</p>
+            <p>Thank you for shopping with Store Company!</p>
+            <p>Questions? Contact us at info@STOREpharmacy.com</p>
           </div>
         </div>
       </div>

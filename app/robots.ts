@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.widamapharmacy.com';
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.STOREpharmacy.com';
 
 export default function robots(): MetadataRoute.Robots {
   return {

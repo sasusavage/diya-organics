@@ -120,6 +120,16 @@ export default function ModulesPage() {
       enabled: false,
       category: 'Support',
       configPath: '/admin/support'
+    },
+    {
+      id: 'about',
+      name: 'About Page Editor',
+      description: 'Customize your company story, mission, and founder info',
+      icon: 'ri-info-card-line',
+      color: 'blue',
+      enabled: true, // Enabled by default as it's a core page
+      category: 'Content',
+      configPath: '/admin/settings?tab=about'
     }
   ]);
 

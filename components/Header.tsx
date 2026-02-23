@@ -19,7 +19,7 @@ export default function Header() {
   const { cartCount, isCartOpen, setIsCartOpen } = useCart();
   const { getSetting } = useCMS();
 
-  const siteName = getSetting('site_name') || 'Diya Organics';
+  const siteName = getSetting('site_name') || 'Brand Store';
   const siteLogo = getSetting('site_logo') || '/logo.png';
   const sitePhone = getSetting('contact_phone') || '+233 XX XXX XXXX';
 
@@ -47,7 +47,7 @@ export default function Header() {
 
     checkUser();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event: string, session: any) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
       setUser(session?.user ?? null);
     });
 
@@ -273,7 +273,7 @@ export default function Header() {
                 { label: 'Home', href: '/', icon: 'ri-home-4-line' },
                 { label: 'Shop All Products', href: '/shop', icon: 'ri-store-2-line' },
                 { label: 'Categories', href: '/categories', icon: 'ri-layout-grid-line' },
-                { label: 'About Diya Organics', href: '/about', icon: 'ri-information-line' },
+                { label: 'About Brand Store', href: '/about', icon: 'ri-information-line' },
                 { label: 'Contact Us', href: '/contact', icon: 'ri-phone-line' },
               ].map((link) => (
                 <Link

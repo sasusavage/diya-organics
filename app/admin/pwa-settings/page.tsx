@@ -7,7 +7,7 @@ import Link from 'next/link';
 export default function PWAPage() {
     const [loading, setLoading] = useState(true);
     const [config, setConfig] = useState({
-        app_name: 'WIDAMA Pharmacy',
+        app_name: 'Store Company',
         theme_color: '#0D6B4E'
     });
 

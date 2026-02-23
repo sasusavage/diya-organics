@@ -264,10 +264,10 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
   });
 
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: 'Home', url: 'https://widamapharmacy.com' },
-    { name: 'Shop', url: 'https://widamapharmacy.com/shop' },
-    { name: product.category, url: `https://widamapharmacy.com/shop?category=${product.category.toLowerCase().replace(/\s+/g, '-')}` },
-    { name: product.name, url: `https://widamapharmacy.com/product/${slug}` }
+    { name: 'Home', url: 'https://STOREpharmacy.com' },
+    { name: 'Shop', url: 'https://STOREpharmacy.com/shop' },
+    { name: product.category, url: `https://STOREpharmacy.com/shop?category=${product.category.toLowerCase().replace(/\s+/g, '-')}` },
+    { name: product.name, url: `https://STOREpharmacy.com/product/${slug}` }
   ]);
 
   return (

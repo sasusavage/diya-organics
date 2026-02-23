@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
 interface SettingRow {
@@ -18,6 +19,8 @@ const SETTING_CATEGORIES = [
     { id: 'branding', label: 'Branding', icon: 'ri-palette-line', description: 'Colors and visual identity' },
     { id: 'currency', label: 'Currency', icon: 'ri-money-cny-circle-line', description: 'Currency settings' },
     { id: 'footer', label: 'Footer', icon: 'ri-layout-bottom-line', description: 'Footer content and links' },
+    { id: 'about', label: 'About Us', icon: 'ri-info-card-line', description: 'Edit your story and mission' },
+    { id: 'home', label: 'Homepage', icon: 'ri-home-4-line', description: 'Edit main page content and hero' },
 ];
 
 const SOCIAL_PLATFORMS = [
@@ -30,14 +33,23 @@ const SOCIAL_PLATFORMS = [
     { key: 'social_whatsapp', label: 'WhatsApp', icon: 'ri-whatsapp-line', color: '#25D366' },
 ];
 
-export default function SiteSettingsPage() {
+function SettingsContent() {
+    const searchParams = useSearchParams();
+    const tabParam = searchParams.get('tab');
+
     const [settings, setSettings] = useState<Record<string, any>>({});
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
-    const [activeTab, setActiveTab] = useState('general');
+    const [activeTab, setActiveTab] = useState(tabParam || 'general');
     const [toast, setToast] = useState<{ type: string; message: string } | null>(null);
     const [logoFile, setLogoFile] = useState<File | null>(null);
     const [logoPreview, setLogoPreview] = useState<string | null>(null);
+    const [aboutHeroFile, setAboutHeroFile] = useState<File | null>(null);
+    const [aboutHeroPreview, setAboutHeroPreview] = useState<string | null>(null);
+    const [contactHeroFile, setContactHeroFile] = useState<File | null>(null);
+    const [contactHeroPreview, setContactHeroPreview] = useState<string | null>(null);
+    const [homeHeroFile, setHomeHeroFile] = useState<File | null>(null);
+    const [homeHeroPreview, setHomeHeroPreview] = useState<string | null>(null);
 
     const fetchSettings = useCallback(async () => {
         try {
@@ -61,6 +73,12 @@ export default function SiteSettingsPage() {
         fetchSettings();
     }, [fetchSettings]);
 
+    useEffect(() => {
+        if (tabParam) {
+            setActiveTab(tabParam);
+        }
+    }, [tabParam]);
+
     const showToast = (type: string, message: string) => {
         setToast({ type, message });
         setTimeout(() => setToast(null), 4000);
@@ -77,11 +95,52 @@ export default function SiteSettingsPage() {
         setSettings(prev => ({ ...prev, [key]: value }));
     };
 
+    const getJSON = (key: string, fallback: any = []) => {
+        const val = settings[key];
+        if (!val) return fallback;
+        if (typeof val === 'string') {
+            try {
+                return JSON.parse(val);
+            } catch (e) {
+                return fallback;
+            }
+        }
+        return val;
+    };
+
+    const setJSON = (key: string, value: any) => {
+        setSettings(prev => ({ ...prev, [key]: value }));
+    };
+
     const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
             setLogoFile(file);
             setLogoPreview(URL.createObjectURL(file));
+        }
+    };
+
+    const handleAboutHeroChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setAboutHeroFile(file);
+            setAboutHeroPreview(URL.createObjectURL(file));
+        }
+    };
+
+    const handleContactHeroChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setContactHeroFile(file);
+            setContactHeroPreview(URL.createObjectURL(file));
+        }
+    };
+
+    const handleHomeHeroChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setHomeHeroFile(file);
+            setHomeHeroPreview(URL.createObjectURL(file));
         }
     };
 
@@ -104,6 +163,51 @@ export default function SiteSettingsPage() {
                 setVal('site_logo', logoUrl);
             }
 
+            // Upload about hero if changed
+            let aboutHeroUrl = getVal('about_hero_image');
+            if (aboutHeroFile) {
+                const ext = aboutHeroFile.name.split('.').pop();
+                const filePath = `about/hero-${Date.now()}.${ext}`;
+                const { error: uploadError } = await supabase.storage
+                    .from('media')
+                    .upload(filePath, aboutHeroFile, { upsert: true });
+
+                if (uploadError) throw uploadError;
+
+                const { data: urlData } = supabase.storage.from('media').getPublicUrl(filePath);
+                aboutHeroUrl = urlData.publicUrl;
+            }
+
+            // Upload contact hero if changed
+            let contactHeroUrl = getVal('contact_hero_image');
+            if (contactHeroFile) {
+                const ext = contactHeroFile.name.split('.').pop();
+                const filePath = `contact/hero-${Date.now()}.${ext}`;
+                const { error: uploadError } = await supabase.storage
+                    .from('media')
+                    .upload(filePath, contactHeroFile, { upsert: true });
+
+                if (uploadError) throw uploadError;
+
+                const { data: urlData } = supabase.storage.from('media').getPublicUrl(filePath);
+                contactHeroUrl = urlData.publicUrl;
+            }
+
+            // Upload home hero if changed
+            let homeHeroUrl = getVal('home_hero_image');
+            if (homeHeroFile) {
+                const ext = homeHeroFile.name.split('.').pop();
+                const filePath = `home/hero-${Date.now()}.${ext}`;
+                const { error: uploadError } = await supabase.storage
+                    .from('media')
+                    .upload(filePath, homeHeroFile, { upsert: true });
+
+                if (uploadError) throw uploadError;
+
+                const { data: urlData } = supabase.storage.from('media').getPublicUrl(filePath);
+                homeHeroUrl = urlData.publicUrl;
+            }
+
             // Prepare all settings for upsert
             const settingsToSave = Object.entries(settings).map(([key, value]) => {
                 // Determine category
@@ -113,23 +217,37 @@ export default function SiteSettingsPage() {
                 else if (key.startsWith('social_')) category = 'social';
                 else if (key.startsWith('contact_')) category = 'contact';
                 else if (key.startsWith('footer_') || key === 'payment_methods') category = 'footer';
+                else if (key.startsWith('about_')) category = 'about';
+                else if (key.startsWith('home_')) category = 'home';
                 else if (['primary_color', 'secondary_color', 'accent_color'].includes(key)) category = 'branding';
                 else if (['currency', 'currency_symbol'].includes(key)) category = 'currency';
 
+                let finalValue = typeof value === 'string' ? value : JSON.stringify(value);
+                if (key === 'site_logo') finalValue = logoUrl;
+                if (key === 'about_hero_image') finalValue = aboutHeroUrl;
+                if (key === 'contact_hero_image') finalValue = contactHeroUrl;
+                if (key === 'home_hero_image') finalValue = homeHeroUrl;
+
                 return {
                     key,
-                    value: typeof value === 'string' ? value : JSON.stringify(value),
+                    value: finalValue,
                     category,
                     updated_at: new Date().toISOString(),
                 };
             });
 
-            // Also include logo
-            if (logoUrl !== getVal('site_logo')) {
-                const existing = settingsToSave.find(s => s.key === 'site_logo');
-                if (existing) {
-                    existing.value = logoUrl;
-                }
+            // If keys were missing from state but we have new URLs, ensure they are added
+            if (!settingsToSave.find(s => s.key === 'site_logo')) {
+                settingsToSave.push({ key: 'site_logo', value: logoUrl, category: 'general', updated_at: new Date().toISOString() });
+            }
+            if (!settingsToSave.find(s => s.key === 'about_hero_image')) {
+                settingsToSave.push({ key: 'about_hero_image', value: aboutHeroUrl, category: 'about', updated_at: new Date().toISOString() });
+            }
+            if (!settingsToSave.find(s => s.key === 'contact_hero_image')) {
+                settingsToSave.push({ key: 'contact_hero_image', value: contactHeroUrl, category: 'contact', updated_at: new Date().toISOString() });
+            }
+            if (!settingsToSave.find(s => s.key === 'home_hero_image')) {
+                settingsToSave.push({ key: 'home_hero_image', value: homeHeroUrl, category: 'home', updated_at: new Date().toISOString() });
             }
 
             const { error } = await supabase
@@ -342,31 +460,393 @@ export default function SiteSettingsPage() {
 
                             {/* Contact */}
                             {activeTab === 'contact' && (
-                                <div className="space-y-6">
+                                <div className="space-y-8">
                                     <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                                        <i className="ri-contacts-line text-blue-600"></i> Contact Information
+                                        <i className="ri-contacts-line text-blue-600"></i> Contact Us Page Editor
                                     </h2>
+
                                     <div className="grid gap-6">
-                                        <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
-                                            <div className="relative">
-                                                <i className="ri-mail-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                                <input type="email" value={getVal('contact_email')} onChange={e => setVal('contact_email', e.target.value)} className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" />
+                                        <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+                                            <h3 className="font-bold text-gray-900 mb-4">Hero Section</h3>
+                                            <div className="grid gap-4">
+                                                <div className="flex flex-col md:flex-row gap-6 items-start">
+                                                    <div className="w-full md:w-1/3">
+                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Hero Image</label>
+                                                        <div className="relative group aspect-video bg-white rounded-xl border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center">
+                                                            {contactHeroPreview || getVal('contact_hero_image') ? (
+                                                                <img src={contactHeroPreview || getVal('contact_hero_image')} alt="Hero Preview" className="w-full h-full object-cover" />
+                                                            ) : (
+                                                                <div className="text-gray-400 text-center p-4">
+                                                                    <i className="ri-image-add-line text-3xl mb-1 block"></i>
+                                                                    <span className="text-xs">16:9 Aspect Ratio recommended</span>
+                                                                </div>
+                                                            )}
+                                                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                                                <label className="cursor-pointer bg-white text-gray-900 px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-gray-100">
+                                                                    Change
+                                                                    <input type="file" className="hidden" accept="image/*" onChange={handleContactHeroChange} />
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex-1 grid gap-4">
+                                                        <div>
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Hero Title</label>
+                                                            <input type="text" value={getVal('contact_hero_title')} onChange={e => setVal('contact_hero_title', e.target.value)} placeholder="Get In Touch" className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Hero Description</label>
+                                                            <textarea value={getVal('contact_hero_subtitle')} onChange={e => setVal('contact_hero_subtitle', e.target.value)} rows={2} className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none resize-none" />
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
-                                            <div className="relative">
-                                                <i className="ri-phone-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                                <input type="text" value={getVal('contact_phone')} onChange={e => setVal('contact_phone', e.target.value)} className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" />
+
+                                        <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+                                            <div className="flex justify-between items-center mb-4">
+                                                <h3 className="font-bold text-gray-900">Contact Methods</h3>
+                                                <button
+                                                    onClick={() => {
+                                                        const current = getJSON('contact_methods');
+                                                        setJSON('contact_methods', [...current, { icon: 'ri-phone-line', title: 'New Method', value: '', link: '', description: '' }]);
+                                                    }}
+                                                    className="text-sm font-bold text-blue-600 flex items-center gap-1 hover:underline"
+                                                >
+                                                    <i className="ri-add-line"></i> Add Method
+                                                </button>
+                                            </div>
+                                            <div className="space-y-4">
+                                                {getJSON('contact_methods').map((m: any, i: number) => (
+                                                    <div key={i} className="bg-white p-4 rounded-xl border border-gray-200 relative group">
+                                                        <button
+                                                            onClick={() => {
+                                                                const current = getJSON('contact_methods');
+                                                                setJSON('contact_methods', current.filter((_: any, idx: number) => idx !== i));
+                                                            }}
+                                                            className="absolute top-2 right-2 p-1.5 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                        >
+                                                            <i className="ri-delete-bin-line"></i>
+                                                        </button>
+                                                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                            <div>
+                                                                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Icon</label>
+                                                                <input type="text" value={m.icon} onChange={e => {
+                                                                    const current = getJSON('contact_methods');
+                                                                    current[i].icon = e.target.value;
+                                                                    setJSON('contact_methods', [...current]);
+                                                                }} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" placeholder="ri-phone-line" />
+                                                            </div>
+                                                            <div>
+                                                                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Title</label>
+                                                                <input type="text" value={m.title} onChange={e => {
+                                                                    const current = getJSON('contact_methods');
+                                                                    current[i].title = e.target.value;
+                                                                    setJSON('contact_methods', [...current]);
+                                                                }} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" placeholder="Call Us" />
+                                                            </div>
+                                                            <div>
+                                                                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Display Value</label>
+                                                                <input type="text" value={m.value} onChange={e => {
+                                                                    const current = getJSON('contact_methods');
+                                                                    current[i].value = e.target.value;
+                                                                    setJSON('contact_methods', [...current]);
+                                                                }} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" placeholder="+233..." />
+                                                            </div>
+                                                            <div>
+                                                                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Link (URL/tel/mailto)</label>
+                                                                <input type="text" value={m.link} onChange={e => {
+                                                                    const current = getJSON('contact_methods');
+                                                                    current[i].link = e.target.value;
+                                                                    setJSON('contact_methods', [...current]);
+                                                                }} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" placeholder="tel:+233..." />
+                                                            </div>
+                                                            <div className="lg:col-span-2">
+                                                                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Description</label>
+                                                                <input type="text" value={m.description} onChange={e => {
+                                                                    const current = getJSON('contact_methods');
+                                                                    current[i].description = e.target.value;
+                                                                    setJSON('contact_methods', [...current]);
+                                                                }} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" placeholder="Mon-Fri, 8am-6pm" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
                                             </div>
                                         </div>
-                                        <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Physical Address</label>
-                                            <div className="relative">
-                                                <i className="ri-map-pin-line absolute left-4 top-4 text-gray-400"></i>
-                                                <textarea value={getVal('contact_address')} onChange={e => setVal('contact_address', e.target.value)} rows={3} className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none" />
+
+                                        <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+                                            <div className="flex justify-between items-center mb-4">
+                                                <h3 className="font-bold text-gray-900">FAQ Section</h3>
+                                                <button
+                                                    onClick={() => {
+                                                        const current = getJSON('contact_faqs');
+                                                        setJSON('contact_faqs', [...current, { question: 'New Question', answer: 'New Answer' }]);
+                                                    }}
+                                                    className="text-sm font-bold text-blue-600 flex items-center gap-1 hover:underline"
+                                                >
+                                                    <i className="ri-add-line"></i> Add FAQ
+                                                </button>
                                             </div>
+                                            <div className="space-y-4">
+                                                {getJSON('contact_faqs').map((faq: any, i: number) => (
+                                                    <div key={i} className="bg-white p-4 rounded-xl border border-gray-200 relative group">
+                                                        <button
+                                                            onClick={() => {
+                                                                const current = getJSON('contact_faqs');
+                                                                setJSON('contact_faqs', current.filter((_: any, idx: number) => idx !== i));
+                                                            }}
+                                                            className="absolute top-2 right-2 p-1.5 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                        >
+                                                            <i className="ri-delete-bin-line"></i>
+                                                        </button>
+                                                        <div className="grid gap-3">
+                                                            <div>
+                                                                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Question</label>
+                                                                <input type="text" value={faq.question} onChange={e => {
+                                                                    const current = getJSON('contact_faqs');
+                                                                    current[i].question = e.target.value;
+                                                                    setJSON('contact_faqs', [...current]);
+                                                                }} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" />
+                                                            </div>
+                                                            <div>
+                                                                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Answer</label>
+                                                                <textarea value={faq.answer} onChange={e => {
+                                                                    const current = getJSON('contact_faqs');
+                                                                    current[i].answer = e.target.value;
+                                                                    setJSON('contact_faqs', [...current]);
+                                                                }} rows={2} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm resize-none" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+                                            <h3 className="font-bold text-gray-900 mb-4">Core Info (Used Site-wide)</h3>
+                                            <div className="grid gap-6">
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+                                                    <div className="relative">
+                                                        <i className="ri-mail-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                                        <input type="email" value={getVal('contact_email')} onChange={e => setVal('contact_email', e.target.value)} className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" />
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+                                                    <div className="relative">
+                                                        <i className="ri-phone-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                                        <input type="text" value={getVal('contact_phone')} onChange={e => setVal('contact_phone', e.target.value)} className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" />
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Physical Address</label>
+                                                    <div className="relative">
+                                                        <i className="ri-map-pin-line absolute left-4 top-4 text-gray-400"></i>
+                                                        <textarea value={getVal('contact_address')} onChange={e => setVal('contact_address', e.target.value)} rows={3} className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none resize-none" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Homepage */}
+                            {activeTab === 'home' && (
+                                <div className="space-y-8">
+                                    <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                                        <i className="ri-home-4-line text-blue-600"></i> Homepage Editor
+                                    </h2>
+
+                                    {/* Hero Section */}
+                                    <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+                                        <h3 className="font-bold text-gray-900 mb-4">Hero Section</h3>
+                                        <div className="grid gap-6">
+                                            <div className="flex flex-col md:flex-row gap-6 items-start">
+                                                <div className="w-full md:w-1/3">
+                                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Background Image</label>
+                                                    <div className="relative group aspect-video bg-white rounded-xl border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center">
+                                                        {homeHeroPreview || getVal('home_hero_image') ? (
+                                                            <img src={homeHeroPreview || getVal('home_hero_image')} alt="Hero Preview" className="w-full h-full object-cover" />
+                                                        ) : (
+                                                            <div className="text-gray-400 text-center p-4">
+                                                                <i className="ri-image-add-line text-3xl mb-1 block"></i>
+                                                                <span className="text-xs">High resolution recommended</span>
+                                                            </div>
+                                                        )}
+                                                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                                            <label className="cursor-pointer bg-white text-gray-900 px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-gray-100">
+                                                                Change Image
+                                                                <input type="file" className="hidden" accept="image/*" onChange={handleHomeHeroChange} />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="flex-1 grid gap-4">
+                                                    <div>
+                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Badge Text</label>
+                                                        <input type="text" value={getVal('home_hero_badge')} onChange={e => setVal('home_hero_badge', e.target.value)} placeholder="100% Organic & Pure" className="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500" />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Main Title</label>
+                                                        <input type="text" value={getVal('home_hero_title')} onChange={e => setVal('home_hero_title', e.target.value)} className="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500" />
+                                                        <p className="text-xs text-gray-400 mt-1">Tip: Use &lt;br /&gt; for line breaks.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="grid md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Hero Description</label>
+                                                    <textarea value={getVal('home_hero_desc')} onChange={e => setVal('home_hero_desc', e.target.value)} rows={3} className="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
+                                                </div>
+                                                <div className="grid grid-cols-2 gap-4">
+                                                    <div>
+                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Primary CTA Text</label>
+                                                        <input type="text" value={getVal('home_hero_cta_primary')} onChange={e => setVal('home_hero_cta_primary', e.target.value)} className="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500" />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Secondary CTA Text</label>
+                                                        <input type="text" value={getVal('home_hero_cta_secondary')} onChange={e => setVal('home_hero_cta_secondary', e.target.value)} className="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Benefits Section */}
+                                    <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+                                        <div className="flex justify-between items-center mb-4">
+                                            <h3 className="font-bold text-gray-900">Benefits Grid</h3>
+                                            <button
+                                                onClick={() => {
+                                                    const current = getJSON('home_benefits');
+                                                    setJSON('home_benefits', [...current, { icon: 'ri-leaf-line', title: 'New Benefit', desc: 'Description of benefit' }]);
+                                                }}
+                                                className="text-sm font-bold text-blue-600 flex items-center gap-1 hover:underline"
+                                            >
+                                                <i className="ri-add-line"></i> Add Benefit
+                                            </button>
+                                        </div>
+                                        <div className="grid md:grid-cols-2 gap-4">
+                                            {getJSON('home_benefits').map((item: any, i: number) => (
+                                                <div key={i} className="bg-white p-4 rounded-xl border border-gray-200 relative group">
+                                                    <button
+                                                        onClick={() => {
+                                                            const current = getJSON('home_benefits');
+                                                            setJSON('home_benefits', current.filter((_: any, idx: number) => idx !== i));
+                                                        }}
+                                                        className="absolute top-2 right-2 p-1.5 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                    >
+                                                        <i className="ri-delete-bin-line"></i>
+                                                    </button>
+                                                    <div className="grid gap-3">
+                                                        <div className="flex gap-4">
+                                                            <div className="w-1/3">
+                                                                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Icon</label>
+                                                                <input type="text" value={item.icon} onChange={e => {
+                                                                    const current = getJSON('home_benefits');
+                                                                    current[i].icon = e.target.value;
+                                                                    setJSON('home_benefits', [...current]);
+                                                                }} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" placeholder="ri-leaf-line" />
+                                                            </div>
+                                                            <div className="flex-1">
+                                                                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Title</label>
+                                                                <input type="text" value={item.title} onChange={e => {
+                                                                    const current = getJSON('home_benefits');
+                                                                    current[i].title = e.target.value;
+                                                                    setJSON('home_benefits', [...current]);
+                                                                }} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" />
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Description</label>
+                                                            <input type="text" value={item.desc} onChange={e => {
+                                                                const current = getJSON('home_benefits');
+                                                                current[i].desc = e.target.value;
+                                                                setJSON('home_benefits', [...current]);
+                                                            }} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Featured Section */}
+                                    <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+                                        <h3 className="font-bold text-gray-900 mb-4">Featured Products Section</h3>
+                                        <div className="grid md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-sm font-semibold text-gray-700 mb-2">Section Badge</label>
+                                                <input type="text" value={getVal('home_featured_badge')} onChange={e => setVal('home_featured_badge', e.target.value)} placeholder="The Essentials" className="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-semibold text-gray-700 mb-2">View All Link Text</label>
+                                                <input type="text" value={getVal('home_featured_link')} onChange={e => setVal('home_featured_link', e.target.value)} placeholder="Shop All Products" className="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500" />
+                                            </div>
+                                            <div className="md:col-span-2">
+                                                <label className="block text-sm font-semibold text-gray-700 mb-2">Main Title</label>
+                                                <textarea value={getVal('home_featured_title')} onChange={e => setVal('home_featured_title', e.target.value)} rows={2} className="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Testimonials */}
+                                    <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+                                        <div className="flex justify-between items-center mb-4">
+                                            <h3 className="font-bold text-gray-900">Featured Testimonials</h3>
+                                            <button
+                                                onClick={() => {
+                                                    const current = getJSON('home_testimonials');
+                                                    setJSON('home_testimonials', [...current, { quote: '', author: '', role: 'Verified Buyer', image: '' }]);
+                                                }}
+                                                className="text-sm font-bold text-blue-600 flex items-center gap-1 hover:underline"
+                                            >
+                                                <i className="ri-add-line"></i> Add Testimonial
+                                            </button>
+                                        </div>
+                                        <div className="space-y-4">
+                                            {getJSON('home_testimonials').map((t: any, i: number) => (
+                                                <div key={i} className="bg-white p-4 rounded-xl border border-gray-200 relative group">
+                                                    <button
+                                                        onClick={() => {
+                                                            const current = getJSON('home_testimonials');
+                                                            setJSON('home_testimonials', current.filter((_: any, idx: number) => idx !== i));
+                                                        }}
+                                                        className="absolute top-2 right-2 p-1.5 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                    >
+                                                        <i className="ri-delete-bin-line"></i>
+                                                    </button>
+                                                    <div className="grid md:grid-cols-2 gap-4">
+                                                        <div className="md:col-span-2">
+                                                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Quote</label>
+                                                            <textarea value={t.quote} onChange={e => {
+                                                                const current = getJSON('home_testimonials');
+                                                                current[i].quote = e.target.value;
+                                                                setJSON('home_testimonials', [...current]);
+                                                            }} rows={2} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm resize-none" />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Author Name</label>
+                                                            <input type="text" value={t.author} onChange={e => {
+                                                                const current = getJSON('home_testimonials');
+                                                                current[i].author = e.target.value;
+                                                                setJSON('home_testimonials', [...current]);
+                                                            }} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Role/Tag</label>
+                                                            <input type="text" value={t.role} onChange={e => {
+                                                                const current = getJSON('home_testimonials');
+                                                                current[i].role = e.target.value;
+                                                                setJSON('home_testimonials', [...current]);
+                                                            }} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
                                         </div>
                                     </div>
                                 </div>
@@ -499,10 +979,324 @@ export default function SiteSettingsPage() {
                                     </div>
                                 </div>
                             )}
+
+                            {/* About Section */}
+                            {activeTab === 'about' && (
+                                <div className="space-y-8">
+                                    <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                                        <i className="ri-info-card-line text-blue-600"></i> About Us Section
+                                    </h2>
+
+                                    <div className="grid gap-6">
+                                        <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+                                            <h3 className="font-bold text-gray-900 mb-4">Hero Section</h3>
+                                            <div className="grid gap-4">
+                                                <div className="flex flex-col md:flex-row gap-6 items-start">
+                                                    <div className="w-full md:w-1/3">
+                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Hero Image</label>
+                                                        <div className="relative group aspect-video bg-white rounded-xl border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center">
+                                                            {aboutHeroPreview || getVal('about_hero_image') ? (
+                                                                <img src={aboutHeroPreview || getVal('about_hero_image')} alt="Hero Preview" className="w-full h-full object-cover" />
+                                                            ) : (
+                                                                <div className="text-gray-400 text-center p-4">
+                                                                    <i className="ri-image-add-line text-3xl mb-1 block"></i>
+                                                                    <span className="text-xs">16:9 Aspect Ratio recommended</span>
+                                                                </div>
+                                                            )}
+                                                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                                                <label className="cursor-pointer bg-white text-gray-900 px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-gray-100">
+                                                                    Change
+                                                                    <input type="file" className="hidden" accept="image/*" onChange={handleAboutHeroChange} />
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex-1 grid gap-4">
+                                                        <div>
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Hero Title</label>
+                                                            <input type="text" value={getVal('about_hero_title')} onChange={e => setVal('about_hero_title', e.target.value)} placeholder="More Than Just A Pharmacy" className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Hero Description</label>
+                                                            <textarea value={getVal('about_hero_subtitle')} onChange={e => setVal('about_hero_subtitle', e.target.value)} rows={2} className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none resize-none" />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Establishment Year</label>
+                                                            <input type="text" value={getVal('about_est_year')} onChange={e => setVal('about_est_year', e.target.value)} placeholder="2004" className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+                                            <h3 className="font-bold text-gray-900 mb-4">Our Story</h3>
+                                            <div className="grid gap-4">
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Paragraph 1</label>
+                                                    <textarea value={getVal('about_story_p1')} onChange={e => setVal('about_story_p1', e.target.value)} rows={3} className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none resize-none" />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Paragraph 2</label>
+                                                    <textarea value={getVal('about_story_p2')} onChange={e => setVal('about_story_p2', e.target.value)} rows={3} className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none resize-none" />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Paragraph 3</label>
+                                                    <textarea value={getVal('about_story_p3')} onChange={e => setVal('about_story_p3', e.target.value)} rows={3} className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none resize-none" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Milestones Editor */}
+                                        <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+                                            <div className="flex justify-between items-center mb-4">
+                                                <h3 className="font-bold text-gray-900">Milestones / Journey</h3>
+                                                <button
+                                                    onClick={() => {
+                                                        const current = getJSON('about_milestones');
+                                                        setJSON('about_milestones', [...current, { year: '2025', title: 'New Milestone', description: 'Description here...' }]);
+                                                    }}
+                                                    className="text-sm font-bold text-blue-600 flex items-center gap-1 hover:underline"
+                                                >
+                                                    <i className="ri-add-line"></i> Add Milestone
+                                                </button>
+                                            </div>
+                                            <div className="space-y-4">
+                                                {getJSON('about_milestones').map((m: any, i: number) => (
+                                                    <div key={i} className="bg-white p-4 rounded-xl border border-gray-200 relative group">
+                                                        <button
+                                                            onClick={() => {
+                                                                const current = getJSON('about_milestones');
+                                                                setJSON('about_milestones', current.filter((_: any, idx: number) => idx !== i));
+                                                            }}
+                                                            className="absolute top-2 right-2 p-1.5 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                        >
+                                                            <i className="ri-delete-bin-line"></i>
+                                                        </button>
+                                                        <div className="grid md:grid-cols-4 gap-4">
+                                                            <div>
+                                                                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Year</label>
+                                                                <input type="text" value={m.year} onChange={e => {
+                                                                    const current = getJSON('about_milestones');
+                                                                    current[i].year = e.target.value;
+                                                                    setJSON('about_milestones', [...current]);
+                                                                }} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" />
+                                                            </div>
+                                                            <div className="md:col-span-3">
+                                                                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Title</label>
+                                                                <input type="text" value={m.title} onChange={e => {
+                                                                    const current = getJSON('about_milestones');
+                                                                    current[i].title = e.target.value;
+                                                                    setJSON('about_milestones', [...current]);
+                                                                }} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" />
+                                                            </div>
+                                                            <div className="md:col-span-4">
+                                                                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Description</label>
+                                                                <textarea value={m.description} onChange={e => {
+                                                                    const current = getJSON('about_milestones');
+                                                                    current[i].description = e.target.value;
+                                                                    setJSON('about_milestones', [...current]);
+                                                                }} rows={2} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm resize-none" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+                                            <h3 className="font-bold text-gray-900 mb-4">Mission & Vision</h3>
+                                            <div className="grid gap-4">
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Mission Statement</label>
+                                                    <textarea value={getVal('about_mission_text')} onChange={e => setVal('about_mission_text', e.target.value)} rows={3} className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none resize-none" />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Vision Statement</label>
+                                                    <textarea value={getVal('about_vision_text')} onChange={e => setVal('about_vision_text', e.target.value)} rows={3} className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none resize-none" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Core Values Editor */}
+                                        <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+                                            <div className="flex justify-between items-center mb-4">
+                                                <h3 className="font-bold text-gray-900">Core Values</h3>
+                                                <button
+                                                    onClick={() => {
+                                                        const current = getJSON('about_core_values');
+                                                        setJSON('about_core_values', [...current, { icon: 'ri-heart-line', title: 'New Value', description: 'Description here...', color: 'bg-brand-50 text-brand-600', borderColor: 'border-brand-100' }]);
+                                                    }}
+                                                    className="text-sm font-bold text-blue-600 flex items-center gap-1 hover:underline"
+                                                >
+                                                    <i className="ri-add-line"></i> Add Value
+                                                </button>
+                                            </div>
+                                            <div className="grid md:grid-cols-2 gap-4">
+                                                {getJSON('about_core_values').map((v: any, i: number) => (
+                                                    <div key={i} className="bg-white p-4 rounded-xl border border-gray-200 relative group">
+                                                        <button
+                                                            onClick={() => {
+                                                                const current = getJSON('about_core_values');
+                                                                setJSON('about_core_values', current.filter((_: any, idx: number) => idx !== i));
+                                                            }}
+                                                            className="absolute top-2 right-2 p-1.5 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                        >
+                                                            <i className="ri-delete-bin-line"></i>
+                                                        </button>
+                                                        <div className="grid gap-3">
+                                                            <div className="flex gap-3">
+                                                                <div className="flex-1">
+                                                                    <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Icon (Remix Icon)</label>
+                                                                    <input type="text" value={v.icon} onChange={e => {
+                                                                        const current = getJSON('about_core_values');
+                                                                        current[i].icon = e.target.value;
+                                                                        setJSON('about_core_values', [...current]);
+                                                                    }} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" placeholder="ri-shield-line" />
+                                                                </div>
+                                                                <div className="w-10 h-10 mt-5 border border-gray-100 rounded-lg flex items-center justify-center bg-gray-50">
+                                                                    <i className={`${v.icon} text-lg text-brand-600`}></i>
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Title</label>
+                                                                <input type="text" value={v.title} onChange={e => {
+                                                                    const current = getJSON('about_core_values');
+                                                                    current[i].title = e.target.value;
+                                                                    setJSON('about_core_values', [...current]);
+                                                                }} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" />
+                                                            </div>
+                                                            <div>
+                                                                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Description</label>
+                                                                <textarea value={v.description} onChange={e => {
+                                                                    const current = getJSON('about_core_values');
+                                                                    current[i].description = e.target.value;
+                                                                    setJSON('about_core_values', [...current]);
+                                                                }} rows={2} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm resize-none" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+                                            <h3 className="font-bold text-gray-900 mb-4">Founder Info</h3>
+                                            <div className="grid gap-4">
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Founder Name</label>
+                                                    <input type="text" value={getVal('about_founder_name')} onChange={e => setVal('about_founder_name', e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Founder Role</label>
+                                                    <input type="text" value={getVal('about_founder_role')} onChange={e => setVal('about_founder_role', e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Founder Quote</label>
+                                                    <textarea value={getVal('about_founder_quote')} onChange={e => setVal('about_founder_quote', e.target.value)} rows={3} className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none resize-none" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Services Editor */}
+                                        <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+                                            <div className="flex justify-between items-center mb-4">
+                                                <h3 className="font-bold text-gray-900">Services</h3>
+                                                <button
+                                                    onClick={() => {
+                                                        const current = getJSON('about_services');
+                                                        setJSON('about_services', [...current, { icon: 'ri-medicine-bottle-line', title: 'New Service', description: 'Description here...', features: ['Feature 1', 'Feature 2'] }]);
+                                                    }}
+                                                    className="text-sm font-bold text-blue-600 flex items-center gap-1 hover:underline"
+                                                >
+                                                    <i className="ri-add-line"></i> Add Service
+                                                </button>
+                                            </div>
+                                            <div className="space-y-4">
+                                                {getJSON('about_services').map((s: any, i: number) => (
+                                                    <div key={i} className="bg-white p-4 rounded-xl border border-gray-200 relative group">
+                                                        <button
+                                                            onClick={() => {
+                                                                const current = getJSON('about_services');
+                                                                setJSON('about_services', current.filter((_: any, idx: number) => idx !== i));
+                                                            }}
+                                                            className="absolute top-2 right-2 p-1.5 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                        >
+                                                            <i className="ri-delete-bin-line"></i>
+                                                        </button>
+                                                        <div className="grid md:grid-cols-2 gap-4">
+                                                            <div className="grid gap-3">
+                                                                <div className="flex gap-3">
+                                                                    <div className="flex-1">
+                                                                        <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Icon</label>
+                                                                        <input type="text" value={s.icon} onChange={e => {
+                                                                            const current = getJSON('about_services');
+                                                                            current[i].icon = e.target.value;
+                                                                            setJSON('about_services', [...current]);
+                                                                        }} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" />
+                                                                    </div>
+                                                                    <div className="w-10 h-10 mt-5 border border-gray-100 rounded-lg flex items-center justify-center bg-gray-50 text-brand-600">
+                                                                        <i className={`${s.icon} text-lg`}></i>
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Title</label>
+                                                                    <input type="text" value={s.title} onChange={e => {
+                                                                        const current = getJSON('about_services');
+                                                                        current[i].title = e.target.value;
+                                                                        setJSON('about_services', [...current]);
+                                                                    }} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" />
+                                                                </div>
+                                                                <div>
+                                                                    <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Description</label>
+                                                                    <textarea value={s.description} onChange={e => {
+                                                                        const current = getJSON('about_services');
+                                                                        current[i].description = e.target.value;
+                                                                        setJSON('about_services', [...current]);
+                                                                    }} rows={3} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm resize-none" />
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Features (one per line)</label>
+                                                                <textarea
+                                                                    value={(s.features || []).join('\n')}
+                                                                    onChange={e => {
+                                                                        const current = getJSON('about_services');
+                                                                        current[i].features = e.target.value.split('\n').filter(f => f.trim());
+                                                                        setJSON('about_services', [...current]);
+                                                                    }}
+                                                                    rows={8}
+                                                                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm font-mono resize-none"
+                                                                    placeholder="Prescription Meds&#10;OTC Products..."
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function SiteSettingsPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+                <div className="flex items-center gap-3 text-gray-500">
+                    <i className="ri-loader-4-line animate-spin text-2xl"></i>
+                    <span>Loading...</span>
+                </div>
+            </div>
+        }>
+            <SettingsContent />
+        </Suspense>
     );
 }

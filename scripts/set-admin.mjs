@@ -22,7 +22,7 @@ if (!supabaseUrl || !supabaseServiceKey) {
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-const email = 'admin@widamapharmacy.com';
+const email = 'admin@STOREpharmacy.com';
 const password = 'Password123!'; // Temporary password
 
 async function main() {
@@ -74,7 +74,7 @@ async function main() {
             id: userId,
             email: email,
             role: 'admin',
-            full_name: 'WIDAMA Admin',
+            full_name: 'STORE Admin',
             updated_at: new Date().toISOString()
         })
         .select();

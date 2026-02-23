@@ -10,7 +10,6 @@ import { useRecaptcha } from '@/hooks/useRecaptcha';
 export default function ContactPage() {
   usePageTitle('Contact Us');
   const { getSetting } = useCMS();
-  const [pageContent, setPageContent] = useState<any>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,22 +20,6 @@ export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const { getToken, verifying } = useRecaptcha();
-
-  useEffect(() => {
-    async function fetchContactContent() {
-      const { data } = await supabase
-        .from('cms_content')
-        .select('*')
-        .eq('section', 'contact')
-        .eq('block_key', 'main')
-        .single();
-
-      if (data) {
-        setPageContent(data);
-      }
-    }
-    fetchContactContent();
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,71 +70,42 @@ export default function ContactPage() {
     }
   };
 
+  // Helper to safely parse JSON settings
+  const getParsedSetting = (key: string, fallback: any) => {
+    const setting = getSetting(key);
+    if (!setting) return fallback;
+    try {
+      return JSON.parse(setting);
+    } catch (e) {
+      console.error(`Error parsing CMS setting ${key}:`, e);
+      return fallback;
+    }
+  };
+
   // Get contact details from CMS settings
-  const contactEmail = getSetting('contact_email') || 'info@widamapharmacy.com';
-  const contactPhone = getSetting('contact_phone') || '+233209597443';
-  const contactAddress = getSetting('contact_address') || 'Accra, Ghana';
+  const contactEmail = getSetting('contact_email') || '';
+  const contactPhone = getSetting('contact_phone') || '';
+  const contactAddress = getSetting('contact_address') || '';
 
-  const heroTitle = pageContent?.title || 'Get In Touch';
-  const heroSubtitle = pageContent?.subtitle || 'Have a question or need assistance?';
-  const heroContent = pageContent?.content || 'Our friendly team is here to help. Reach out through any of our contact channels.';
+  const heroImage = getSetting('contact_hero_image');
+  const heroTitle = getSetting('contact_hero_title') || '';
+  const heroSubtitle = getSetting('contact_hero_subtitle') || "";
 
-  const contactMethods = [
-    {
-      icon: 'ri-phone-line',
-      title: 'Call Us',
-      value: contactPhone,
-      link: `tel:${contactPhone.replace(/\s/g, '')}`,
-      description: 'Mon-Fri, 8am-6pm GMT'
-    },
-    {
-      icon: 'ri-mail-line',
-      title: 'Email Us',
-      value: contactEmail,
-      link: `mailto:${contactEmail}`,
-      description: 'We respond within 24 hours'
-    },
-    {
-      icon: 'ri-whatsapp-line',
-      title: 'WhatsApp',
-      value: contactPhone,
-      link: `https://wa.me/${contactPhone.replace(/[^0-9]/g, '')}`,
-      description: 'Chat with us instantly'
-    },
-    {
-      icon: 'ri-map-pin-line',
-      title: 'Visit Us',
-      value: contactAddress,
-      link: 'https://maps.google.com',
-      description: 'Mon-Sat, 9am-6pm'
-    }
-  ];
+  const contactMethods = getParsedSetting('contact_methods', []);
 
-  const faqs = [
-    {
-      question: 'What are your delivery times?',
-      answer: 'Standard delivery takes 2-5 business days within Ghana. Express delivery is available for Accra and Kumasi. We ship medicines, supplements, and health products with care.'
-    },
-    {
-      question: 'Do you offer international shipping?',
-      answer: 'Currently, we ship within Ghana only. Many of our products are imported from China, so we handle all international logistics on our end. You simply order and receive.'
-    },
-    {
-      question: 'What payment methods do you accept?',
-      answer: 'We accept mobile money (MTN, Vodafone, AirtelTigo) and credit/debit cards through our secure Moolre payment gateway.'
-    }
-  ];
+  const faqs = getParsedSetting('contact_faqs', []);
 
   return (
     <div className="min-h-screen bg-white">
       <PageHero
-        title="Get In Touch"
-        subtitle="Have a question about our medicines, supplements, or health products? We're here to help from Accra, Ghana."
+        title={heroTitle}
+        subtitle={heroSubtitle}
+        backgroundImage={heroImage}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          {contactMethods.map((method, index) => (
+          {contactMethods.map((method: any, index: number) => (
             <a
               key={index}
               href={method.link}
@@ -160,7 +114,7 @@ export default function ContactPage() {
               className="bg-white border border-gray-200 p-6 rounded-2xl hover:shadow-lg hover:border-brand-200 transition-all cursor-pointer"
             >
               <div className="w-12 h-12 bg-brand-100 rounded-full flex items-center justify-center mb-4">
-                <i className={`${method.icon} text-2xl text-brand-700`}></i>
+                <i className={`${method.icon || 'ri-link'} text-2xl text-brand-700`}></i>
               </div>
               <h3 className="font-bold text-gray-900 mb-2">{method.title}</h3>
               <p className="text-brand-700 font-medium mb-1">{method.value}</p>
@@ -290,7 +244,7 @@ export default function ContactPage() {
             </p>
 
             <div className="space-y-4 mb-12">
-              {faqs.map((faq, index) => (
+              {faqs.map((faq: any, index: number) => (
                 <details key={index} className="bg-gray-50 rounded-xl overflow-hidden">
                   <summary className="px-6 py-4 font-medium text-gray-900 cursor-pointer hover:bg-gray-100 transition-colors">
                     {faq.question}

@@ -281,7 +281,7 @@ export default function PrivacyPage() {
             </div>
 
             <p className="text-gray-600 leading-relaxed">
-              To exercise any of these rights, please contact us at <a href="mailto:info@widamapharmacy.com" className="text-brand-700 font-medium hover:underline">info@widamapharmacy.com</a> or through your account settings. We will respond within 30 days.
+              To exercise any of these rights, please contact us at <a href="mailto:info@STOREpharmacy.com" className="text-brand-700 font-medium hover:underline">info@STOREpharmacy.com</a> or through your account settings. We will respond within 30 days.
             </p>
           </section>
 
@@ -384,7 +384,7 @@ export default function PrivacyPage() {
                   <i className="ri-mail-line text-brand-700 text-xl mt-1"></i>
                   <div>
                     <p className="font-medium text-gray-900">Email</p>
-                    <a href="mailto:info@widamapharmacy.com" className="text-brand-700 hover:underline">info@widamapharmacy.com</a>
+                    <a href="mailto:info@STOREpharmacy.com" className="text-brand-700 hover:underline">info@STOREpharmacy.com</a>
                   </div>
                 </div>
 
@@ -400,7 +400,7 @@ export default function PrivacyPage() {
                   <i className="ri-map-pin-line text-brand-700 text-xl mt-1"></i>
                   <div>
                     <p className="font-medium text-gray-900">Address</p>
-                    <p className="text-gray-600">WIDAMA Pharmacy<br />Accra, Ghana</p>
+                    <p className="text-gray-600">Store Company<br />Accra, Ghana</p>
                   </div>
                 </div>
               </div>

@@ -1,4 +1,4 @@
-// MultiMey Supplies - Service Worker v2.0
+// app-project Supplies - Service Worker v2.0
 const CACHE_VERSION = 'sl-v2.0';
 const STATIC_CACHE = `static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `dynamic-${CACHE_VERSION}`;
@@ -212,7 +212,7 @@ self.addEventListener('push', (event) => {
 
   const data = event.data.json();
   const options = {
-    body: data.body || 'New update from MultiMey Supplies',
+    body: data.body || 'New update from app-project Supplies',
     icon: '/icons/icon-192x192.png',
     badge: '/icons/icon-72x72.png',
     vibrate: [100, 50, 100],
@@ -228,7 +228,7 @@ self.addEventListener('push', (event) => {
 
   event.waitUntil(
     self.registration.showNotification(
-      data.title || 'MultiMey Supplies',
+      data.title || 'app-project Supplies',
       options
     )
   );

@@ -18,8 +18,8 @@ export default function PWASplash() {
   return (
     <div className="pwa-splash">
       <div className="pwa-splash-logo flex flex-col items-center">
-        <img src={siteLogo} alt="WIDAMA Pharmacy" className="w-24 h-24 object-contain mb-6" />
-        <h1 className="text-white text-3xl font-bold font-serif mb-2">WIDAMA</h1>
+        <img src={siteLogo} alt="Store Company" className="w-24 h-24 object-contain mb-6" />
+        <h1 className="text-white text-3xl font-bold font-serif mb-2">STORE</h1>
         <p className="text-gold-300 text-xs uppercase tracking-[0.3em] font-medium">Pharmacy</p>
       </div>
       <div className="pwa-splash-dots flex gap-2 mt-10">

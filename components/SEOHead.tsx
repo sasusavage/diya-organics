@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 
-const SITE_NAME = 'WIDAMA Pharmacy';
-const SITE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://www.widamapharmacy.com';
-const SITE_DESCRIPTION = 'WIDAMA Pharmacy — Ghana\'s trusted source for quality medicines, health products, and pharmaceutical services. Wholesale, retail, manufacturing, and training since 2004.';
+const SITE_NAME = 'Store Company';
+const SITE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://www.STOREpharmacy.com';
+const SITE_DESCRIPTION = 'Store Company — Ghana\'s trusted source for quality medicines, health products, and pharmaceutical services. Wholesale, retail, manufacturing, and training since 2004.';
 const DEFAULT_KEYWORDS = [
-  'WIDAMA Pharmacy', 'pharmacy Ghana', 'medicines online', 'health products',
+  'Store Company', 'pharmacy Ghana', 'medicines online', 'health products',
   'pharmaceutical wholesale', 'pharmacy Ashaiman', 'buy medicine online Ghana',
-  'WIDAMA Towers', 'pharmaceutical services', 'health supplements',
+  'STORE Towers', 'pharmaceutical services', 'health supplements',
   'pharmacy training Ghana', 'pharmaceutical manufacturing',
 ];
 
@@ -149,11 +149,11 @@ export function generateOrganizationSchema() {
     foundingDate: '2004',
     founder: {
       '@type': 'Person',
-      name: 'Mr. Wisdom Amezah',
+      name: 'Store Owner',
     },
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'WIDAMA Towers, Ashaiman Lebanon',
+      streetAddress: 'STORE Towers, Ashaiman Lebanon',
       addressLocality: 'Ashaiman',
       addressRegion: 'Greater Accra',
       addressCountry: 'GH',

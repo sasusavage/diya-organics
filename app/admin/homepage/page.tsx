@@ -320,7 +320,7 @@ export default function HomepageConfigPage() {
                     {activeTab === 'about' && (
                         <div>
                             <h2 className="text-xl font-bold text-gray-900 mb-1">About / Why Choose Us</h2>
-                            <p className="text-sm text-gray-500 mb-6">The &ldquo;Why Choose WIDAMA&rdquo; section</p>
+                            <p className="text-sm text-gray-500 mb-6">The &ldquo;Why Choose STORE&rdquo; section</p>
 
                             {blocks.find(b => b.block_key === 'about_header') && (
                                 <div className="mb-4">

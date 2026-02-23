@@ -5,15 +5,15 @@ import { useCMS } from '@/context/CMSContext';
 
 export default function Footer() {
   const { getSetting, getContentList } = useCMS();
-  const siteName = getSetting('site_name') || 'Diya Organics';
-  const siteLogo = getSetting('site_logo') || '/logo.png';
-  const siteEmail = getSetting('contact_email') || 'info@diyaorganics.com';
-  const sitePhone = getSetting('contact_phone') || '+233 XX XXX XXXX';
-  const siteAddress = getSetting('contact_address') || 'WIDAMA Towers, Ashaiman Lebanon, Ghana';
-  const footerDescription = getSetting('footer_description') || 'Your trusted destination for premium organic and natural products. Enhancing your wellbeing with nature\'s best since 2024.';
-  const footerCopyright = getSetting('footer_copyright') || `All rights reserved. Licensed Pharmacy — WIDAMA Towers, Ashaiman Lebanon, Ghana.`;
-  const footerCtaTitle = getSetting('footer_cta_title') || 'Need Natural Wellness Advice?';
-  const footerCtaSubtitle = getSetting('footer_cta_subtitle') || 'Our organic experts are here to help.';
+  const siteName = getSetting('site_name') || '';
+  const siteLogo = getSetting('site_logo') || '';
+  const siteEmail = getSetting('contact_email') || '';
+  const sitePhone = getSetting('contact_phone') || '';
+  const siteAddress = getSetting('contact_address') || '';
+  const footerDescription = getSetting('footer_description') || '';
+  const footerCopyright = getSetting('footer_copyright') || ``;
+  const footerCtaTitle = getSetting('footer_cta_title') || '';
+  const footerCtaSubtitle = getSetting('footer_cta_subtitle') || '';
 
   // Social links from settings
   const socialLinks = [
@@ -56,7 +56,7 @@ export default function Footer() {
   const companyLinks = cmsCompanyLinks.length > 0
     ? cmsCompanyLinks.map(l => ({ label: l.title || '', href: l.button_url || '#' }))
     : [
-      { label: 'About Diya Organics', href: '/about' },
+      { label: 'About Brand Store', href: '/about' },
       { label: 'Privacy Policy', href: '/privacy' },
       { label: 'Terms & Conditions', href: '/terms' },
     ];

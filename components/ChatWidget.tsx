@@ -38,10 +38,10 @@ export default function ChatWidget() {
             }
 
             // 2. Get/Set Visitor ID
-            let vid = localStorage.getItem('widama_visitor_id');
+            let vid = localStorage.getItem('STORE_visitor_id');
             if (!vid) {
                 vid = generateId();
-                localStorage.setItem('widama_visitor_id', vid);
+                localStorage.setItem('STORE_visitor_id', vid);
             }
             setVisitorId(vid);
 
@@ -231,7 +231,7 @@ export default function ChatWidget() {
                             </button>
                         </form>
                         <div className="text-[10px] text-center text-gray-400 mt-2">
-                            Powered by <a href="#" className="hover:text-blue-500">WIDAMA AI</a>
+                            Powered by <a href="#" className="hover:text-blue-500">STORE AI</a>
                         </div>
                     </div>
                 </div>

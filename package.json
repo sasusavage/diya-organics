@@ -10,7 +10,6 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.6.0",
-    "react-is": "^19.2.4",
     "recharts": "^3.0.2",
     "resend": "^6.9.1",
     "tailwind-merge": "^3.5.0"
@@ -28,8 +27,8 @@
     "tailwindcss": "^3.4.17",
     "typescript": "^5"
   },
-  "name": "diya-organics",
-  "description": "Premium Natural & Organic E-Commerce Platform",
+  "name": "e-commerce-platform",
+  "description": "Customizable E-Commerce Platform",
   "private": true,
   "scripts": {
     "build": "next build",

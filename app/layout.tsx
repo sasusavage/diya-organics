@@ -9,35 +9,31 @@ import ChatWidget from '@/components/ChatWidget';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Diya Organics — Premium Natural & Organic Products',
-    template: '%s | Diya Organics',
+    default: 'Store Platform',
+    template: '%s | Store Platform',
   },
-  description: 'Diya Organics — Your trusted source for 100% natural, organic, and eco-friendly products. Shop our curated collection for a healthier lifestyle.',
-  keywords: [
-    'Diya Organics', 'organic products Ghana', 'natural skincare', 'organic health supplements',
-    'eco-friendly products', 'buy organic online Ghana', 'healthy living',
-    'natural wellness', 'organic beauty', 'superfoods',
-  ],
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://www.widamapharmacy.com'),
+  description: 'Your premium shopping destination for quality products.',
+  keywords: ['shopping', 'ecommerce', 'store'],
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
   openGraph: {
     type: 'website',
-    locale: 'en_GH',
-    url: process.env.NEXT_PUBLIC_APP_URL || 'https://www.widamapharmacy.com',
-    siteName: 'Diya Organics',
-    title: 'Diya Organics — Premium Natural & Organic Products',
-    description: 'Your trusted destination for premium organic and natural products. Enhancing your wellbeing with nature\'s best.',
+    locale: 'en_US',
+    url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+    siteName: 'Platform Store',
+    title: 'Modern E-Commerce Solution',
+    description: 'High-quality products for your needs.',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Diya Organics',
+        alt: 'Brand Store',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Diya Organics — Premium Natural & Organic Products',
+    title: 'Brand Store — Premium Natural & Organic Products',
     description: 'Premium organic and natural products for a healthier lifestyle. Order online today.',
   },
   icons: {
@@ -53,7 +49,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'Diya Organics',
+    title: 'Store App',
   },
 };
 
@@ -61,28 +57,24 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
-  themeColor: '#0D6B4E',
+  themeColor: '#000000',
   viewportFit: 'cover',
 };
 
 const orgSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'Diya Organics',
-  description: 'Premium natural and organic products for a healthier and sustainable lifestyle.',
-  url: process.env.NEXT_PUBLIC_APP_URL || 'https://www.widamapharmacy.com',
-  logo: `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.widamapharmacy.com'}/logo.png`,
-  foundingDate: '2004',
-  founder: {
-    '@type': 'Person',
-    name: 'Mr. Wisdom Amezah',
-  },
+  name: 'Store Brand',
+  description: 'Providing quality products to our customers.',
+  url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+  logo: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/logo.png`,
+  foundingDate: '2024',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'WIDAMA Towers, Ashaiman Lebanon',
-    addressLocality: 'Ashaiman',
-    addressRegion: 'Greater Accra',
-    addressCountry: 'GH',
+    streetAddress: 'Main Street',
+    addressLocality: 'City',
+    addressRegion: 'Region',
+    addressCountry: 'US',
   },
   contactPoint: {
     '@type': 'ContactPoint',

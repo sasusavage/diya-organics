@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-const SITE_NAME = 'WIDAMA Pharmacy';
+const SITE_NAME = 'Store Company';
 
 export function usePageTitle(title: string) {
   useEffect(() => {

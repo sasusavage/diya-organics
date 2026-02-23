@@ -24,9 +24,40 @@ import { usePageTitle } from '@/hooks/usePageTitle';
 
 export default function Home() {
   usePageTitle('');
-  const { getContent } = useCMS();
+  const { getSetting } = useCMS();
   const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Helper to safely parse JSON settings
+  const getParsedSetting = (key: string, fallback: any) => {
+    const setting = getSetting(key);
+    if (!setting) return fallback;
+    try {
+      return JSON.parse(setting);
+    } catch (e) {
+      console.error(`Error parsing CMS setting ${key}:`, e);
+      return fallback;
+    }
+  };
+
+  // Home Hero Settings
+  const heroImage = getSetting('home_hero_image') || '';
+  const heroBadge = getSetting('home_hero_badge') || '';
+  const heroTitle = getSetting('home_hero_title') || '';
+  const heroDesc = getSetting('home_hero_desc') || '';
+  const heroPrimaryText = getSetting('home_hero_cta_primary') || '';
+  const heroSecondaryText = getSetting('home_hero_cta_secondary') || '';
+
+  // Benefits Settings
+  const benefits = getParsedSetting('home_benefits', []);
+
+  // Featured Settings
+  const featuredBadge = getSetting('home_featured_badge') || '';
+  const featuredTitle = getSetting('home_featured_title') || '';
+  const featuredLinkText = getSetting('home_featured_link') || '';
+
+  // Testimonials Settings
+  const testimonials = getParsedSetting('home_testimonials', []);
 
   // Fetch Featured Products from Supabase
   useEffect(() => {
@@ -66,7 +97,7 @@ export default function Home() {
         {/* Background Image with Overlay */}
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1540555700478-4be289fbecee?auto=format&fit=crop&q=80&w=2000"
+            src={heroImage}
             alt="Organic Skincare Background"
             fill
             className="object-cover opacity-60"
@@ -84,28 +115,28 @@ export default function Home() {
           >
             <span className="inline-flex items-center gap-2 px-3 py-1 mb-6 text-xs font-bold tracking-widest uppercase rounded-full bg-brand-500/20 backdrop-blur-md text-gold-300 border border-gold-300/20">
               <Sparkles className="w-3 h-3" />
-              100% Organic & Pure
+              {heroBadge}
             </span>
-            <h1 className="mb-8 text-5xl md:text-7xl font-serif leading-[1.1] text-white">
-              Nature’s Secret <br />
-              <span className="italic text-gold-300">to Radiant Skin</span>
-            </h1>
+            <h1
+              className="mb-8 text-5xl md:text-7xl font-serif leading-[1.1] text-white"
+              dangerouslySetInnerHTML={{ __html: heroTitle }}
+            />
             <p className="mb-10 text-lg leading-relaxed text-brand-50/80 md:text-xl font-light">
-              Experience the power of botanical excellence. Our hand-crafted organic solutions are designed to nourish your skin and elevate your wellness journey.
+              {heroDesc}
             </p>
             <div className="flex flex-col gap-4 sm:flex-row">
               <Link
                 href="/shop"
                 className="group inline-flex items-center justify-center gap-2 px-8 py-4 text-sm font-bold tracking-wider uppercase transition-all rounded-full bg-gold-400 text-brand-900 hover:bg-gold-300 shadow-gold"
               >
-                Shop Collection
+                {heroPrimaryText}
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
               <Link
                 href="/about"
                 className="inline-flex items-center justify-center px-8 py-4 text-sm font-bold tracking-wider uppercase transition-all border rounded-full border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
               >
-                Our Story
+                {heroSecondaryText}
               </Link>
             </div>
           </motion.div>
@@ -138,12 +169,7 @@ export default function Home() {
       <section className="py-20 bg-white border-b border-sage-100">
         <div className="container px-6 mx-auto">
           <div className="grid grid-cols-1 gap-12 md:grid-cols-4 md:gap-8">
-            {[
-              { icon: Leaf, title: "100% Organic", desc: "No synthetic chemicals or pesticides." },
-              { icon: Sparkles, title: "Cruelty Free", desc: "Never tested on animals, ethically sourced." },
-              { icon: ShieldCheck, title: "Lab Tested", desc: "Verified for purity and active potency." },
-              { icon: Truck, title: "Fast Delivery", desc: "Nationwide shipping directly to you." }
-            ].map((item, i) => (
+            {benefits.map((item: any, i: number) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
@@ -153,7 +179,7 @@ export default function Home() {
                 className="text-center md:text-left flex flex-col items-center md:items-start"
               >
                 <div className="flex items-center justify-center w-14 h-14 mb-5 rounded-2xl bg-sage-50 text-brand-600 transition-colors hover:bg-brand-50">
-                  <item.icon className="w-6 h-6" />
+                  <i className={`${item.icon || 'ri-check-line'} text-2xl`}></i>
                 </div>
                 <h3 className="mb-2 text-lg font-bold text-gray-900">{item.title}</h3>
                 <p className="text-sm leading-relaxed text-gray-500">{item.desc}</p>
@@ -173,17 +199,17 @@ export default function Home() {
             className="flex flex-col items-end justify-between gap-6 mb-16 md:flex-row"
           >
             <div className="max-w-xl text-left mr-auto">
-              <span className="text-sm font-bold tracking-widest uppercase text-brand-600">The Essentials</span>
-              <h2 className="mt-4 text-4xl font-serif md:text-5xl text-gray-900 leading-tight">
-                Our Most Loved <br />
-                <span className="italic text-gold-500">Organic Solutions</span>
-              </h2>
+              <span className="text-sm font-bold tracking-widest uppercase text-brand-600">{featuredBadge}</span>
+              <h2
+                className="mt-4 text-4xl font-serif md:text-5xl text-gray-900 leading-tight"
+                dangerouslySetInnerHTML={{ __html: featuredTitle }}
+              />
             </div>
             <Link
               href="/shop"
               className="group inline-flex items-center gap-2 font-bold text-brand-900 border-b-2 border-gold-400 pb-1"
             >
-              Shop All Products
+              {featuredLinkText}
               <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </motion.div>
@@ -219,32 +245,34 @@ export default function Home() {
       <section className="py-24 bg-sage-50/50">
         <div className="container px-6 mx-auto">
           <motion.div {...fadeInUp} className="max-w-2xl mx-auto mb-16 text-center">
-            <h2 className="mb-4 text-4xl font-serif md:text-5xl text-gray-900">Loved by Nature Lovers</h2>
-            <p className="text-gray-500">Join over 10,000 satisfied customers who switched to pure, botanical skincare.</p>
+            <h2 className="mb-4 text-4xl font-serif md:text-5xl text-gray-900">{getSetting('home_testimonials_title') || 'Loved by Nature Lovers'}</h2>
+            <p className="text-gray-500">{getSetting('home_testimonials_subtitle') || 'Join over 10,000 satisfied customers who switched to pure, botanical skincare.'}</p>
           </motion.div>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {/* Main Feature Testimonial */}
-            <motion.div
-              {...fadeInUp}
-              className="md:col-span-2 p-10 bg-white rounded-4xl border border-brand-100/50 shadow-sm flex flex-col justify-center"
-            >
-              <div className="flex gap-1 mb-6 text-gold-400">
-                {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 fill-current" />)}
-              </div>
-              <p className="text-2xl font-serif italic leading-relaxed text-gray-800 mb-8">
-                &quot;The Organic Radiance Serum completely transformed my skin routine. I noticed a difference in texture within just two weeks. Finally, a brand that stays true to its organic promise!&quot;
-              </p>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 overflow-hidden rounded-full bg-sage-100">
-                  <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=100" alt="Customer" />
+            {testimonials.length > 0 && (
+              <motion.div
+                {...fadeInUp}
+                className="md:col-span-2 p-10 bg-white rounded-4xl border border-brand-100/50 shadow-sm flex flex-col justify-center"
+              >
+                <div className="flex gap-1 mb-6 text-gold-400">
+                  {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 fill-current" />)}
                 </div>
-                <div>
-                  <h4 className="font-bold text-gray-900">Sarah Jenkins</h4>
-                  <p className="text-sm text-gray-400">Verified Buyer</p>
+                <p className="text-2xl font-serif italic leading-relaxed text-gray-800 mb-8">
+                  &quot;{testimonials[0].quote}&quot;
+                </p>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 overflow-hidden rounded-full bg-sage-100">
+                    <img src={testimonials[0].image || "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=100"} alt="Customer" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900">{testimonials[0].author}</h4>
+                    <p className="text-sm text-gray-400">{testimonials[0].role}</p>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            )}
 
             {/* Side Callouts */}
             <div className="flex flex-col gap-6">

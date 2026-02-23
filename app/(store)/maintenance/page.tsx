@@ -58,7 +58,7 @@ export default function MaintenancePage() {
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <a
-              href="mailto:info@widamapharmacy.com"
+              href="mailto:info@STOREpharmacy.com"
               className="inline-flex items-center gap-2 bg-white text-gray-900 px-6 py-3 rounded-full font-medium hover:bg-gray-50 transition-colors border border-gray-200 whitespace-nowrap"
             >
               <i className="ri-mail-line"></i>
@@ -87,13 +87,13 @@ export default function MaintenancePage() {
           <p className="mb-2">Thank you for your patience</p>
           <p>Follow us on social media for real-time updates</p>
           <div className="flex gap-4 justify-center mt-4">
-            <a href="https://www.instagram.com/widamapharmacy" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors">
+            <a href="https://www.instagram.com/STOREpharmacy" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors">
               <i className="ri-instagram-line text-gray-600"></i>
             </a>
-            <a href="https://x.com/widamapharmacy" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors">
+            <a href="https://x.com/STOREpharmacy" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors">
               <i className="ri-twitter-fill text-gray-600"></i>
             </a>
-            <a href="https://www.tiktok.com/@widamapharmacy" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors">
+            <a href="https://www.tiktok.com/@STOREpharmacy" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors">
               <i className="ri-tiktok-fill text-gray-600"></i>
             </a>
           </div>
