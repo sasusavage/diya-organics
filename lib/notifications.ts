@@ -3,15 +3,15 @@ import { supabase } from '@/lib/supabase';
 import { escapeHtml } from '@/lib/sanitize';
 
 const resend = new Resend(process.env.RESEND_API_KEY || 'missing_api_key');
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@STOREpharmacy.com';
-const EMAIL_FROM = process.env.EMAIL_FROM || 'Store Company <noreply@STOREpharmacy.com>';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@diya-organics.com';
+const EMAIL_FROM = process.env.EMAIL_FROM || 'Diya Organics <noreply@diya-organics.com>';
 const BRAND = {
-    name: 'Store Company',
-    color: '#2563eb',
-    colorLight: '#eff6ff',
-    colorDark: '#064e3b',
+    name: 'Diya Organics',
+    color: '#0e2d21',
+    colorLight: '#f0fdf4',
+    colorDark: '#061a13',
     url: (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/+$/, ''),
-    phone: '+233209597443',
+    phone: '0500590559',
 };
 
 // Reusable branded email layout
@@ -154,7 +154,7 @@ export async function sendSMS({ to, message }: { to: string; message: string }) 
             },
             body: JSON.stringify({
                 type: 1,
-                senderid: 'STORE',
+                senderid: 'DIYA',
                 messages: [
                     {
                         recipient: recipient,
@@ -296,7 +296,7 @@ ${emailButton('View Order in Admin', `${baseUrl}/admin/orders/${id}`)}
     if (phone) {
         const smsMessage = trackingNumber
             ? `Hi ${name}, your order #${order_number || id} is confirmed! Tracking: ${trackingNumber}. Track here: ${trackingUrl}${shippingNotesSms}`
-            : `Hi ${name}, your order #${order_number || id} at Store Company is confirmed! Track here: ${trackingUrl}${shippingNotesSms}`;
+            : `Hi ${name}, your order #${order_number || id} at Diya Organics is confirmed! Track here: ${trackingUrl}${shippingNotesSms}`;
 
         await sendSMS({
             to: phone,
@@ -438,7 +438,7 @@ ${emailButton('Start Shopping', `${BRAND.url}/shop`)}
     if (phone) {
         await sendSMS({
             to: phone,
-            message: `Welcome ${firstName}! Thanks for joining Store Company.`
+            message: `Welcome ${firstName}! Thanks for joining Diya Organics.`
         });
     }
 }

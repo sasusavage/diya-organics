@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 import { supabase } from '@/lib/supabase';
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.STOREpharmacy.com';
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.diya-organics.com';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Static pages

@@ -9,47 +9,49 @@ import ChatWidget from '@/components/ChatWidget';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Store Platform',
-    template: '%s | Store Platform',
+    default: 'Diya Organics',
+    template: '%s | Diya Organics',
   },
-  description: 'Your premium shopping destination for quality products.',
-  keywords: ['shopping', 'ecommerce', 'store'],
+  description: 'Pure Ayurvedic Hair Care hand-manufactured with love in Ghana.',
+  keywords: ['hair care', 'ayurvedic', 'organic', 'ghana', 'made in ghana'],
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
-    siteName: 'Platform Store',
-    title: 'Modern E-Commerce Solution',
-    description: 'High-quality products for your needs.',
+    siteName: 'Diya Organics',
+    title: 'Diya Organics — Hand-Manufactured Ayurvedic Hair Care',
+    description: 'Pure Ayurvedic hair care for thicker, healthier hair. 100% Made in Ghana.',
     images: [
       {
-        url: '/og-image.jpg',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Brand Store',
+        alt: 'Diya Organics',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Brand Store — Premium Natural & Organic Products',
-    description: 'Premium organic and natural products for a healthier lifestyle. Order online today.',
+    title: 'Diya Organics — Premium Ayurvedic Hair Care',
+    description: 'Pure Ayurvedic hair care for thicker, healthier hair. Hand-manufactured in Ghana.',
   },
   icons: {
     icon: [
-      { url: '/favicon.ico' },
-      { url: '/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
-      { url: '/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
+      { url: '/favicon/favicon.ico' },
+      { url: '/favicon/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/favicon/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
+      { url: '/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
     ],
-    shortcut: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    shortcut: '/favicon/favicon.ico',
+    apple: '/favicon/apple-touch-icon.png',
   },
-  manifest: '/manifest.json',
+  manifest: '/favicon/site.webmanifest',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'Store App',
+    title: 'Diya Organics',
   },
 };
 
@@ -64,22 +66,23 @@ export const viewport: Viewport = {
 const orgSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'Store Brand',
-  description: 'Providing quality products to our customers.',
+  name: 'Diya Organics',
+  description: 'Pure Ayurvedic hair care hand-manufactured with love by Diya in Ghana.',
   url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
   logo: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/logo.png`,
-  foundingDate: '2024',
+  foundingDate: '2020',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'Main Street',
-    addressLocality: 'City',
-    addressRegion: 'Region',
-    addressCountry: 'US',
+    streetAddress: 'Haatso',
+    addressLocality: 'Accra',
+    addressRegion: 'Greater Accra',
+    addressCountry: 'GH',
   },
   contactPoint: {
     '@type': 'ContactPoint',
     contactType: 'customer service',
     availableLanguage: 'English',
+    telephone: '0500590559',
   },
 };
 

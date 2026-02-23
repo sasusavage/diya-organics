@@ -38,10 +38,10 @@ export default function ChatWidget() {
             }
 
             // 2. Get/Set Visitor ID
-            let vid = localStorage.getItem('STORE_visitor_id');
+            let vid = localStorage.getItem('DIYA_visitor_id');
             if (!vid) {
                 vid = generateId();
-                localStorage.setItem('STORE_visitor_id', vid);
+                localStorage.setItem('DIYA_visitor_id', vid);
             }
             setVisitorId(vid);
 
@@ -177,16 +177,16 @@ export default function ChatWidget() {
             {isOpen && (
                 <div className="bg-white rounded-2xl shadow-2xl w-[350px] h-[500px] mb-4 flex flex-col border border-gray-100 overflow-hidden animate-in slide-in-from-bottom-5 fade-in duration-300">
                     {/* Header */}
-                    <div className="p-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white flex justify-between items-center shadow-md shrink-0">
+                    <div className="p-4 bg-gradient-to-r from-brand-800 to-brand-900 text-white flex justify-between items-center shadow-md shrink-0">
                         <div className="flex items-center gap-3">
                             <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
                                 <i className="ri-customer-service-2-line text-lg"></i>
                             </div>
                             <div>
-                                <h3 className="font-bold text-sm">Support Team</h3>
-                                <span className="flex items-center gap-1.5 text-xs text-blue-100">
+                                <h3 className="font-bold text-sm">Diya Support</h3>
+                                <span className="flex items-center gap-1.5 text-xs text-brand-100">
                                     <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
-                                    We reply instantly
+                                    Ayurvedic Experts Online
                                 </span>
                             </div>
                         </div>
@@ -203,7 +203,7 @@ export default function ChatWidget() {
                         {messages.map((msg, i) => (
                             <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                 <div className={`max-w-[85%] p-3 rounded-2xl text-sm shadow-sm ${msg.role === 'user'
-                                    ? 'bg-blue-600 text-white rounded-br-none'
+                                    ? 'bg-brand-600 text-white rounded-br-none'
                                     : 'bg-white text-gray-800 border border-gray-200 rounded-bl-none'
                                     }`}>
                                     {msg.content}
@@ -219,19 +219,19 @@ export default function ChatWidget() {
                             <input
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
-                                className="flex-1 bg-gray-100 text-gray-800 text-sm border-0 rounded-full px-4 py-2.5 focus:ring-2 focus:ring-blue-500/20 focus:bg-white transition-all outline-none placeholder:text-gray-400"
-                                placeholder="Type your message..."
+                                className="flex-1 bg-gray-100 text-gray-800 text-sm border-0 rounded-full px-4 py-2.5 focus:ring-2 focus:ring-brand-500/20 focus:bg-white transition-all outline-none placeholder:text-gray-400"
+                                placeholder="Ask us about Ayurvedic hair care..."
                             />
                             <button
                                 type="submit"
                                 disabled={!input.trim()}
-                                className="w-9 h-9 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-transform active:scale-95 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="w-9 h-9 bg-brand-600 text-white rounded-full flex items-center justify-center hover:bg-brand-700 transition-transform active:scale-95 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 <i className="ri-send-plane-fill text-sm"></i>
                             </button>
                         </form>
                         <div className="text-[10px] text-center text-gray-400 mt-2">
-                            Powered by <a href="#" className="hover:text-blue-500">STORE AI</a>
+                            Powered by <a href="#" className="hover:text-brand-500 font-bold tracking-wider">DIYA AI</a>
                         </div>
                     </div>
                 </div>
@@ -240,10 +240,10 @@ export default function ChatWidget() {
             {/* Floating Button */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className={`bg-blue-600 hover:bg-blue-700 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg shadow-blue-600/30 transition-all hover:scale-105 active:scale-95 ${isOpen ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`}
+                className={`bg-brand-600 hover:bg-brand-700 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg shadow-brand-600/30 transition-all hover:scale-105 active:scale-95 ${isOpen ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`}
                 aria-label="Toggle Chat"
             >
-                <span className="absolute inset-0 rounded-full animate-ping bg-blue-600 opacity-20"></span>
+                <span className="absolute inset-0 rounded-full animate-ping bg-brand-600 opacity-20"></span>
                 <i className="ri-message-3-fill text-2xl"></i>
             </button>
 

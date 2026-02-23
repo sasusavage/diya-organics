@@ -1,13 +1,12 @@
 import type { Metadata } from 'next';
 
-const SITE_NAME = 'Store Company';
-const SITE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://www.STOREpharmacy.com';
-const SITE_DESCRIPTION = 'Store Company — Ghana\'s trusted source for quality medicines, health products, and pharmaceutical services. Wholesale, retail, manufacturing, and training since 2004.';
+const SITE_NAME = 'Diya Organics';
+const SITE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://www.diya-organics.com';
+const SITE_DESCRIPTION = 'Diya Organics — Hand-manufactured Ayurvedic hair care by Diya in Ghana. Pure, natural solutions for stronger, thicker, and lusher hair.';
 const DEFAULT_KEYWORDS = [
-  'Store Company', 'pharmacy Ghana', 'medicines online', 'health products',
-  'pharmaceutical wholesale', 'pharmacy Ashaiman', 'buy medicine online Ghana',
-  'STORE Towers', 'pharmaceutical services', 'health supplements',
-  'pharmacy training Ghana', 'pharmaceutical manufacturing',
+  'Diya Organics', 'hair care Ghana', 'ayurvedic hair care', 'organics hair care',
+  'made in Ghana', 'Haatso hair care', 'natural hair products Ghana',
+  'hair growth oil Ghana', 'herbal hair care', 'pure ayurvedic hair',
 ];
 
 export function StructuredData({ data }: { data: any }) {
@@ -145,16 +144,16 @@ export function generateOrganizationSchema() {
     name: SITE_NAME,
     description: SITE_DESCRIPTION,
     url: SITE_URL,
-    logo: `${SITE_URL}/logo.png`,
-    foundingDate: '2004',
+    logo: `${SITE_URL}/favicon/favicon.ico`,
+    foundingDate: '2020',
     founder: {
       '@type': 'Person',
-      name: 'Store Owner',
+      name: 'Diya',
     },
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'STORE Towers, Ashaiman Lebanon',
-      addressLocality: 'Ashaiman',
+      streetAddress: 'Haatso',
+      addressLocality: 'Accra',
       addressRegion: 'Greater Accra',
       addressCountry: 'GH',
     },

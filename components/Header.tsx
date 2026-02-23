@@ -19,9 +19,9 @@ export default function Header() {
   const { cartCount, isCartOpen, setIsCartOpen } = useCart();
   const { getSetting } = useCMS();
 
-  const siteName = getSetting('site_name') || 'Brand Store';
-  const siteLogo = getSetting('site_logo') || '/logo.png';
-  const sitePhone = getSetting('contact_phone') || '+233 XX XXX XXXX';
+  const siteName = getSetting('site_name') || 'Diya Organics';
+  const siteLogo = getSetting('site_logo') || '/favicon/favicon.ico';
+  const sitePhone = getSetting('contact_phone') || '0500590559';
 
   useEffect(() => {
     const handleScroll = () => {

@@ -18,7 +18,7 @@ export default function TermsPage() {
           <section className="mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-6">1. Agreement to Terms</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-              By accessing and using this website (STOREpharmacy.com), you accept and agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you must not use our website or services.
+              By accessing and using this website (diya-organics.com), you accept and agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you must not use our website or services.
             </p>
             <p className="text-gray-600 leading-relaxed">
               These terms apply to all visitors, users, and customers who access or use our service. We reserve the right to update or modify these terms at any time without prior notice. Your continued use of the website following any changes indicates your acceptance of the new terms.
@@ -27,7 +27,7 @@ export default function TermsPage() {
 
           <section className="mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-6">2. Use of Website</h2>
-            
+
             <h3 className="text-xl font-bold text-gray-900 mb-4 mt-8">2.1 Permitted Use</h3>
             <p className="text-gray-600 leading-relaxed mb-4">
               You may use our website for lawful purposes only. You agree not to:
@@ -67,7 +67,7 @@ export default function TermsPage() {
 
           <section className="mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-6">3. Products & Pricing</h2>
-            
+
             <h3 className="text-xl font-bold text-gray-900 mb-4 mt-8">3.1 Product Information</h3>
             <p className="text-gray-600 leading-relaxed mb-4">
               We make every effort to display our products accurately, including colours, descriptions, and specifications. However, we cannot guarantee that your device's display will accurately reflect product colours or that product descriptions are error-free.
@@ -107,7 +107,7 @@ export default function TermsPage() {
 
           <section className="mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-6">4. Orders & Payment</h2>
-            
+
             <h3 className="text-xl font-bold text-gray-900 mb-4 mt-8">4.1 Order Acceptance</h3>
             <p className="text-gray-600 leading-relaxed mb-4">
               Placing an order does not guarantee acceptance. We reserve the right to refuse or cancel any order for reasons including:
@@ -292,7 +292,7 @@ export default function TermsPage() {
                   <i className="ri-mail-line text-brand-700 text-xl mt-1"></i>
                   <div>
                     <p className="font-medium text-gray-900">Email</p>
-                    <a href="mailto:info@STOREpharmacy.com" className="text-brand-700 hover:underline">info@STOREpharmacy.com</a>
+                    <a href="mailto:care@diya-organics.com" className="text-brand-700 hover:underline">care@diya-organics.com</a>
                   </div>
                 </div>
 
@@ -300,7 +300,7 @@ export default function TermsPage() {
                   <i className="ri-phone-line text-brand-700 text-xl mt-1"></i>
                   <div>
                     <p className="font-medium text-gray-900">Phone</p>
-                    <a href="tel:+233209597443" className="text-brand-700 hover:underline">+233 XX XXX XXXX</a>
+                    <a href="tel:0500590559" className="text-brand-700 hover:underline">0500590559</a>
                   </div>
                 </div>
 
@@ -308,7 +308,7 @@ export default function TermsPage() {
                   <i className="ri-map-pin-line text-brand-700 text-xl mt-1"></i>
                   <div>
                     <p className="font-medium text-gray-900">Address</p>
-                    <p className="text-gray-600">Store Company<br />Accra, Ghana</p>
+                    <p className="text-gray-600">Diya Organics<br />Haatso, Accra, Ghana</p>
                   </div>
                 </div>
               </div>

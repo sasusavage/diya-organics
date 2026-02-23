@@ -61,7 +61,7 @@ export default function AboutPage() {
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 right-0 w-96 h-96 bg-brand-400/10 rounded-full blur-3xl" />
           <div className="absolute bottom-0 left-0 w-72 h-72 bg-gold-400/10 rounded-full blur-3xl" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white/[0.02] text-[400px] font-black pointer-events-none select-none">✚</div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white/[0.02] text-[400px] font-black pointer-events-none select-none">🌿</div>
         </div>
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
@@ -120,7 +120,7 @@ export default function AboutPage() {
               </div>
               <div className="relative">
                 <div className="bg-gradient-to-br from-brand-600 to-brand-800 rounded-[2rem] p-12 text-center relative overflow-hidden">
-                  <div className="absolute top-4 right-4 text-white/10 text-7xl font-black">✚</div>
+                  <div className="absolute top-4 right-4 text-white/10 text-7xl font-black">🌿</div>
                   <div className="relative z-10">
                     <div className="w-24 h-24 mx-auto bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center mb-6 border border-white/10">
                       <i className="ri-user-star-line text-4xl text-gold-300"></i>
@@ -221,8 +221,8 @@ export default function AboutPage() {
           <div className="animate-fade-in-up">
             <div className="text-center mb-14">
               <p className="text-brand-500 font-semibold text-sm uppercase tracking-wider mb-2">Our Offerings</p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 font-serif mb-4">Comprehensive Healthcare Services</h2>
-              <p className="text-gray-500 text-lg max-w-2xl mx-auto">Store Company operates across four key pillars, each designed to serve different aspects of Ghana&apos;s healthcare needs.</p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 font-serif mb-4">Our Commitment</h2>
+              <p className="text-gray-500 text-lg max-w-2xl mx-auto">Diya Organics operates on the principle of purity, ensuring every product is hand-manufactured with the finest Ayurvedic ingredients.</p>
             </div>
 
             <div className="space-y-8">
@@ -264,7 +264,7 @@ export default function AboutPage() {
             Experience the {siteName} Difference
           </h2>
           <p className="text-white/60 text-lg mb-10 max-w-2xl mx-auto">
-            Visit us at our headquarters, or shop online for genuine medicines and health products.
+            Experience the purity of our hand-manufactured products, made with love and time-tested Ayurvedic wisdom.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

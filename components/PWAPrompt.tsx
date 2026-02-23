@@ -60,11 +60,11 @@ export default function PWAPrompt() {
       <div className="pwa-prompt-sheet relative w-full max-w-lg mx-4 mb-6 bg-white rounded-3xl p-8 shadow-2xl">
         <div className="flex flex-col items-center text-center">
           <div className="w-16 h-16 bg-brand-100 rounded-2xl flex items-center justify-center mb-5">
-            <img src="/logo.png" alt="Store Company" className="w-10 h-10 object-contain" />
+            <img src="/favicon/favicon.ico" alt="Diya Organics" className="w-10 h-10 object-contain" />
           </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-2">Install Store Company</h3>
+          <h3 className="text-xl font-bold text-gray-900 mb-2">Install Diya Organics</h3>
           <p className="text-gray-500 text-sm mb-6 max-w-xs">
-            Add our app to your home screen for quick access to medicines, order tracking, and more.
+            Add our hair care app to your home screen for quick access to your favorite products and orders.
           </p>
           <div className="flex gap-3 w-full">
             <button

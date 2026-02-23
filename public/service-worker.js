@@ -1,5 +1,5 @@
-// app-project Supplies - Service Worker v2.0
-const CACHE_VERSION = 'sl-v2.0';
+// Diya Organics - Service Worker v2.1
+const CACHE_VERSION = 'diya-v2.1';
 const STATIC_CACHE = `static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `dynamic-${CACHE_VERSION}`;
 const IMAGE_CACHE = `images-${CACHE_VERSION}`;
@@ -212,7 +212,7 @@ self.addEventListener('push', (event) => {
 
   const data = event.data.json();
   const options = {
-    body: data.body || 'New update from app-project Supplies',
+    body: data.body || 'New update from Diya Organics',
     icon: '/icons/icon-192x192.png',
     badge: '/icons/icon-72x72.png',
     vibrate: [100, 50, 100],
@@ -228,7 +228,7 @@ self.addEventListener('push', (event) => {
 
   event.waitUntil(
     self.registration.showNotification(
-      data.title || 'app-project Supplies',
+      data.title || 'Diya Organics',
       options
     )
   );

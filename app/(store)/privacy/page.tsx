@@ -17,7 +17,7 @@ export default function PrivacyPage() {
         <div className="prose prose-lg max-w-none">
           <section className="mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-6">1. Information We Collect</h2>
-            
+
             <h3 className="text-xl font-bold text-gray-900 mb-4 mt-8">1.1 Information You Provide</h3>
             <p className="text-gray-600 leading-relaxed mb-4">
               When you create an account, place an order, or contact us, we collect:
@@ -66,7 +66,7 @@ export default function PrivacyPage() {
             <p className="text-gray-600 leading-relaxed mb-6">
               We use your personal information for the following purposes:
             </p>
-            
+
             <div className="space-y-6">
               <div className="bg-gray-50 p-6 rounded-xl">
                 <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
@@ -281,7 +281,7 @@ export default function PrivacyPage() {
             </div>
 
             <p className="text-gray-600 leading-relaxed">
-              To exercise any of these rights, please contact us at <a href="mailto:info@STOREpharmacy.com" className="text-brand-700 font-medium hover:underline">info@STOREpharmacy.com</a> or through your account settings. We will respond within 30 days.
+              To exercise any of these rights, please contact us at <a href="mailto:care@diya-organics.com" className="text-brand-700 font-medium hover:underline">care@diya-organics.com</a> or through your account settings. We will respond within 30 days.
             </p>
           </section>
 
@@ -384,7 +384,7 @@ export default function PrivacyPage() {
                   <i className="ri-mail-line text-brand-700 text-xl mt-1"></i>
                   <div>
                     <p className="font-medium text-gray-900">Email</p>
-                    <a href="mailto:info@STOREpharmacy.com" className="text-brand-700 hover:underline">info@STOREpharmacy.com</a>
+                    <a href="mailto:care@diya-organics.com" className="text-brand-700 hover:underline">care@diya-organics.com</a>
                   </div>
                 </div>
 
@@ -392,7 +392,7 @@ export default function PrivacyPage() {
                   <i className="ri-phone-line text-brand-700 text-xl mt-1"></i>
                   <div>
                     <p className="font-medium text-gray-900">Phone</p>
-                    <a href="tel:+233209597443" className="text-brand-700 hover:underline">+233 XX XXX XXXX</a>
+                    <a href="tel:0500590559" className="text-brand-700 hover:underline">0500590559</a>
                   </div>
                 </div>
 
@@ -400,7 +400,7 @@ export default function PrivacyPage() {
                   <i className="ri-map-pin-line text-brand-700 text-xl mt-1"></i>
                   <div>
                     <p className="font-medium text-gray-900">Address</p>
-                    <p className="text-gray-600">Store Company<br />Accra, Ghana</p>
+                    <p className="text-gray-600">Diya Organics<br />Haatso, Accra, Ghana</p>
                   </div>
                 </div>
               </div>

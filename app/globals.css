@@ -827,7 +827,7 @@ img {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #0D6B4E 0%, #084832 50%, #032416 100%);
+  background: #0e2d21;
   animation: splashFadeOut 0.5s ease-out 1.5s forwards;
 }
 

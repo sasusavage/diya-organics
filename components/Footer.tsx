@@ -5,13 +5,13 @@ import { useCMS } from '@/context/CMSContext';
 
 export default function Footer() {
   const { getSetting, getContentList } = useCMS();
-  const siteName = getSetting('site_name') || '';
-  const siteLogo = getSetting('site_logo') || '';
+  const siteName = getSetting('site_name') || 'Diya Organics';
+  const siteLogo = getSetting('site_logo') || '/favicon/favicon.ico';
   const siteEmail = getSetting('contact_email') || '';
   const sitePhone = getSetting('contact_phone') || '';
   const siteAddress = getSetting('contact_address') || '';
   const footerDescription = getSetting('footer_description') || '';
-  const footerCopyright = getSetting('footer_copyright') || ``;
+  const footerCopyright = getSetting('footer_copyright') || `All rights reserved. Diya Organics — Haatso, Accra, Ghana.`;
   const footerCtaTitle = getSetting('footer_cta_title') || '';
   const footerCtaSubtitle = getSetting('footer_cta_subtitle') || '';
 

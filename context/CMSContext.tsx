@@ -77,8 +77,8 @@ interface CMSContextType {
 
 const defaultSettings: SiteSettings = {
     site_name: 'Diya Organics',
-    site_tagline: 'Nature’s Secret to Radiant Skin',
-    site_logo: '/logo.png',
+    site_tagline: 'Pure Ayurvedic Hair Care — Manufactured with Love in Ghana',
+    site_logo: '/favicon/favicon.ico',
     contact_email: '',
     contact_phone: '',
     contact_address: '',
