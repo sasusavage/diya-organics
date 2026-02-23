@@ -26,6 +26,8 @@ export default function Home() {
   usePageTitle('');
   const { getSetting } = useCMS();
   const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+  const [heroSlides, setHeroSlides] = useState<any[]>([]);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const [loading, setLoading] = useState(true);
 
   // Helper to safely parse JSON settings
@@ -59,11 +61,36 @@ export default function Home() {
   // Testimonials Settings
   const testimonials = getParsedSetting('home_testimonials', []);
 
-  // Fetch Featured Products from Supabase
+  // Fetch Hero Slides & Featured Products
   useEffect(() => {
     async function fetchData() {
       try {
-        const { data, error } = await supabase
+        // Fetch Slides
+        const { data: slidesData } = await supabase
+          .from('hero_slides')
+          .select('*')
+          .eq('is_active', true)
+          .order('sort_order', { ascending: true });
+
+        if (slidesData && slidesData.length > 0) {
+          setHeroSlides(slidesData);
+        } else {
+          // Fallback to CMS settings if no slides are defined in the specific table
+          setHeroSlides([{
+            id: 'cms-fallback',
+            title: heroTitle,
+            subtitle: heroDesc,
+            tag: heroBadge,
+            image_url: heroImage,
+            cta_text: heroPrimaryText,
+            cta_link: '/shop',
+            secondary_cta_text: heroSecondaryText,
+            secondary_cta_link: '/about'
+          }]);
+        }
+
+        // Fetch Products
+        const { data: productsData, error } = await supabase
           .from('products')
           .select('*, product_images(*)')
           .eq('status', 'active')
@@ -71,15 +98,24 @@ export default function Home() {
           .limit(4);
 
         if (error) throw error;
-        setFeaturedProducts(data || []);
+        setFeaturedProducts(productsData || []);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
       }
     }
     fetchData();
-  }, []);
+  }, [heroTitle, heroDesc, heroBadge, heroImage, heroPrimaryText, heroSecondaryText]);
+
+  // Slideshow interval
+  useEffect(() => {
+    if (heroSlides.length <= 1) return;
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 8000);
+    return () => clearInterval(timer);
+  }, [heroSlides]);
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -93,101 +129,114 @@ export default function Home() {
       {/* ============================================
           HERO SECTION — Premium & Minimalist
           ============================================ */}
-      <section className="relative h-[90vh] flex items-center overflow-hidden bg-brand-900">
-        {/* Background Image with Overlay */}
-        <div className="absolute inset-0">
-          <Image
-            src={heroImage}
-            alt="Organic Skincare Background"
-            fill
-            className="object-cover opacity-60"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-brand-900/90 via-brand-900/40 to-transparent" />
-        </div>
+      <section className="relative h-[90vh] w-full overflow-hidden bg-white">
+        <AnimatePresence mode="wait">
+          {heroSlides.length > 0 && (
+            <motion.div
+              key={heroSlides[currentSlide].id}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.2, ease: "easeInOut" }}
+              className="absolute inset-0"
+            >
+              {/* Image Container - No Overlay */}
+              <div className="absolute inset-0">
+                <Image
+                  src={heroSlides[currentSlide].image_url}
+                  alt={heroSlides[currentSlide].title || "Hero Image"}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
 
-        <div className="container relative z-10 px-6 mx-auto">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-2xl"
-          >
-            <span className="inline-flex items-center gap-2 px-3 py-1 mb-6 text-xs font-bold tracking-widest uppercase rounded-full bg-brand-500/20 backdrop-blur-md text-gold-300 border border-gold-300/20">
-              <Sparkles className="w-3 h-3" />
-              {heroBadge}
-            </span>
-            <h1
-              className="mb-8 text-5xl md:text-7xl font-serif leading-[1.1] text-white"
-              dangerouslySetInnerHTML={{ __html: heroTitle }}
-            />
-            <p className="mb-10 text-lg leading-relaxed text-brand-50/80 md:text-xl font-light">
-              {heroDesc}
-            </p>
-            <div className="flex flex-col gap-4 sm:flex-row">
-              <Link
-                href="/shop"
-                className="group inline-flex items-center justify-center gap-2 px-8 py-4 text-sm font-bold tracking-wider uppercase transition-all rounded-full bg-gold-400 text-brand-900 hover:bg-gold-300 shadow-gold"
-              >
-                {heroPrimaryText}
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-              <Link
-                href="/about"
-                className="inline-flex items-center justify-center px-8 py-4 text-sm font-bold tracking-wider uppercase transition-all border rounded-full border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
-              >
-                {heroSecondaryText}
-              </Link>
-            </div>
-          </motion.div>
-        </div>
+              {/* Text Content Overlay - Centered and Premium */}
+              <div className="container relative z-10 h-full px-6 mx-auto flex flex-col justify-center">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="max-w-3xl"
+                >
+                  {heroSlides[currentSlide].tag && (
+                    <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-bold tracking-[0.2em] uppercase rounded-full bg-white/90 backdrop-blur-md text-brand-900 border border-brand-100 shadow-sm">
+                      <Sparkles className="w-3.5 h-3.5 text-gold-500" />
+                      {heroSlides[currentSlide].tag}
+                    </span>
+                  )}
+                  <h1
+                    className="mb-6 text-6xl md:text-8xl font-serif leading-[1.05] text-brand-900 drop-shadow-sm"
+                    dangerouslySetInnerHTML={{ __html: heroSlides[currentSlide].title }}
+                  />
+                  <p className="mb-10 text-xl leading-relaxed text-brand-950/70 md:text-2xl font-light max-w-xl">
+                    {heroSlides[currentSlide].subtitle}
+                  </p>
+                  <div className="flex flex-col gap-4 sm:flex-row">
+                    <Link
+                      href={heroSlides[currentSlide].cta_link || '/shop'}
+                      className="group inline-flex items-center justify-center gap-3 px-10 py-5 text-sm font-bold tracking-widest uppercase transition-all rounded-full bg-brand-900 text-white hover:bg-brand-800 shadow-xl shadow-brand-900/10"
+                    >
+                      {heroSlides[currentSlide].cta_text || 'Shop Collection'}
+                      <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                    </Link>
+                    {/* Secondary CTA if it exists */}
+                    {(heroSlides[currentSlide].secondary_cta_text || heroSecondaryText) && (
+                      <Link
+                        href={heroSlides[currentSlide].secondary_cta_link || '/about'}
+                        className="inline-flex items-center justify-center px-10 py-5 text-sm font-bold tracking-widest uppercase transition-all border-2 rounded-full border-brand-900/10 text-brand-900 hover:bg-brand-900 hover:text-white backdrop-blur-sm"
+                      >
+                        {heroSlides[currentSlide].secondary_cta_text || heroSecondaryText}
+                      </Link>
+                    )}
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* Floating Quality Badges (Desktop Only) */}
-        <div className="absolute hidden lg:flex bottom-12 right-12 gap-6 z-20">
-          <motion.div
-            animate={{ y: [0, -10, 0] }}
-            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-            className="flex flex-col items-center justify-center w-24 h-24 rounded-full bg-white/5 backdrop-blur-lg border border-white/10"
-          >
-            <Leaf className="w-6 h-6 text-gold-300 mb-1" />
-            <span className="text-[10px] font-bold text-white uppercase tracking-tighter">Vegan</span>
-          </motion.div>
-          <motion.div
-            animate={{ y: [0, -10, 0] }}
-            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut", delay: 0.5 }}
-            className="flex flex-col items-center justify-center w-24 h-24 rounded-full bg-white/5 backdrop-blur-lg border border-white/10"
-          >
-            <ShieldCheck className="w-6 h-6 text-gold-300 mb-1" />
-            <span className="text-[10px] font-bold text-white uppercase tracking-tighter">Purity</span>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ============================================
-          BENEFITS SECTION — Trust & USPs
-          ============================================ */}
-      <section className="py-20 bg-white border-b border-sage-100">
-        <div className="container px-6 mx-auto">
-          <div className="grid grid-cols-1 gap-12 md:grid-cols-4 md:gap-8">
-            {benefits.map((item: any, i: number) => (
-              <motion.div
+        {/* Slideshow Progress Bar */}
+        {heroSlides.length > 1 && (
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-30">
+            {heroSlides.map((_, i) => (
+              <button
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className="text-center md:text-left flex flex-col items-center md:items-start"
-              >
-                <div className="flex items-center justify-center w-14 h-14 mb-5 rounded-2xl bg-sage-50 text-brand-600 transition-colors hover:bg-brand-50">
-                  <i className={`${item.icon || 'ri-check-line'} text-2xl`}></i>
-                </div>
-                <h3 className="mb-2 text-lg font-bold text-gray-900">{item.title}</h3>
-                <p className="text-sm leading-relaxed text-gray-500">{item.desc}</p>
-              </motion.div>
+                onClick={() => setCurrentSlide(i)}
+                className={`h-1.5 transition-all duration-500 rounded-full ${i === currentSlide ? 'w-12 bg-brand-900' : 'w-3 bg-brand-900/20'}`}
+                aria-label={`Go to slide ${i + 1}`}
+              />
             ))}
           </div>
+        )}
+
+        {/* Floating Badges */}
+        <div className="absolute hidden xl:flex flex-col bottom-12 right-12 gap-4 z-20">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 1 }}
+            className="flex items-center gap-4 px-5 py-3 rounded-2xl bg-white/80 backdrop-blur-xl border border-white/20 shadow-xl"
+          >
+            <div className="w-10 h-10 rounded-full bg-brand-50 flex items-center justify-center">
+              <Leaf className="w-5 h-5 text-brand-600" />
+            </div>
+            <span className="text-xs font-bold text-brand-900 uppercase tracking-widest text-[10px]">100% Organic</span>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 1.2 }}
+            className="flex items-center gap-4 px-5 py-3 rounded-2xl bg-white/80 backdrop-blur-xl border border-white/20 shadow-xl"
+          >
+            <div className="w-10 h-10 rounded-full bg-brand-50 flex items-center justify-center">
+              <ShieldCheck className="w-5 h-5 text-brand-600" />
+            </div>
+            <span className="text-xs font-bold text-brand-900 uppercase tracking-widest text-[10px]">Ayurvedic</span>
+          </motion.div>
         </div>
       </section>
+
 
       {/* ============================================
           FEATURED PRODUCTS — Best Sellers
@@ -293,6 +342,32 @@ export default function Home() {
                 <p className="text-brand-900/60 text-sm">Tag @diyaorganics to be featured on our page.</p>
               </motion.div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================
+          BENEFITS SECTION — Trust & USPs (Moved to Bottom)
+          ============================================ */}
+      <section className="py-24 bg-white border-t border-sage-100">
+        <div className="container px-6 mx-auto">
+          <div className="grid grid-cols-1 gap-12 md:grid-cols-4 md:gap-8">
+            {benefits.map((item: any, i: number) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                viewport={{ once: true }}
+                className="text-center md:text-left flex flex-col items-center md:items-start"
+              >
+                <div className="flex items-center justify-center w-16 h-16 mb-6 rounded-3xl bg-sage-50 text-brand-600 transition-all hover:bg-brand-900 hover:text-white hover:rotate-6 group">
+                  <i className={`${item.icon || 'ri-check-line'} text-3xl`}></i>
+                </div>
+                <h3 className="mb-3 text-xl font-bold text-gray-900 uppercase tracking-tight">{item.title}</h3>
+                <p className="text-base leading-relaxed text-gray-500 font-light">{item.desc}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>

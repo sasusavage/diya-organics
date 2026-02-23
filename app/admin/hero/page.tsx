@@ -13,6 +13,8 @@ interface HeroSlide {
     video_url: string | null;
     cta_text: string;
     cta_link: string;
+    secondary_cta_text: string;
+    secondary_cta_link: string;
     sort_order: number;
     is_active: boolean;
 }
@@ -33,6 +35,8 @@ export default function HeroManager() {
         video_url: '',
         cta_text: 'Shop Now',
         cta_link: '/shop',
+        secondary_cta_text: '',
+        secondary_cta_link: '',
         sort_order: 0,
         is_active: true
     });
@@ -75,6 +79,8 @@ export default function HeroManager() {
                 video_url: '',
                 cta_text: 'Shop Now',
                 cta_link: '/shop',
+                secondary_cta_text: 'Learn More',
+                secondary_cta_link: '/about',
                 sort_order: slides.length,
                 is_active: true
             });
@@ -454,12 +460,33 @@ export default function HeroManager() {
                                         />
                                     </div>
                                     <div className="col-span-1">
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Button Link</label>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Button 1 Link</label>
                                         <input
                                             type="text"
                                             value={formData.cta_link || ''}
                                             onChange={(e) => setFormData({ ...formData, cta_link: e.target.value })}
                                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+                                        />
+                                    </div>
+
+                                    <div className="col-span-1">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Button 2 Text (Optional)</label>
+                                        <input
+                                            type="text"
+                                            value={formData.secondary_cta_text || ''}
+                                            onChange={(e) => setFormData({ ...formData, secondary_cta_text: e.target.value })}
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+                                            placeholder="e.g. Learn More"
+                                        />
+                                    </div>
+                                    <div className="col-span-1">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Button 2 Link</label>
+                                        <input
+                                            type="text"
+                                            value={formData.secondary_cta_link || ''}
+                                            onChange={(e) => setFormData({ ...formData, secondary_cta_link: e.target.value })}
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+                                            placeholder="e.g. /about"
                                         />
                                     </div>
 
