@@ -111,11 +111,12 @@ export default function Home() {
   // Slideshow interval
   useEffect(() => {
     if (heroSlides.length <= 1) return;
+    const duration = heroSlides[currentSlide]?.duration || 8000;
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 8000);
+    }, duration);
     return () => clearInterval(timer);
-  }, [heroSlides]);
+  }, [heroSlides, currentSlide]);
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -140,9 +141,18 @@ export default function Home() {
               transition={{ duration: 1.2, ease: "easeInOut" }}
               className="absolute inset-0"
             >
-              {/* Background Image - Clean & Edge-to-Edge */}
+              {/* Background Media - Supports Image & Video */}
               <div className="absolute inset-0">
-                {heroSlides[currentSlide].image_url ? (
+                {heroSlides[currentSlide].video_url ? (
+                  <video
+                    src={heroSlides[currentSlide].video_url}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="w-full h-full object-cover"
+                  />
+                ) : heroSlides[currentSlide].image_url ? (
                   <Image
                     src={heroSlides[currentSlide].image_url}
                     alt={heroSlides[currentSlide].title || "Hero Image"}
@@ -156,15 +166,17 @@ export default function Home() {
                     <Sparkles className="w-12 h-12 text-brand-200 animate-pulse" />
                   </div>
                 )}
+                {/* Dark Protection Gradient: Bottom-up on mobile, Left-to-right on desktop */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent md:bg-gradient-to-r md:from-black/70 md:via-black/30 md:to-transparent" />
               </div>
 
-              {/* Text Content - Responsive Positioning with Text Shadow for Readability */}
+              {/* Text Content - Positioned for Readability */}
               <div className="container relative z-10 h-full px-6 mx-auto flex flex-col justify-end pb-24 md:pb-0 md:justify-center">
                 <motion.div
                   initial={{ opacity: 0, x: -30 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
-                  className="max-w-xl md:max-w-2xl drop-shadow-2xl"
+                  className="max-w-xl md:max-w-2xl"
                 >
                   {heroSlides[currentSlide].tag && (
                     <span className="inline-flex items-center gap-2 px-3 py-1 md:px-4 md:py-1.5 mb-4 md:mb-6 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase rounded-full bg-brand-900 text-white shadow-lg shadow-brand-900/10">
@@ -173,10 +185,10 @@ export default function Home() {
                     </span>
                   )}
                   <h1
-                    className="mb-4 md:mb-6 text-3xl sm:text-4xl md:text-7xl font-serif leading-[1.2] md:leading-[1.1] text-brand-950"
+                    className="mb-4 md:mb-6 text-3xl sm:text-4xl md:text-7xl font-serif leading-[1.2] md:leading-[1.1] text-white"
                     dangerouslySetInnerHTML={{ __html: heroSlides[currentSlide].title }}
                   />
-                  <p className="mb-8 md:mb-10 text-base md:text-xl leading-relaxed text-brand-900/80 font-light max-w-lg">
+                  <p className="mb-8 md:mb-10 text-base md:text-xl leading-relaxed text-white/90 font-light max-w-lg">
                     {heroSlides[currentSlide].subtitle}
                   </p>
                   <div className="flex flex-col gap-3 sm:flex-row">

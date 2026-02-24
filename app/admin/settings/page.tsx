@@ -10,6 +10,22 @@ interface SettingRow {
     category: string;
 }
 
+interface HeroSlide {
+    id: string;
+    title: string;
+    subtitle: string;
+    tag: string;
+    image_url: string;
+    video_url: string | null;
+    cta_text: string;
+    cta_link: string;
+    secondary_cta_text: string;
+    secondary_cta_link: string;
+    duration: number;
+    sort_order: number;
+    is_active: boolean;
+}
+
 const SETTING_CATEGORIES = [
     { id: 'announcement', label: 'Announcement', icon: 'ri-megaphone-line', description: 'Top announcement bar' },
     { id: 'newsletter', label: 'Newsletter', icon: 'ri-mail-send-line', description: 'Subscription section' },
@@ -50,6 +66,8 @@ function SettingsContent() {
     const [contactHeroPreview, setContactHeroPreview] = useState<string | null>(null);
     const [homeHeroFile, setHomeHeroFile] = useState<File | null>(null);
     const [homeHeroPreview, setHomeHeroPreview] = useState<string | null>(null);
+    const [heroSlides, setHeroSlides] = useState<HeroSlide[]>([]);
+    const [slideLoading, setSlideLoading] = useState(false);
 
     const fetchSettings = useCallback(async () => {
         try {
@@ -61,6 +79,14 @@ function SettingsContent() {
                 settingsObj[row.key] = typeof row.value === 'string' ? row.value : row.value;
             });
             setSettings(settingsObj);
+
+            // Fetch Hero Slides
+            const { data: slidesData, error: slidesError } = await supabase
+                .from('hero_slides')
+                .select('*')
+                .order('sort_order', { ascending: true });
+            if (slidesError) throw slidesError;
+            setHeroSlides(slidesData || []);
         } catch (err) {
             console.error('Error fetching settings:', err);
             showToast('error', 'Failed to load settings');
@@ -141,6 +167,104 @@ function SettingsContent() {
         if (file) {
             setHomeHeroFile(file);
             setHomeHeroPreview(URL.createObjectURL(file));
+        }
+    };
+
+    const handleSlideMediaChange = async (slideId: string, e: React.ChangeEvent<HTMLInputElement>, type: 'image' | 'video') => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setSlideLoading(true);
+        try {
+            const ext = file.name.split('.').pop();
+            const filePath = `hero/${slideId}-${Date.now()}.${ext}`;
+            const { error: uploadError } = await supabase.storage
+                .from('hero-assets')
+                .upload(filePath, file, { upsert: true });
+
+            if (uploadError) throw uploadError;
+
+            const { data: urlData } = supabase.storage.from('hero-assets').getPublicUrl(filePath);
+            const publicUrl = urlData.publicUrl;
+
+            // Update state and DB
+            const updatedSlides = heroSlides.map(s => {
+                if (s.id === slideId) {
+                    return type === 'image'
+                        ? { ...s, image_url: publicUrl, video_url: null }
+                        : { ...s, video_url: publicUrl };
+                }
+                return s;
+            });
+            setHeroSlides(updatedSlides);
+
+            const { error: updateError } = await supabase
+                .from('hero_slides')
+                .update(type === 'image' ? { image_url: publicUrl, video_url: null } : { video_url: publicUrl })
+                .eq('id', slideId);
+
+            if (updateError) throw updateError;
+            showToast('success', `${type === 'image' ? 'Image' : 'Video'} uploaded successfully`);
+        } catch (err: any) {
+            console.error('Error uploading media:', err);
+            showToast('error', err.message || 'Failed to upload media');
+        } finally {
+            setSlideLoading(false);
+        }
+    };
+
+    const addSlide = async () => {
+        const newSlide = {
+            title: 'New Slide Title',
+            subtitle: 'Slide description goes here...',
+            tag: 'New Arrival',
+            image_url: '',
+            video_url: null,
+            cta_text: 'Shop Now',
+            cta_link: '/shop',
+            sort_order: heroSlides.length,
+            is_active: true,
+            duration: 8000
+        };
+
+        try {
+            const { data, error } = await supabase
+                .from('hero_slides')
+                .insert([newSlide])
+                .select()
+                .single();
+
+            if (error) throw error;
+            setHeroSlides([...heroSlides, data]);
+            showToast('success', 'Slide added successfully');
+        } catch (err: any) {
+            showToast('error', err.message || 'Failed to add slide');
+        }
+    };
+
+    const updateSlideField = async (id: string, field: string, value: any) => {
+        try {
+            const { error } = await supabase
+                .from('hero_slides')
+                .update({ [field]: value })
+                .eq('id', id);
+
+            if (error) throw error;
+            setHeroSlides(heroSlides.map(s => s.id === id ? { ...s, [field]: value } : s));
+        } catch (err: any) {
+            showToast('error', err.message || 'Failed to update slide');
+        }
+    };
+
+    const deleteSlide = async (id: string) => {
+        if (!confirm('Are you sure you want to delete this slide?')) return;
+        try {
+            const { error } = await supabase.from('hero_slides').delete().eq('id', id);
+            if (error) throw error;
+            setHeroSlides(heroSlides.filter(s => s.id !== id));
+            showToast('success', 'Slide deleted');
+        } catch (err: any) {
+            showToast('error', err.message || 'Failed to delete slide');
         }
     };
 
@@ -660,58 +784,129 @@ function SettingsContent() {
                                         <i className="ri-home-4-line text-blue-600"></i> Homepage Editor
                                     </h2>
 
-                                    {/* Hero Section */}
+                                    {/* Hero Slideshow Manager */}
                                     <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6">
-                                        <h3 className="font-bold text-gray-900 mb-4">Hero Section</h3>
-                                        <div className="grid gap-6">
-                                            <div className="flex flex-col md:flex-row gap-6 items-start">
-                                                <div className="w-full md:w-1/3">
-                                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Background Image</label>
-                                                    <div className="relative group aspect-video bg-white rounded-xl border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center">
-                                                        {homeHeroPreview || getVal('home_hero_image') ? (
-                                                            <img src={homeHeroPreview || getVal('home_hero_image')} alt="Hero Preview" className="w-full h-full object-cover" />
-                                                        ) : (
-                                                            <div className="text-gray-400 text-center p-4">
-                                                                <i className="ri-image-add-line text-3xl mb-1 block"></i>
-                                                                <span className="text-xs">High resolution recommended</span>
+                                        <div className="flex justify-between items-center mb-6">
+                                            <div>
+                                                <h3 className="font-bold text-gray-900 text-lg">Hero Slideshow</h3>
+                                                <p className="text-sm text-gray-500">Add slides with images or videos and custom timing</p>
+                                            </div>
+                                            <button
+                                                onClick={addSlide}
+                                                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 shadow-md transition-all sm:px-6"
+                                            >
+                                                <i className="ri-add-line"></i> Add Slide
+                                            </button>
+                                        </div>
+
+                                        <div className="space-y-6">
+                                            {heroSlides.map((slide, index) => (
+                                                <div key={slide.id} className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden group">
+                                                    <div className="flex flex-col lg:flex-row">
+                                                        {/* Media Preview Area */}
+                                                        <div className="lg:w-80 h-48 lg:h-auto bg-gray-100 relative group/media">
+                                                            {slide.video_url ? (
+                                                                <video src={slide.video_url} className="w-full h-full object-cover" autoPlay muted loop />
+                                                            ) : slide.image_url ? (
+                                                                <img src={slide.image_url} alt="" className="w-full h-full object-cover" />
+                                                            ) : (
+                                                                <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 p-4 text-center">
+                                                                    <i className="ri-image-add-line text-4xl mb-2"></i>
+                                                                    <p className="text-xs">No media uploaded</p>
+                                                                </div>
+                                                            )}
+
+                                                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/media:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3">
+                                                                <label className="cursor-pointer bg-white text-gray-900 px-4 py-2 rounded-lg text-xs font-bold hover:bg-gray-100 flex items-center gap-2">
+                                                                    <i className="ri-image-line"></i>
+                                                                    Upload Image
+                                                                    <input type="file" className="hidden" accept="image/*" onChange={(e) => handleSlideMediaChange(slide.id, e, 'image')} />
+                                                                </label>
+                                                                <label className="cursor-pointer bg-brand-900 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-brand-800 flex items-center gap-2">
+                                                                    <i className="ri-video-line"></i>
+                                                                    Upload Video
+                                                                    <input type="file" className="hidden" accept="video/*" onChange={(e) => handleSlideMediaChange(slide.id, e, 'video')} />
+                                                                </label>
                                                             </div>
-                                                        )}
-                                                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                                                            <label className="cursor-pointer bg-white text-gray-900 px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-gray-100">
-                                                                Change Image
-                                                                <input type="file" className="hidden" accept="image/*" onChange={handleHomeHeroChange} />
-                                                            </label>
+
+                                                            {slideLoading && (
+                                                                <div className="absolute inset-0 bg-white/50 backdrop-blur-sm flex items-center justify-center">
+                                                                    <i className="ri-loader-4-line animate-spin text-2xl text-blue-600"></i>
+                                                                </div>
+                                                            )}
+                                                        </div>
+
+                                                        {/* Content Editor */}
+                                                        <div className="p-6 flex-1 bg-white">
+                                                            <div className="flex items-center justify-between mb-4">
+                                                                <div className="flex items-center gap-3">
+                                                                    <span className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-sm font-bold text-gray-500">#{index + 1}</span>
+                                                                    <label className="flex items-center gap-2 cursor-pointer">
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            checked={slide.is_active}
+                                                                            onChange={(e) => updateSlideField(slide.id, 'is_active', e.target.checked)}
+                                                                            className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                                                        />
+                                                                        <span className="text-sm font-semibold text-gray-700">Active</span>
+                                                                    </label>
+                                                                </div>
+                                                                <button onClick={() => deleteSlide(slide.id)} className="text-gray-400 hover:text-red-500 p-2 rounded-lg transition-colors">
+                                                                    <i className="ri-delete-bin-line text-lg"></i>
+                                                                </button>
+                                                            </div>
+
+                                                            <div className="grid md:grid-cols-2 gap-4">
+                                                                <div>
+                                                                    <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Tag/Badge</label>
+                                                                    <input type="text" value={slide.tag} onChange={(e) => updateSlideField(slide.id, 'tag', e.target.value)} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" placeholder="e.g. New Arrival" />
+                                                                </div>
+                                                                <div>
+                                                                    <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Duration (ms)</label>
+                                                                    <input type="number" value={slide.duration} onChange={(e) => updateSlideField(slide.id, 'duration', parseInt(e.target.value))} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" placeholder="8000" />
+                                                                </div>
+                                                                <div className="md:col-span-2">
+                                                                    <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Title (supports HTML)</label>
+                                                                    <input type="text" value={slide.title} onChange={(e) => updateSlideField(slide.id, 'title', e.target.value)} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm font-serif" placeholder="Slide Title" />
+                                                                </div>
+                                                                <div className="md:col-span-2">
+                                                                    <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Subtitle</label>
+                                                                    <textarea value={slide.subtitle} onChange={(e) => updateSlideField(slide.id, 'subtitle', e.target.value)} rows={2} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm resize-none" placeholder="Description..." />
+                                                                </div>
+                                                                <div>
+                                                                    <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Primary Button Text</label>
+                                                                    <input type="text" value={slide.cta_text} onChange={(e) => updateSlideField(slide.id, 'cta_text', e.target.value)} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" />
+                                                                </div>
+                                                                <div>
+                                                                    <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Primary Link</label>
+                                                                    <input type="text" value={slide.cta_link} onChange={(e) => updateSlideField(slide.id, 'cta_link', e.target.value)} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" />
+                                                                </div>
+                                                                <div>
+                                                                    <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Secondary Button Text</label>
+                                                                    <input type="text" value={slide.secondary_cta_text} onChange={(e) => updateSlideField(slide.id, 'secondary_cta_text', e.target.value)} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" />
+                                                                </div>
+                                                                <div>
+                                                                    <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Secondary Link</label>
+                                                                    <input type="text" value={slide.secondary_cta_link} onChange={(e) => updateSlideField(slide.id, 'secondary_cta_link', e.target.value)} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" />
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="flex-1 grid gap-4">
-                                                    <div>
-                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Badge Text</label>
-                                                        <input type="text" value={getVal('home_hero_badge')} onChange={e => setVal('home_hero_badge', e.target.value)} placeholder="100% Organic & Pure" className="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500" />
+                                            ))}
+
+                                            {heroSlides.length === 0 && (
+                                                <div className="text-center py-12 bg-white rounded-2xl border-2 border-dashed border-gray-200">
+                                                    <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                        <i className="ri-image-slideshow-line text-3xl text-gray-300"></i>
                                                     </div>
-                                                    <div>
-                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Main Title</label>
-                                                        <input type="text" value={getVal('home_hero_title')} onChange={e => setVal('home_hero_title', e.target.value)} className="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500" />
-                                                        <p className="text-xs text-gray-400 mt-1">Tip: Use &lt;br /&gt; for line breaks.</p>
-                                                    </div>
+                                                    <h4 className="text-gray-900 font-bold">No slides found</h4>
+                                                    <p className="text-gray-500 text-sm mb-6">Create your first hero slide to get started</p>
+                                                    <button onClick={addSlide} className="inline-flex items-center gap-2 text-blue-600 font-bold hover:underline">
+                                                        <i className="ri-add-line"></i> Add your first slide
+                                                    </button>
                                                 </div>
-                                            </div>
-                                            <div className="grid md:grid-cols-2 gap-4">
-                                                <div>
-                                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Hero Description</label>
-                                                    <textarea value={getVal('home_hero_desc')} onChange={e => setVal('home_hero_desc', e.target.value)} rows={3} className="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
-                                                </div>
-                                                <div className="grid grid-cols-2 gap-4">
-                                                    <div>
-                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Primary CTA Text</label>
-                                                        <input type="text" value={getVal('home_hero_cta_primary')} onChange={e => setVal('home_hero_cta_primary', e.target.value)} className="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500" />
-                                                    </div>
-                                                    <div>
-                                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Secondary CTA Text</label>
-                                                        <input type="text" value={getVal('home_hero_cta_secondary')} onChange={e => setVal('home_hero_cta_secondary', e.target.value)} className="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500" />
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            )}
                                         </div>
                                     </div>
 
