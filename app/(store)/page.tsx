@@ -140,51 +140,58 @@ export default function Home() {
               transition={{ duration: 1.2, ease: "easeInOut" }}
               className="absolute inset-0"
             >
-              {/* Image Container - No Overlay */}
+              {/* Background Image - No Full Overlay */}
               <div className="absolute inset-0">
-                <Image
-                  src={heroSlides[currentSlide].image_url}
-                  alt={heroSlides[currentSlide].title || "Hero Image"}
-                  fill
-                  className="object-cover"
-                  priority
-                />
+                {heroSlides[currentSlide].image_url ? (
+                  <Image
+                    src={heroSlides[currentSlide].image_url}
+                    alt={heroSlides[currentSlide].title || "Hero Image"}
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                ) : (
+                  <div className="w-full h-full bg-brand-50 flex items-center justify-center">
+                    <Sparkles className="w-12 h-12 text-brand-200 animate-pulse" />
+                  </div>
+                )}
+                {/* Text Protection Gradient: Bottom-up on mobile, Left-to-right on desktop */}
+                <div className="absolute inset-0 bg-gradient-to-t from-white/95 via-white/40 to-transparent md:bg-gradient-to-r md:from-white/95 md:via-white/50 md:to-transparent" />
               </div>
 
-              {/* Text Content Overlay - Centered and Premium */}
-              <div className="container relative z-10 h-full px-6 mx-auto flex flex-col justify-center">
+              {/* Text Content - Bottom on mobile, Center on desktop */}
+              <div className="container relative z-10 h-full px-6 mx-auto flex flex-col justify-end pb-20 md:pb-0 md:justify-center">
                 <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
-                  className="max-w-3xl"
+                  className="max-w-xl md:max-w-2xl"
                 >
                   {heroSlides[currentSlide].tag && (
-                    <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-bold tracking-[0.2em] uppercase rounded-full bg-white/90 backdrop-blur-md text-brand-900 border border-brand-100 shadow-sm">
-                      <Sparkles className="w-3.5 h-3.5 text-gold-500" />
+                    <span className="inline-flex items-center gap-2 px-3 py-1 md:px-4 md:py-1.5 mb-4 md:mb-6 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase rounded-full bg-brand-900 text-white shadow-lg shadow-brand-900/10">
+                      <Sparkles className="w-3 h-3 md:w-3.5 md:h-3.5 text-gold-400" />
                       {heroSlides[currentSlide].tag}
                     </span>
                   )}
                   <h1
-                    className="mb-6 text-6xl md:text-8xl font-serif leading-[1.05] text-brand-900 drop-shadow-sm"
+                    className="mb-4 md:mb-6 text-3xl sm:text-4xl md:text-7xl font-serif leading-[1.2] md:leading-[1.1] text-brand-950"
                     dangerouslySetInnerHTML={{ __html: heroSlides[currentSlide].title }}
                   />
-                  <p className="mb-10 text-xl leading-relaxed text-brand-950/70 md:text-2xl font-light max-w-xl">
+                  <p className="mb-8 md:mb-10 text-base md:text-xl leading-relaxed text-brand-900/80 font-light max-w-lg">
                     {heroSlides[currentSlide].subtitle}
                   </p>
-                  <div className="flex flex-col gap-4 sm:flex-row">
+                  <div className="flex flex-col gap-3 sm:flex-row">
                     <Link
                       href={heroSlides[currentSlide].cta_link || '/shop'}
-                      className="group inline-flex items-center justify-center gap-3 px-10 py-5 text-sm font-bold tracking-widest uppercase transition-all rounded-full bg-brand-900 text-white hover:bg-brand-800 shadow-xl shadow-brand-900/10"
+                      className="group inline-flex items-center justify-center gap-2 md:gap-3 px-6 py-3 md:px-8 md:py-4 text-xs md:text-sm font-bold tracking-widest uppercase transition-all rounded-full bg-brand-900 text-white hover:bg-brand-800 shadow-xl shadow-brand-900/20"
                     >
                       {heroSlides[currentSlide].cta_text || 'Shop Collection'}
                       <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                     </Link>
-                    {/* Secondary CTA if it exists */}
                     {(heroSlides[currentSlide].secondary_cta_text || heroSecondaryText) && (
                       <Link
                         href={heroSlides[currentSlide].secondary_cta_link || '/about'}
-                        className="inline-flex items-center justify-center px-10 py-5 text-sm font-bold tracking-widest uppercase transition-all border-2 rounded-full border-brand-900/10 text-brand-900 hover:bg-brand-900 hover:text-white backdrop-blur-sm"
+                        className="inline-flex items-center justify-center px-6 py-3 md:px-8 md:py-4 text-xs md:text-sm font-bold tracking-widest uppercase transition-all border-2 rounded-full border-brand-900/10 text-brand-900 hover:bg-white hover:border-brand-900/20 shadow-sm"
                       >
                         {heroSlides[currentSlide].secondary_cta_text || heroSecondaryText}
                       </Link>
