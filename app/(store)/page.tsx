@@ -129,7 +129,7 @@ export default function Home() {
       {/* ============================================
           HERO SECTION — Premium & Minimalist
           ============================================ */}
-      <section className="relative h-[90vh] w-full overflow-hidden bg-white">
+      <section className="relative h-screen w-full overflow-hidden bg-brand-900">
         <AnimatePresence mode="wait">
           {heroSlides.length > 0 && (
             <motion.div
@@ -140,7 +140,7 @@ export default function Home() {
               transition={{ duration: 1.2, ease: "easeInOut" }}
               className="absolute inset-0"
             >
-              {/* Background Image - No Full Overlay */}
+              {/* Background Image - Clean & Edge-to-Edge */}
               <div className="absolute inset-0">
                 {heroSlides[currentSlide].image_url ? (
                   <Image
@@ -149,23 +149,22 @@ export default function Home() {
                     fill
                     className="object-cover"
                     priority
+                    unoptimized
                   />
                 ) : (
-                  <div className="w-full h-full bg-brand-50 flex items-center justify-center">
+                  <div className="w-full h-full bg-brand-900 flex items-center justify-center">
                     <Sparkles className="w-12 h-12 text-brand-200 animate-pulse" />
                   </div>
                 )}
-                {/* Text Protection Gradient: Bottom-up on mobile, Left-to-right on desktop */}
-                <div className="absolute inset-0 bg-gradient-to-t from-white/95 via-white/40 to-transparent md:bg-gradient-to-r md:from-white/95 md:via-white/50 md:to-transparent" />
               </div>
 
-              {/* Text Content - Bottom on mobile, Center on desktop */}
-              <div className="container relative z-10 h-full px-6 mx-auto flex flex-col justify-end pb-20 md:pb-0 md:justify-center">
+              {/* Text Content - Responsive Positioning with Text Shadow for Readability */}
+              <div className="container relative z-10 h-full px-6 mx-auto flex flex-col justify-end pb-24 md:pb-0 md:justify-center">
                 <motion.div
                   initial={{ opacity: 0, x: -30 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
-                  className="max-w-xl md:max-w-2xl"
+                  className="max-w-xl md:max-w-2xl drop-shadow-2xl"
                 >
                   {heroSlides[currentSlide].tag && (
                     <span className="inline-flex items-center gap-2 px-3 py-1 md:px-4 md:py-1.5 mb-4 md:mb-6 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase rounded-full bg-brand-900 text-white shadow-lg shadow-brand-900/10">
